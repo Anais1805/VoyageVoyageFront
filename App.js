@@ -12,12 +12,35 @@ import OverviewScreen from './Screens/OverviewScreen';
 // import MapScreen from './Screens/MapScreen';
 // import DaysScreen from './Screens/DaysScreen';
 import ConnectionScreen from './Screens/ConnectionScreen';
+import { Provider } from 'react-redux';
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import user from './reducers/users'
 
 const Stack = createNativeStackNavigator();
 
+const persistConfig = {
+  key: "voyagevoyage",
+  storage: AsyncStorage,
+};
+const reducers = combineReducers({user})
+
+
+const store = configureStore({
+  reducer: persistReducer(persistConfig, reducers),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
+});
+let persistor = persistStore(store);
+
 export default function App() {
-  return (
   
+  
+  return (
+
+<Provider store={store}>
+
 <NavigationContainer>
      <Stack.Navigator screenOptions={{ headerShown: false }}>
        <Stack.Screen name="Home" component={HomeScreen} />
@@ -31,6 +54,8 @@ export default function App() {
        <Stack.Screen name="Map" component={MapScreen} /> */
      </Stack.Navigator>
    </NavigationContainer>
+   </PersistGate>
+   </Provider>
   );
 }
 
