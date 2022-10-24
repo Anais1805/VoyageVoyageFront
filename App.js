@@ -1,12 +1,12 @@
-// import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './Screens/HomeScreen.js'
+import HomeScreen from './Screens/HomeScreen'
 // import StartScreen from './screens/StartScreen';
 // import ReservedScreen from './Screens/ReservedScreen';
 import ProfileScreen from './Screens/ProfileScreen';
-// import OverviewScreen from './Screens/OverviewScreen';
+import OverviewScreen from './Screens/OverviewScreen';
 // import MyReservationScreen from './Screens/MyReservationScreen';
 // import MyDayScreen from './Screens/MyDayScreen';
 // import MapScreen from './Screens/MapScreen';
@@ -38,15 +38,14 @@ export default function App() {
   
   
   return (
+
 <Provider store={store}>
-<PersistGate loading={null} persistor={persistor}>
+
 <NavigationContainer>
      <Stack.Navigator screenOptions={{ headerShown: false }}>
        <Stack.Screen name="Home" component={HomeScreen} />
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
-       {/* <Stack.Screen name="Days" component={DaysScreen} />
-      
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Reserved" component={ReservedScreen} />
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
