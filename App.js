@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/HomeScreen.js'
 // import StartScreen from './screens/StartScreen';
 // import ReservedScreen from './Screens/ReservedScreen';
-// import ProfileScreen from './Screens/ProfileScreen';
+import ProfileScreen from './Screens/ProfileScreen';
 // import OverviewScreen from './Screens/OverviewScreen';
 // import MyReservationScreen from './Screens/MyReservationScreen';
 // import MyDayScreen from './Screens/MyDayScreen';
@@ -22,8 +22,9 @@ export default function App() {
      <Stack.Navigator screenOptions={{ headerShown: false }}>
        <Stack.Screen name="Home" component={HomeScreen} />
        <Stack.Screen name="Connection" component={ConnectionScreen} />
-       {/* <Stack.Screen name="Days" component={DaysScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
+       {/* <Stack.Screen name="Days" component={DaysScreen} />
+      
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Reserved" component={ReservedScreen} />
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
