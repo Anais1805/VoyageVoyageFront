@@ -7,7 +7,7 @@ export default function ConnectionScreen({ navigation }) {
         <View style={styles.header}>
             <Image style= {styles.logo} source={require('../assets/logo.png')} />
             <View style={styles.menuHeader}>
-                <TouchableOpacity onPress={() => handleSubmit()} style={styles.login1} activeOpacity={0.8}>
+                <TouchableOpacity onPress={() => navigation.navigate('Connection')} style={styles.login1} activeOpacity={0.8}>
                     <Text style={styles.btnLogin1}>S'inscrire</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleSubmit()} style={styles.login2} activeOpacity={0.8}>
