@@ -10,7 +10,9 @@ export default function ConnectionScreen({ navigation }) {
             title="Go to Home"
             onPress={() => navigation.navigate('Home')} 
           /> */}
-          <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
+          <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
+             <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => handleSubmit()} style={styles.login} activeOpacity={0.8}>
             <Text style={styles.textButton}>Login</Text>
           </TouchableOpacity>
@@ -33,7 +35,7 @@ export default function ConnectionScreen({ navigation }) {
         <Text style={styles.compte}> Pas encore de compte ? </Text>
 
         <View style={styles.part2}>
-        <TouchableOpacity onPress={() => handleSubmit()} style={styles.input} activeOpacity={0.8}>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')} style={styles.input} activeOpacity={0.8}>
             <Text style={styles.text}>Inscritpion avec email</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleSubmit()} style={styles.input} activeOpacity={0.8}>
@@ -64,7 +66,7 @@ export default function ConnectionScreen({ navigation }) {
       width: '15%',
       height: '50%',
       marginLeft: '6%',
-      marginTop: '12%',
+      marginTop: '14%',
     },
     login: {
       width: '20%',
@@ -95,6 +97,7 @@ export default function ConnectionScreen({ navigation }) {
       width: '100%',
       alignItems: 'center',
       justifyContent: 'space-around',
+      marginTop: '10%',
     },
     part2: {
       flex: 0.36,  
