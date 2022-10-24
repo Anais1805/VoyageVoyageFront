@@ -6,8 +6,9 @@ export default function ConnectionScreen({ navigation }) {
         <Text>Connection Screen</Text>
         <Button
           title="Go to Home"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Home')} 
         />
       </View>
+      
     );
    }
