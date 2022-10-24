@@ -40,7 +40,7 @@ export default function App() {
   return (
 
 <Provider store={store}>
-
+<PersistGate persistor={persistor}>
 <NavigationContainer>
      <Stack.Navigator screenOptions={{ headerShown: false }}>
        <Stack.Screen name="Home" component={HomeScreen} />
@@ -51,7 +51,7 @@ export default function App() {
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />
-       <Stack.Screen name="Map" component={MapScreen} /> */
+       <Stack.Screen name="Map" component={MapScreen} /> 
      </Stack.Navigator>
    </NavigationContainer>
    </PersistGate>
