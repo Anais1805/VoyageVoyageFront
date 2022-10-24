@@ -26,7 +26,7 @@ export default function ConnectionScreen({ navigation }) {
           {/* <FontAwesome name='envelope' size={20}></FontAwesome> */}
         </TextInput>
         <TextInput style={styles.input} placeholder=' 🔒 Mot de Passe'></TextInput>
-           <TouchableOpacity style={styles.textconnexion} onPress={() => handleSubmit()} activeOpacity={0.8}>
+           <TouchableOpacity style={styles.textconnexion} onPress={() => navigation.navigate('ReservedScreen')} activeOpacity={0.8}>
               <Text style={styles.title2}>SE CONNECTER</Text>
           </TouchableOpacity>
         </View>
