@@ -1,7 +1,10 @@
-import { View, Text, Button, TextInput, StyleSheet, Image, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, Button, TextInput, StyleSheet, Image, Pressable, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { useState } from "react";
 import { RadioButton } from "react-native-paper";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserToStore } from "../reducers/users";
+
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");
@@ -11,7 +14,20 @@ export default function ProfileScreen({ navigation }) {
   const [checked, setChecked] = useState("first");
   const [checked2, setChecked2] = useState("first");
   const [checked3, setChecked3] = useState("first");
+  const [familyValue, SetFamilyValue] = useState('')
+  const dispatch = useDispatch()
  
+  const submitClick = () => {
+    fetch('http://localhost:3000/users/signin', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: useInternalTheme, password: passwordValue, email: emailValue,  })
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    dispatch(addUserToStore())
+  })
+  }
 
   return (
     <View style={styles.container}>
@@ -27,6 +43,7 @@ export default function ProfileScreen({ navigation }) {
           uri: "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small_2x/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg",
         }}
       ></Image>
+      <KeyboardAvoidingView>
       <TextInput
         style={styles.input}
         onChangeText={(usernameValue) => setUsernameValue(usernameValue)}
@@ -45,8 +62,8 @@ export default function ProfileScreen({ navigation }) {
         value={emailValue}
         placeholder={"Email"}
       />
-      
-      <Text style={styles.ligne}>              </Text>
+      </KeyboardAvoidingView>
+    
       <Text style={styles.soustitre}>Profil Voyageur - Préférences</Text>
        
       <View style={styles.allRadioButton}>
@@ -56,17 +73,18 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="Seul(e)"
+              value={familyValue}
               status={checked === "first" ? "checked" : "unchecked"}
               onPress={() => setChecked("first")}
               disabled={false}
+              uncheckedColor='#F3F3F3'
             />
             <Text style={styles.textRadio}>Seul(e)</Text>
           </View>
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="second"
+              value="En famille"
               status={checked === "second" ? "checked" : "unchecked"}
               onPress={() => setChecked("second")}
               disabled={false}
@@ -76,7 +94,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="third"
+              value="Entre amis"
               status={checked === "third" ? "checked" : "unchecked"}
               onPress={() => setChecked("third")}
               disabled={false}
@@ -90,7 +108,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="Seul(e)"
+              value="€"
               status={checked2 === "first" ? "checked" : "unchecked"}
               onPress={() => setChecked2("first")}
               disabled={false}
@@ -100,7 +118,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="second"
+              value="¥¥"
               status={checked2 === "second" ? "checked" : "unchecked"}
               onPress={() => setChecked2("second")}
               disabled={false}
@@ -110,7 +128,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="third"
+              value="$$$"
               status={checked2 === "third" ? "checked" : "unchecked"}
               onPress={() => setChecked2("third")}
               disabled={false}
@@ -125,7 +143,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="first"
+              value="Flexitarien"
               status={checked3 === "first" ? "checked" : "unchecked"}
               onPress={() => setChecked3("first")}
               disabled={false}
@@ -135,7 +153,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="second"
+              value="Végétarien"
               status={checked3 === "second" ? "checked" : "unchecked"}
               onPress={() => setChecked3("second")}
               disabled={false}
@@ -145,7 +163,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value="third"
+              value="Vegan"
               status={checked3 === "third" ? "checked" : "unchecked"}
               onPress={() => setChecked3("third")}
               disabled={false}
@@ -165,8 +183,8 @@ export default function ProfileScreen({ navigation }) {
               onPress={() => setChecked4("first")}
               disabled={false}
             /> */}
-        <BouncyCheckbox onPress={(isSelected) => {}} fillColor="#9E2A2B"/>
-            <Text style={styles.textRadio}>A pied</Text>
+        <BouncyCheckbox onPress={(isSelected) => {}} fillColor="#9E2A2B" text='A pied' textStyle={styles.textRadio}/>
+           
           </View>
           <View style={styles.radio}>
             {/* <RadioButton
@@ -176,12 +194,12 @@ export default function ProfileScreen({ navigation }) {
               onPress={() => setChecked4("second")}
               disabled={false}
             /> */}
-            <BouncyCheckbox onPress={(isSelected) => {}} fillColor="#9E2A2B"/>
-            <Text style={styles.textRadio}>En transports</Text>
+            <BouncyCheckbox onPress={(isSelected) => {}} fillColor="#9E2A2B" text='En transports' textStyle={styles.textRadio}/>
+           
           </View>
           <View style={styles.radio}>
-          <BouncyCheckbox onPress={(isSelected) => {}}  fillColor="#9E2A2B" />
-            <Text style={styles.textRadio}>En voiture</Text>
+          <BouncyCheckbox onPress={(isSelected) => {}}  fillColor="#9E2A2B" text='En voiture' textStyle={styles.textRadio}/>
+           
           </View>
       </View>
     </View>
@@ -276,7 +294,9 @@ const styles = StyleSheet.create({
   textRadio: {
     marginLeft: 5,
     marginTop: 6,
-    marginBottom: 15
+    marginBottom: 10,
+    color: 'black',
+    fontSize: 15
   },
   subtitleRadio: {
     marginBottom: 4,
