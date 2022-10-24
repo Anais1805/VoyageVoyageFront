@@ -1,4 +1,5 @@
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function ConnectionScreen({ navigation }) {
     return (
@@ -16,9 +17,11 @@ export default function ConnectionScreen({ navigation }) {
         </View>
 
         <View style={styles.part1}>
-        <Text>Connexion</Text>
-        <TextInput placeholder='Adresse Mail'></TextInput>
-        <TextInput placeholder='Mot de Passe'></TextInput>
+        <Text style={styles.connexion}>CONNEXION</Text>
+        <TextInput style={styles.input} placeholder='Adresse Mail'>
+          {/* <FontAwesome name='envelope' size={20}></FontAwesome> */}
+        </TextInput>
+        <TextInput style={styles.input} placeholder='Mot de Passe'></TextInput>
            <TouchableOpacity onPress={() => handleSubmit()} activeOpacity={0.8}>
             <Text style={styles.textConnexion}>Connexion</Text>
           </TouchableOpacity>
@@ -87,11 +90,43 @@ export default function ConnectionScreen({ navigation }) {
       width: '100%',
       backgroundColor: 'green',
       alignItems: 'center',
-      borderWidth: 10,
+      justifyContent: 'space-around',
     },
     part2: {
       flex: 0.36,  
       width: '100%',
       backgroundColor: 'yellow',
+    },
+    input: {
+      width: '70%',
+      height: '15%',
+      borderRadius: 5,
+      backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: '#9E2A2B',
+      shadowColor: "#9E2A2B",
+      shadowOffset: {
+            width: 0,
+            height: 3,
+            },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65,
+      elevation: 6,
+    },
+    connexion:{
+      width: '80%',
+      height: '15%',
+      borderRadius: 5,
+      backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: '#9E2A2B',
+      shadowColor: "#9E2A2B",
+      shadowOffset: {
+            width: 0,
+            height: 3,
+            },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65,
+      elevation: 6,
     }
   }) 
