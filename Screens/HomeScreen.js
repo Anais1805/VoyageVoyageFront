@@ -1,16 +1,34 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground } from 'react-native'
 
-export default function ConnectionScreen({ navigation }) {
+export default function HomeScreen({ navigation }){
     return (
-      <View>
-        <Text>Home Screen</Text>
-        <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate('Connection')}
-        />
-      </View>
+      <View style={styles.container}>
+        
+        <View style={styles.header}>
+            <Image style= {styles.logo} source={require('../assets/logo.png')} />
+            <View style={styles.menuHeader}>
+                
+                <TouchableOpacity onPress={() => navigation.navigate('Connection')} style={styles.login1} activeOpacity={0.8}>
+                    <Text style={styles.btnLogin1}>S'inscrire</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.login2} activeOpacity={0.8}>
+                    <Text style={styles.btnLogin2}>Se connecter</Text>
+                </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.content}>
+        <ImageBackground source={require('../assets/bg.jpg')} style={styles.bg}>
+            <View style={styles.titleHome}>
+              <Text style={styles.title}>Nos suggestions</Text>
+            </View>
+        </ImageBackground>
+            
+        </View>
+    </View> 
     );
    }
+
 
 
 
