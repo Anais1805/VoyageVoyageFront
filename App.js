@@ -51,7 +51,9 @@ export default function App() {
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />
-       <Stack.Screen name="Map" component={MapScreen} /> */}
+
+       <Stack.Screen name="Map" component={MapScreen} /> 
+
      </Stack.Navigator>
    </NavigationContainer>
    </PersistGate>
