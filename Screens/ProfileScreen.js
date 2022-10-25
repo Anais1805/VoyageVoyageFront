@@ -1,41 +1,98 @@
-import { View, Text, Button, TextInput, StyleSheet, Image, Pressable, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  StyleSheet,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useState } from "react";
 import { RadioButton } from "react-native-paper";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { useDispatch, useSelector } from 'react-redux';
-import { addUserToStore } from "../reducers/users";
-
+import { useDispatch, useSelector } from "react-redux";
+import { SignUp } from "../reducers/users";
+import createPersistoid from "redux-persist/es/createPersistoid";
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
-  const [isSelected, setSelected] = useState(false);
-  const [checked, setChecked] = useState("first");
-  const [checked2, setChecked2] = useState("first");
-  const [checked3, setChecked3] = useState("first");
-  const [familyValue, SetFamilyValue] = useState('')
-  const dispatch = useDispatch()
+  const [isSelected, setSelected] = useState([]);
+  const [checked, setChecked] = useState("Seul(e)");
+  const [checked2, setChecked2] = useState("€");
+  const [checked3, setChecked3] = useState("Flexitarien");
+  const [alreadyPress, setAlreadyPress]=useState('false')
+  const dispatch = useDispatch();
+
+  
+  const user = useSelector((state)=> state.user.value)  
+  console.log(user)
+
  
   const submitClick = () => {
-    fetch('http://localhost:3000/users/signin', { 
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: useInternalTheme, password: passwordValue, email: emailValue,  })
-  })
-  .then(resp => resp.json())
-  .then(data => {
-    dispatch(addUserToStore())
-  })
+    fetch("http://192.168.10.129:4000/users/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: usernameValue,
+        password: passwordValue,
+        email: emailValue,
+        family: checked,
+        budget: checked2,
+        diet: checked3,
+        displacement: [...isSelected],
+        isConnected: true,
+      }),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        if (data.result) {
+          dispatch(
+           SignUp({
+              username: usernameValue,
+              password: passwordValue,
+              email: emailValue,
+              family: checked,
+              budget: checked2,
+              diet: checked3,
+              displacement: [...isSelected],
+              isConnected: true,
+            })
+          )
+          setSelected([])
+        }
+      });
+  };
+  const addDisplacement = (newDisplacement) => {
+    
+    setSelected([...isSelected, newDisplacement])
+    console.log('r', isSelected)
   }
-
+  const removeDisplacement = (newDisplacement) => {
+    if(alreadyPress){
+    setSelected(isSelected.filter(e => e !== newDisplacement) )
+    
+}
+  }
+  const checkedBox = () => {
+    setAlreadyPress(!alreadyPress)
+   
+  }
+  
   return (
     <View style={styles.container}>
-         <View style={styles.header}>
-          <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
-            <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/logo.png")}
+          ></Image>
+        </TouchableOpacity>
+      </View>
 
       <Image
         style={styles.avatar}
@@ -44,28 +101,28 @@ export default function ProfileScreen({ navigation }) {
         }}
       ></Image>
       <KeyboardAvoidingView>
-      <TextInput
-        style={styles.input}
-        onChangeText={(usernameValue) => setUsernameValue(usernameValue)}
-        value={usernameValue}
-        placeholder={"Username"}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={(passwordValue) => setPasswordValue(passwordValue)}
-        value={passwordValue}
-        placeholder={"Password"}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={(emailValue) => setEmailValue(emailValue)}
-        value={emailValue}
-        placeholder={"Email"}
-      />
+        <TextInput
+          style={styles.input}
+          onChangeText={(usernameValue) => setUsernameValue(usernameValue)}
+          value={usernameValue}
+          placeholder={"Username"}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(passwordValue) => setPasswordValue(passwordValue)}
+          value={passwordValue}
+          placeholder={"Password"}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(emailValue) => setEmailValue(emailValue)}
+          value={emailValue}
+          placeholder={"Email"}
+        />
       </KeyboardAvoidingView>
-    
+
       <Text style={styles.soustitre}>Profil Voyageur - Préférences</Text>
-       
+
       <View style={styles.allRadioButton}>
         <View style={styles.containerRadioButton}>
           {/* //////////////SITUATION FAMILIALE //////////// */}
@@ -73,11 +130,13 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
-              value={familyValue}
-              status={checked === "first" ? "checked" : "unchecked"}
-              onPress={() => setChecked("first")}
+              value="Seul(e)"
+              status={checked === "Seul(e)" ? "checked" : "unchecked"}
+              onPress={() => {
+                setChecked("Seul(e)");
+              }}
               disabled={false}
-              uncheckedColor='#F3F3F3'
+              uncheckedColor="#F3F3F3"
             />
             <Text style={styles.textRadio}>Seul(e)</Text>
           </View>
@@ -85,8 +144,8 @@ export default function ProfileScreen({ navigation }) {
             <RadioButton
               style={styles.radioButton}
               value="En famille"
-              status={checked === "second" ? "checked" : "unchecked"}
-              onPress={() => setChecked("second")}
+              status={checked === "En famille" ? "checked" : "unchecked"}
+              onPress={() => setChecked("En famille")}
               disabled={false}
             />
             <Text style={styles.textRadio}>En famille</Text>
@@ -95,22 +154,21 @@ export default function ProfileScreen({ navigation }) {
             <RadioButton
               style={styles.radioButton}
               value="Entre amis"
-              status={checked === "third" ? "checked" : "unchecked"}
-              onPress={() => setChecked("third")}
+              status={checked === "Entre amis" ? "checked" : "unchecked"}
+              onPress={() => setChecked("Entre amis")}
               disabled={false}
             />
             <Text style={styles.textRadio}>Entre amis</Text>
           </View>
-        
-        
+
           {/* ////////////// BUDGET //////////// */}
           <Text style={styles.subtitleRadio}>Budget :</Text>
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
               value="€"
-              status={checked2 === "first" ? "checked" : "unchecked"}
-              onPress={() => setChecked2("first")}
+              status={checked2 === "€" ? "checked" : "unchecked"}
+              onPress={() => setChecked2("€")}
               disabled={false}
             />
             <Text style={styles.textRadio}>€</Text>
@@ -119,8 +177,8 @@ export default function ProfileScreen({ navigation }) {
             <RadioButton
               style={styles.radioButton}
               value="¥¥"
-              status={checked2 === "second" ? "checked" : "unchecked"}
-              onPress={() => setChecked2("second")}
+              status={checked2 === "¥¥" ? "checked" : "unchecked"}
+              onPress={() => setChecked2("¥¥")}
               disabled={false}
             />
             <Text style={styles.textRadio}>¥¥</Text>
@@ -129,23 +187,23 @@ export default function ProfileScreen({ navigation }) {
             <RadioButton
               style={styles.radioButton}
               value="$$$"
-              status={checked2 === "third" ? "checked" : "unchecked"}
-              onPress={() => setChecked2("third")}
+              status={checked2 === "$$$" ? "checked" : "unchecked"}
+              onPress={() => setChecked2("$$$")}
               disabled={false}
             />
             <Text style={styles.textRadio}>$$$</Text>
           </View>
-          </View>
+        </View>
 
-          <View style={styles.containerRadioButton}>
+        <View style={styles.containerRadioButton}>
           {/* //////////////REGIME ALIMENTAIRE //////////// */}
           <Text style={styles.subtitleRadio}>Régime alimentaire :</Text>
           <View style={styles.radio}>
             <RadioButton
               style={styles.radioButton}
               value="Flexitarien"
-              status={checked3 === "first" ? "checked" : "unchecked"}
-              onPress={() => setChecked3("first")}
+              status={checked3 === "Flexitarien" ? "checked" : "unchecked"}
+              onPress={() => setChecked3("Flexitarien")}
               disabled={false}
             />
             <Text style={styles.textRadio}>Flexitarien</Text>
@@ -154,8 +212,8 @@ export default function ProfileScreen({ navigation }) {
             <RadioButton
               style={styles.radioButton}
               value="Végétarien"
-              status={checked3 === "second" ? "checked" : "unchecked"}
-              onPress={() => setChecked3("second")}
+              status={checked3 === "Végétarien" ? "checked" : "unchecked"}
+              onPress={() => setChecked3("Végétarien")}
               disabled={false}
             />
             <Text style={styles.textRadio}>Végétarien</Text>
@@ -164,48 +222,45 @@ export default function ProfileScreen({ navigation }) {
             <RadioButton
               style={styles.radioButton}
               value="Vegan"
-              status={checked3 === "third" ? "checked" : "unchecked"}
-              onPress={() => setChecked3("third")}
+              status={checked3 === "Vegan" ? "checked" : "unchecked"}
+              onPress={() => setChecked3("Vegan")}
               disabled={false}
             />
             <Text style={styles.textRadio}>Vegan</Text>
           </View>
-       
 
-        
           {/* ////////////// DEPLACEMENT//////////// */}
           <Text style={styles.subtitleRadio}>Déplacement :</Text>
           <View style={styles.radio}>
-            {/* <RadioButton
-              style={styles.radioButton}
-              value="first"
-              status={checked4 === "first" ? "checked" : "unchecked"}
-              onPress={() => setChecked4("first")}
-              disabled={false}
-            /> */}
-        <BouncyCheckbox onPress={(isSelected) => {}} fillColor="#9E2A2B" text='A pied' textStyle={styles.textRadio}/>
-           
+            <BouncyCheckbox
+              onPress={() => {addDisplacement("A pied"); removeDisplacement(); ; checkedBox()}}
+              fillColor="#9E2A2B"
+              text="A pied"
+              textStyle={styles.textRadio}
+            />
           </View>
           <View style={styles.radio}>
-            {/* <RadioButton
-              style={styles.radioButton}
-              value="second"
-              status={checked4 === "second" ? "checked" : "unchecked"}
-              onPress={() => setChecked4("second")}
-              disabled={false}
-            /> */}
-            <BouncyCheckbox onPress={(isSelected) => {}} fillColor="#9E2A2B" text='En transports' textStyle={styles.textRadio}/>
-           
+            <BouncyCheckbox
+              onPress={() => {addDisplacement("En transports"); removeDisplacement("En transports"); checkedBox()}}
+              fillColor="#9E2A2B"
+              text="En transports"
+              textStyle={styles.textRadio}
+              
+            />
           </View>
           <View style={styles.radio}>
-          <BouncyCheckbox onPress={(isSelected) => {}}  fillColor="#9E2A2B" text='En voiture' textStyle={styles.textRadio}/>
-           
+            <BouncyCheckbox
+              onPress={() => {addDisplacement("En voiture"); removeDisplacement("En voiture"); ; checkedBox()}}
+              fillColor="#9E2A2B"
+              text="En voiture"
+              textStyle={styles.textRadio}
+            />
           </View>
+        </View>
       </View>
-    </View>
-    <Pressable style={styles.button}>
-    <Text style={styles.texteButton}>Valider</Text>
-    </Pressable>
+      <Pressable style={styles.button} onPress={() => submitClick()}>
+        <Text style={styles.texteButton}>Valider</Text>
+      </Pressable>
     </View>
   );
 }
@@ -213,34 +268,29 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   
+
     alignItems: "center",
-    width:'100%',
-    height: '100%',
-    
+    width: "100%",
+    height: "100%",
   },
 
   header: {
-      width: '100%',
-      backgroundColor: 'white',
-      borderWidth: 1,
-      justifyContent: 'flex-start',
-      alignItems: 'left',
-      marginBottom: 15,
-      paddingTop: 30,
+    width: "100%",
+    backgroundColor: "white",
+    borderWidth: 1,
+    justifyContent: "flex-start",
+    alignItems: "left",
+    marginBottom: 15,
+    paddingTop: 30,
+  },
+  logo: {
+    width: 60,
+    height: 60,
+    marginLeft: "6%",
+    marginBottom: 15,
+    justifyContent: "flex-start",
+  },
 
-      
-    },
-    logo: {
-        width: 60,
-        height: 60,
-        marginLeft: '6%',
-        marginBottom: 15,
-        justifyContent: 'flex-start',
-        
-      },
-   
-      
   input: {
     borderWidth: 1,
     borderColor: "#E1E1E1",
@@ -254,11 +304,11 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     marginBottom: 20,
-    borderRadius: 50
+    borderRadius: 50,
   },
   ligne: {
     borderBottomWidth: 2,
-    textDecorationLine: 'underline'
+    textDecorationLine: "underline",
   },
   soustitre: {
     borderWidth: 1,
@@ -267,50 +317,47 @@ const styles = StyleSheet.create({
     width: 300,
     textAlign: "center",
     borderRadius: 10,
-    borderStyle: 'dashed'
+    borderStyle: "dashed",
   },
   radioButton: {
     width: 10,
     height: 10,
-   
   },
   containerRadioButton: {
     flex: 1,
     marginBottom: 5,
-   
   },
   radio: {
-    display: 'flex',
-    flexDirection: 'row',
-    
+    display: "flex",
+    flexDirection: "row",
   },
   allRadioButton: {
-    flexWrap: 'wrap',
-   display: 'flex',
-    flexDirection: 'row',
+    flexWrap: "wrap",
+    display: "flex",
+    flexDirection: "row",
     margin: 40,
-    marginBottom: 30
+    marginBottom: 30,
   },
   textRadio: {
     marginLeft: 5,
     marginTop: 6,
     marginBottom: 10,
-    color: 'black',
-    fontSize: 15
+    color: "black",
+    fontSize: 15,
+    textDecorationLine: "none",
   },
   subtitleRadio: {
     marginBottom: 4,
-    textDecorationLine: 'underline'
+    textDecorationLine: "underline",
   },
-  button: { 
-    backgroundColor: '#9E2A2B',
-    color: 'white',
+  button: {
+    backgroundColor: "#9E2A2B",
+    color: "white",
     paddingHorizontal: 25,
-    padding : 10,
-    borderRadius: 15
-  }, 
-  texteButton: {
-    color: 'white'
+    padding: 10,
+    borderRadius: 15,
   },
-  
+  texteButton: {
+    color: "white",
+  },
 });
