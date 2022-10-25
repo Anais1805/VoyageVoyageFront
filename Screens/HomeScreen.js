@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet } from 'react-native'
 
 export default function ConnectionScreen({ navigation }) {
     return (
@@ -7,6 +7,10 @@ export default function ConnectionScreen({ navigation }) {
         <Button
           title="Go to Connection"
           onPress={() => navigation.navigate('Connection')}
+        />
+          <Button
+          title="Go to"
+          onPress={() => navigation.navigate('Profile')}
         />
       </View>
     );

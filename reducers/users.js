@@ -11,13 +11,15 @@ const initialState = {
     displacement: null,
     isConnected: true,
   },
+  
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addUserToStore: (state, action) => {
+    SignUp: (state, action) => {
+        console.log(state.value.displacement)
         state.value.username = action.payload.username
         state.value.password = action.payload.password
         state.value.email = action.payload.email
@@ -30,5 +32,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const {addUserToStore} = userSlice.actions;
+export const {SignUp} = userSlice.actions;
 export default userSlice.reducer;
