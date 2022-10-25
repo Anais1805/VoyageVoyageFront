@@ -10,7 +10,7 @@ import OverviewScreen from './Screens/OverviewScreen';
 import MyReservationScreen from './Screens/MyReservationScreen';
 
 // import MyDayScreen from './Screens/MyDayScreen';
-// import MapScreen from './Screens/MapScreen';
+import MapScreen from './Screens/MapScreen';
 // import DaysScreen from './Screens/DaysScreen';
 import ConnectionScreen from './Screens/ConnectionScreen';
 import { Provider } from 'react-redux';
@@ -50,10 +50,11 @@ export default function App() {
        <Stack.Screen name="Profile" component={ProfileScreen} />
 
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
+       <Stack.Screen name="Map" component={MapScreen} />  
+
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
        <Stack.Screen name="MyDay" component={MyDayScreen} />
-       <Stack.Screen name="Overview" component={OverviewScreen} />
-       <Stack.Screen name="Map" component={MapScreen} />  */}
+        <Stack.Screen name="Overview" component={OverviewScreen} />*/}
 
 
      </Stack.Navigator>
