@@ -1,7 +1,10 @@
+
 import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground } from 'react-native'
+
 
 export default function HomeScreen({ navigation }){
     return (
+
       <View style={styles.container}>
         
         <View style={styles.header}>
@@ -26,6 +29,7 @@ export default function HomeScreen({ navigation }){
             
         </View>
     </View> 
+
     );
    }
 
