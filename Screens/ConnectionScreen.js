@@ -1,7 +1,44 @@
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native'
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserToStore } from '../reducers/users';
+
+const BACKEND_ADRESS='http://192.168.10.152:4000'
 
 export default function ConnectionScreen({ navigation }) {
+
+  const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
+  console.log(user)
+
+  const [emailError, setEmailError] = useState(false);
+  const [signInEmail, setSignInEmail] = useState('');
+	const [signInPassword, setSignInPassword] = useState('');
+
+  const handleSubmit = () => {
+    fetch(`${BACKEND_ADRESS}/users/signin`, { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: signInPassword, email: signInEmail })
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    console.log(data.result)
+    if (data.result && EMAIL_REGEX.test(signInEmail)) {
+      dispatch(addUserToStore({email: setSignInEmail, token: data.token}));
+      navigation.navigate('MyReservation');
+      setSignInEmail('');
+			setSignInPassword('');
+    } else {
+      setEmailError(true);
+    }
+  })
+  };
+
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -22,11 +59,20 @@ export default function ConnectionScreen({ navigation }) {
           <View style={styles.connexion}>
             <Text style={styles.title}>CONNEXION</Text>
           </View>
-        <TextInput style={styles.input} placeholder='  ✉️️ Adresse Mail'>
-          {/* <FontAwesome name='envelope' size={20}></FontAwesome> */}
-        </TextInput>
-        <TextInput style={styles.input} placeholder=' 🔒 Mot de Passe'></TextInput>
-           <TouchableOpacity style={styles.textconnexion} onPress={() => navigation.navigate('ReservedScreen')} activeOpacity={0.8}>
+        <TextInput style={styles.input} 
+                   placeholder='  ✉️️ Adresse Mail'
+                   autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
+                   keyboardType="email-address" // https://reactnative.dev/docs/textinput#keyboardtype
+                   textContentType="emailAddress" // https://reactnative.dev/docs/textinput#textcontenttype-ios
+                   autoComplete="email" // https://reactnative.dev/docs/textinput#autocomplete-android
+                   onChangeText={(signInEmail) => setSignInEmail(signInEmail)}
+                   value={signInEmail}/>
+          {emailError && <Text style={styles.error}>Invalid email address</Text>}
+        <TextInput style={styles.input} 
+                   placeholder=' 🔒 Mot de Passe'
+                   onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
+                   value = {signInPassword}></TextInput>
+           <TouchableOpacity style={styles.textconnexion} onPress={() => handleSubmit()} activeOpacity={0.8}>
               <Text style={styles.title2}>SE CONNECTER</Text>
           </TouchableOpacity>
         </View>
@@ -38,10 +84,10 @@ export default function ConnectionScreen({ navigation }) {
         <TouchableOpacity  onPress={() => navigation.navigate('Profile')} style={styles.input} activeOpacity={0.8}>
             <Text style={styles.text}>Inscritpion avec email</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSubmit()} style={styles.input} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => handleGoogle()} style={styles.input} activeOpacity={0.8}>
             <Text style={styles.text}>Connexion avec Google</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSubmit()} style={styles.input} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => handleFacebook()} style={styles.input} activeOpacity={0.8}>
             <Text style={styles.text}>Connexion avec Facebook</Text>
           </TouchableOpacity>
         </View>
