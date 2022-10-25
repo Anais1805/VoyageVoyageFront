@@ -47,6 +47,7 @@ export default function ConnectionScreen({ navigation }) {
             title="Go to Home"
             onPress={() => navigation.navigate('Home')} 
           /> */}
+          
           <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
              <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
           </TouchableOpacity>
@@ -59,6 +60,9 @@ export default function ConnectionScreen({ navigation }) {
           <View style={styles.connexion}>
             <Text style={styles.title}>CONNEXION</Text>
           </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Map')} style={styles.login} activeOpacity={0.8}>
+                    <Text style={styles.textButton}>Go to Map</Text>
+                </TouchableOpacity>
         <TextInput style={styles.input} 
                    placeholder='  ✉️️ Adresse Mail'
                    autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
