@@ -24,15 +24,17 @@ export default function ProfileScreen({ navigation }) {
   const [checked, setChecked] = useState("Seul(e)");
   const [checked2, setChecked2] = useState("€");
   const [checked3, setChecked3] = useState("Flexitarien");
-  const [alreadyPress, setAlreadyPress]=useState('false')
+  const [onFoot, setOnFoot]=useState('false')
+  const [car, setCar]=useState('false')
+  const [onTransit, setOnTransit]= useState('false')
   const dispatch = useDispatch();
 
   
   const user = useSelector((state)=> state.user.value)  
-  console.log(user)
-
+console.log('user', user)
  
   const submitClick = () => {
+    console.log('r', isSelected)
     fetch("http://192.168.10.129:4000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -67,22 +69,44 @@ export default function ProfileScreen({ navigation }) {
         }
       });
   };
-  const addDisplacement = (newDisplacement) => {
-    
-    setSelected([...isSelected, newDisplacement])
-    console.log('r', isSelected)
-  }
-  const removeDisplacement = (newDisplacement) => {
-    if(alreadyPress){
-    setSelected(isSelected.filter(e => e !== newDisplacement) )
-    
-}
-  }
-  const checkedBox = () => {
-    setAlreadyPress(!alreadyPress)
+
    
-  }
   
+  
+  const updateDisplacement = (displacement) => {
+    if(isSelected.find(displacement => displacement === 'A pied')){
+        setSelected(isSelected.filter(displacement => displacement !== 'A pied'))
+    }else {
+       return setSelected([...isSelected, displacement])
+    }
+  }
+  const updateDisplacement1 = (displacement) => {
+    if(isSelected.find(displacement => displacement === 'En transports')){
+        setSelected(isSelected.filter(displacement => displacement !== 'En transports'))
+    }else {
+        return setSelected([...isSelected, displacement])
+     }
+   }
+   const updateDisplacement2 = (displacement) => {
+    if(isSelected.find(displacement => displacement === 'En voiture')){
+        setSelected(isSelected.filter(displacement => displacement !== 'En voiture'))
+    }else {
+        return setSelected([...isSelected, displacement])
+     }
+   }
+
+//   const checkedBox = () => {
+//     setOnFoot(!onFoot)
+//   }
+//   const checkedBox1 = () => {
+//     setCar(!car)
+//   }
+//   const checkedBox2 = () => {
+//     setOnTransit(!onTransit) 
+//   }
+    
+  
+  console.log(onFoot)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -233,15 +257,17 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.subtitleRadio}>Déplacement :</Text>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {addDisplacement("A pied"); removeDisplacement(); ; checkedBox()}}
+              onPress={()=> updateDisplacement('A pied')}
               fillColor="#9E2A2B"
               text="A pied"
               textStyle={styles.textRadio}
+              
             />
           </View>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {addDisplacement("En transports"); removeDisplacement("En transports"); checkedBox()}}
+            //   onPress={() => {addDisplacement("En transports"); removeDisplacement("En transports"); checkedBox()}}
+              onPress={()=> updateDisplacement1('En transports')}
               fillColor="#9E2A2B"
               text="En transports"
               textStyle={styles.textRadio}
@@ -250,7 +276,8 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {addDisplacement("En voiture"); removeDisplacement("En voiture"); ; checkedBox()}}
+            //   onPress={() => {addDisplacement("En voiture"); removeDisplacement("En voiture"); ; checkedBox()}}
+              onPress={()=> updateDisplacement2('En voiture')}
               fillColor="#9E2A2B"
               text="En voiture"
               textStyle={styles.textRadio}
