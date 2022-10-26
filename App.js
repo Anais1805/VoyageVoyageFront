@@ -11,7 +11,7 @@ import MyReservationScreen from './Screens/MyReservationScreen';
 
 // import MyDayScreen from './Screens/MyDayScreen';
 import MapScreen from './Screens/MapScreen';
-// import DaysScreen from './Screens/DaysScreen';
+import DaysScreen from './Screens/DaysScreen';
 import ConnectionScreen from './Screens/ConnectionScreen';
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from "redux-persist";
@@ -51,6 +51,7 @@ export default function App() {
 
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
        <Stack.Screen name="Map" component={MapScreen} />  
+       <Stack.Screen name="Days" component={DaysScreen} />
 
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
        <Stack.Screen name="MyDay" component={MyDayScreen} />

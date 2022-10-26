@@ -27,6 +27,10 @@ export default function HomeScreen({ navigation }){
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('MyReservation')}>
                <Text style={styles.btnLogin1}>Réservation</Text></TouchableOpacity>
+
+               <TouchableOpacity onPress={() => navigation.navigate('Days')} style={styles.titleHome} activeOpacity={0.8}>
+                    <Text style={styles.daysButton}>Days Resa</Text>
+                </TouchableOpacity>
         </ImageBackground>
             
         </View>
@@ -130,6 +134,11 @@ export default function HomeScreen({ navigation }){
         color: 'white',
         textAlign: 'center',
         lineHeight: 40,
-    }
+    },
+    daysButton: {
+      color: 'white',
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
   }) 
 
