@@ -71,7 +71,7 @@ export default function ConnectionScreen({ navigation }) {
                    autoComplete="email" // https://reactnative.dev/docs/textinput#autocomplete-android
                    onChangeText={(signInEmail) => setSignInEmail(signInEmail)}
                    value={signInEmail}/>
-          {emailError && <Text style={styles.error}>Invalid email address</Text>}
+          {emailError && <Text style={styles.error}>⚠️ Invalid email address</Text>}
         <TextInput style={styles.input} 
                    placeholder=' 🔒 Mot de Passe'
                    onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
