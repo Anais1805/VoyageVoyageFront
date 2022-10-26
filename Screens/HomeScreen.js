@@ -25,6 +25,8 @@ export default function HomeScreen({ navigation }){
             <View style={styles.titleHome}>
               <Text style={styles.title}>Nos suggestions</Text>
             </View>
+            <TouchableOpacity onPress={() => navigation.navigate('MyReservation')}>
+               <Text style={styles.btnLogin1}>Réservation</Text></TouchableOpacity>
         </ImageBackground>
             
         </View>
