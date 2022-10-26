@@ -1,21 +1,38 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground, Button } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+
 export default function DaysScreen({ navigation }) {
 
 
     //compteur
     const [count, setCount] = useState(1);
 
-    const handlePagePlace = () => {
+    const handleUpPage = () => {
         setCount(count +1);
     };
+    const handleDownPage = () =>{
+        if (count <2){
+            return;
+        } else {
+        setCount(count -1);
+        }
+    }
 
     //map en attendant les fetch...
-    const [placeData, setPlaceData] = useState([]);
+    //const [places, setPlaces] = useState([]);
+
+
+    const placeData = [
+        { title: 'Opera Fenice', poster: 'operafenice.jpg', overview: 'A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case.' },
+        { title: 'Palais des Doges', poster: 'palaisdesdoges.jpg', overview: 'Batman raises the stakes in his war on crime and sets out to dismantle the remaining criminal organizations that plague the streets.' },
+        { title: 'Trattoria Onesta', poster: 'trattoriaonesta.jpg', overview: 'High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places.' },
+    ];
 
     const places = placeData.map( (places, i) => {
-        return <Places key={i} {...data} />
+        //return <Places key={i} {...data} />
     })
     return (
         <View style={styles.container}>
@@ -43,15 +60,15 @@ export default function DaysScreen({ navigation }) {
                         </View>
 
                         <View style={styles.suggest}>
-                            <Text>Suggestions (à faire avec un map ou des components) {places}</Text>
+                            <Text>Suggestions (à faire avec un map ou des components) {places.tittle}</Text>
                         </View>
 
                         <View style={styles.pageNumber}>
-                            <TouchableOpacity onPress={() => alert('Page précédente')} style={styles.pageChangement}>
+                            <TouchableOpacity onPress={() => handleDownPage()} style={styles.pageChangement}>
                                 <Text style={styles.text}>G </Text>
                             </TouchableOpacity>
-                            <Text style={styles.text}>Journée </Text>
-                            <TouchableOpacity onPress={() => alert('Page suivante')} style={styles.pageChangement}>
+                            <Text style={styles.text}>Journée {count}/ nb page</Text>
+                            <TouchableOpacity onPress={() => handleUpPage()} style={styles.pageChangement}>
                                 <Text style={styles.text}>D </Text>
                             </TouchableOpacity>
                         </View>
