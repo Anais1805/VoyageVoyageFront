@@ -6,13 +6,27 @@ export default function ReservedScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
-                    <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Profile')}  style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Sign Up</Text>
-                </TouchableOpacity>
-            </View>
+        <TouchableOpacity
+          style={styles.logoContainer}
+          onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.logo} source={require("../assets/logo.png")} />
+        </TouchableOpacity>
+        <View style={styles.menuHeader}>
+         <FontAwesome
+            style={styles.icon}
+            name="suitcase"
+            size={40}
+            color={'#335C67'}
+            onPress={() => navigation.navigate("Profile")}
+          />
+          <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={40}
+            onPress={() => navigation.navigate("Profile")}
+          />
+        </View>
+      </View>
 
             <View style={styles.journee}>
                      <Text style={styles.title}>MA JOURNEE</Text>
@@ -48,42 +62,45 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
     },
     header: {
-      flex: 0.13,
-      width: '100%',
-     borderBottomColor: '#9E2A2B',
-     borderBottomWidth: 2,
-      
-    }, 
-    logo: {
-      width: '15%',
-      height: '50%',
-      marginLeft: '6%',
-      marginTop: '12.5%',
-    },
-    login: {
-      width: '20%',
-      height: '30%',
-      marginLeft: '75%',
-      marginTop: '-12%',
-      borderRadius: 8,
-      backgroundColor: '#9E2A2B',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 1, 
-      borderColor: '#9E2A2B',
-      shadowColor: "#9E2A2B",
-      shadowOffset: {
-            width: 0,
-            height: 3,
-            },
-      shadowOpacity: 0.27,
-      shadowRadius: 4.65,
-      elevation: 6,
-    },
+        width: "100%",
+        height: "12%",
+        flexDirection: "row",
+        borderBottomColor: "#9E2A2B",
+        borderBottomWidth: 2,
+        marginBottom: 15,
+      },
+      menuHeader: {
+        flexDirection: "row",
+        width: "100%",
+        height: 100,
+        marginTop: "12%",
+        marginLeft: "45%",
+      },
+      logoContainer: {
+        marginLeft: "-10%",
+        marginBottom: "-5%",
+      },
+      logo: {
+        width: "35%",
+        height: "50%",
+        marginLeft: "35%",
+        marginTop: "22%",
+      },
+      avatar: {
+        width: "20%",
+        height: "20%",
+      },
+      icon: {
+        marginLeft: "0.5%",
+        marginRight: "2%",
+        marginBottom: "15%",
+        padding: 0,
+        marginTop: 0,
+      },
     textButton: {
       color: 'white',
       fontWeight: 'bold',
-      fontSize: 16,
+      fontSize: 14,
     },
     title: {
         fontSize: 20,
@@ -125,8 +142,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         margin: '3%',
-        
-        
+    
     },
     left: {
         flex: 0.4, 
@@ -142,7 +158,6 @@ const styles = StyleSheet.create({
     },
     delete: {
         marginLeft: '85%',
-    
     },
     remplace: {
         backgroundColor: '#335C67',
