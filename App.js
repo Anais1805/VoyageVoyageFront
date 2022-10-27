@@ -54,7 +54,9 @@ export default function App() {
        <Stack.Screen name="MyDay" component={MyDayScreen} />
 
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
+
         <Stack.Screen name="Overview" component={OverviewScreen} />*/}
+
 
 
      </Stack.Navigator>
