@@ -31,6 +31,10 @@ export default function HomeScreen({ navigation }){
                <TouchableOpacity onPress={() => navigation.navigate('Days')} style={styles.titleHome} activeOpacity={0.8}>
                     <Text style={styles.daysButton}>Days Resa</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Overview')} style={styles.titleHome} activeOpacity={0.8}>
+                    <Text style={styles.title}>Direction Recap</Text>
+                </TouchableOpacity>
         </ImageBackground>
             
         </View>
