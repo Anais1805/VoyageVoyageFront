@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/HomeScreen.js'
-// import StartScreen from './Screens/StartScreen';
+import StartScreen from './Screens/StartScreen';
 // import ReservedScreen from './Screens/ReservedScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import OverviewScreen from './Screens/OverviewScreen';
@@ -45,6 +45,7 @@ export default function App() {
 <PersistGate persistor={persistor}>
 <NavigationContainer>
      <Stack.Navigator screenOptions={{ headerShown: false }}>
+       <Stack.Screen name="Start" component={StartScreen} />
        <Stack.Screen name="Home" component={HomeScreen} />
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
