@@ -14,82 +14,28 @@ export default function ReservedScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.part}>
-                <View style={styles.journee}>
-                 <Text style={styles.title}>MA JOURNEE</Text>
-                </View>
-                <View styles={styles.cardcontainer}>
-                    <View style= {styles.image} >
-                     <Image source={require('../assets/logo.png')}></Image>
-                    </View>
-                    <TouchableOpacity onPress={() => handleSubmit()}  style={styles.delete} activeOpacity={0.8}>
-                         <FontAwesome name='times-circle' size={25}></FontAwesome>
-                     </TouchableOpacity>
-                     <Text style={styles.title2}>Title</Text>
-                     <Text style={styles.descritpion}>Descritpion</Text>
-                     <TouchableOpacity onPress={() => handleSubmit()}  style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Remplacer</Text>
-                </TouchableOpacity>
-                </View>
-
-                <View style={styles.part}>
-                <View style={styles.journee}>
-                 <Text style={styles.title}>MA JOURNEE</Text>
-                </View>
-                <View styles={styles.cardcontainer}>
-                    <View style= {styles.image} >
-                     <Image source={require('../assets/logo.png')}></Image>
-                    </View>
-                    <TouchableOpacity onPress={() => handleSubmit()}  style={styles.delete} activeOpacity={0.8}>
-                         <FontAwesome name='times-circle' size={25}></FontAwesome>
-                     </TouchableOpacity>
-                     <Text style={styles.title2}>Title</Text>
-                     <Text style={styles.descritpion}>Descritpion</Text>
-                     <TouchableOpacity onPress={() => handleSubmit()}  style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Remplacer</Text>
-                </TouchableOpacity>
-                </View>
-                </View>
-
-                <View style={styles.part}>
-                <View style={styles.journee}>
-                 <Text style={styles.title}>MA JOURNEE</Text>
-                </View>
-                <View styles={styles.cardcontainer}>
-                    <View style= {styles.image} >
-                     <Image source={require('../assets/logo.png')}></Image>
-                    </View>
-                    <TouchableOpacity onPress={() => handleSubmit()}  style={styles.delete} activeOpacity={0.8}>
-                         <FontAwesome name='times-circle' size={25}></FontAwesome>
-                     </TouchableOpacity>
-                     <Text style={styles.title2}>Title</Text>
-                     <Text style={styles.descritpion}>Descritpion</Text>
-                     <TouchableOpacity onPress={() => handleSubmit()}  style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Remplacer</Text>
-                </TouchableOpacity>
-                </View>
-                </View>
-
-                <View style={styles.part}>
-                <View style={styles.journee}>
-                 <Text style={styles.title}>MA JOURNEE</Text>
-                </View>
-                <View styles={styles.cardcontainer}>
-                    <View style= {styles.image} >
-                     <Image source={require('../assets/logo.png')}></Image>
-                    </View>
-                    <TouchableOpacity onPress={() => handleSubmit()}  style={styles.delete} activeOpacity={0.8}>
-                         <FontAwesome name='times-circle' size={25}></FontAwesome>
-                     </TouchableOpacity>
-                     <Text style={styles.title2}>Title</Text>
-                     <Text style={styles.descritpion}>Descritpion</Text>
-                     <TouchableOpacity onPress={() => handleSubmit()}  style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Remplacer</Text>
-                </TouchableOpacity>
-                </View>
-                </View>
- 
+            <View style={styles.journee}>
+                     <Text style={styles.title}>MA JOURNEE</Text>
             </View>
+
+            <View style={styles.part}>
+                <View style={styles.cardcontainer}>
+                    <View style={styles.left} >
+                        <Image style={styles.image} source={require('../assets/rando.jpg')}></Image>
+                    </View>
+                    <View style={styles.right}>
+                        <TouchableOpacity onPress={() => handleSubmit()}  style={styles.delete} activeOpacity={0.8}>
+                            <FontAwesome name='times-circle' size={25} color='#335C67'></FontAwesome>
+                        </TouchableOpacity>
+                        <Text style={styles.title2}>Title</Text>
+                        <Text style={styles.descritpion}>Descritpion Adultes: 25€,  jusqu’à 14ans et après     65 ans : 13€, avant 5ans: gratuit</Text>
+                        <TouchableOpacity onPress={() => handleSubmit()}  style={styles.remplace} activeOpacity={0.8}>
+                            <Text style={styles.textButton}>Remplacer</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+
         </View>
     )
 }
@@ -112,7 +58,7 @@ const styles = StyleSheet.create({
       width: '15%',
       height: '50%',
       marginLeft: '6%',
-      marginTop: '14%',
+      marginTop: '12.5%',
     },
     login: {
       width: '20%',
@@ -139,18 +85,13 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       fontSize: 16,
     },
-    part: {
-        flex: 0.2175, 
-    },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#9E2A2B',
     },
-    
     journee:{
-        width: '80%',
-        height: '15%',
+        flex: 0.05,
         borderRadius: 5,
         backgroundColor: 'white',
         borderWidth: 1,
@@ -165,6 +106,65 @@ const styles = StyleSheet.create({
         elevation: 6,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '10%',
+        margin: '8%',
+        width: '85%',
     },
+    part: {
+        flex: 0.82, 
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 5,
+        padding: '1%',
+    },
+    cardcontainer: {
+        flex: 0.2, 
+        flexDirection: 'row',
+        borderColor: '#9E2A2B',
+        borderWidth: 1,
+        borderRadius: 5,
+        margin: '3%',
+        
+        
+    },
+    left: {
+        flex: 0.4, 
+        margin: '2%',
+       
+    },
+    right: {
+        flex: 0.6,
+        alignItems: 'flex-start',
+        justifyContent: 'space-around',
+        margin: '2%',
+        
+    },
+    delete: {
+        marginLeft: '85%',
+    
+    },
+    remplace: {
+        backgroundColor: '#335C67',
+        width: '40%',
+        height: '20%', 
+        marginLeft: '55%',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: "#335C67",
+        shadowOffset: {
+              width: 0,
+              height: 3,
+              },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        elevation: 6,
+    },
+    descritpion: {
+        fontSize: 12, 
+    }, 
+    title2: {
+        fontWeight: 'bold',
+    }
 })
