@@ -9,7 +9,7 @@ import ProfileScreen from './Screens/ProfileScreen';
 import OverviewScreen from './Screens/OverviewScreen';
 import MyReservationScreen from './Screens/MyReservationScreen';
 
-// import MyDayScreen from './Screens/MyDayScreen';
+import MyDayScreen from './Screens/MyDayScreen';
 import MapScreen from './Screens/MapScreen';
 import DaysScreen from './Screens/DaysScreen';
 import ConnectionScreen from './Screens/ConnectionScreen';
@@ -51,11 +51,15 @@ export default function App() {
        <Stack.Screen name="Overview" component={OverviewScreen} />
        <Stack.Screen name="MyReservation" component={MyReservationScreen} />
        <Stack.Screen name="Map" component={MapScreen} />  
-       <Stack.Screen name="Days" component={DaysScreen} />
+
+
+       <Stack.Screen name="MyDay" component={MyDayScreen} />
 
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
-       <Stack.Screen name="MyDay" component={MyDayScreen} />
-      */}
+
+        <Stack.Screen name="Overview" component={OverviewScreen} />*/}
+
+
 
 
      </Stack.Navigator>

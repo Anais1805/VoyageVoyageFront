@@ -1,3 +1,4 @@
+
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Modal } from 'react-native'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -178,3 +179,4 @@ const styles = StyleSheet.create({
         paddingRight: 40,
     },
   });
+
