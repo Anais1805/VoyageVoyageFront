@@ -61,6 +61,7 @@ export default function MyReservationScreen({ navigation }) {
   };
   LocaleConfig.defaultLocale = "fr";
 
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -260,5 +261,6 @@ const styles = StyleSheet.create({
     marginBottom: "10%",
   },
 });
+
 
 
