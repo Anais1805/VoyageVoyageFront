@@ -1,5 +1,6 @@
 
-import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground, TextInput } from 'react-native'
+
 
 
 export default function HomeScreen({ navigation }){
@@ -27,6 +28,12 @@ export default function HomeScreen({ navigation }){
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('MyReservation')}>
                <Text style={styles.btnLogin1}>Réservation</Text></TouchableOpacity>
+               <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
+               <Text style={styles.btnLogin1}>Restaurants</Text></TouchableOpacity>
+               <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
+               <Text style={styles.btnLogin1}>Culturals</Text></TouchableOpacity>
+               <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+               <Text style={styles.btnLogin1}>Naturals</Text></TouchableOpacity>
 
                <TouchableOpacity onPress={() => navigation.navigate('Days')} style={styles.titleHome} activeOpacity={0.8}>
                     <Text style={styles.daysButton}>Days Resa</Text>
@@ -35,7 +42,9 @@ export default function HomeScreen({ navigation }){
                 <TouchableOpacity onPress={() => navigation.navigate('Overview')} style={styles.titleHome} activeOpacity={0.8}>
                     <Text style={styles.title}>Direction Recap</Text>
                 </TouchableOpacity>
+                <TextInput style={styles.searchBar}> </TextInput>
         </ImageBackground>
+
             
         </View>
     </View> 
@@ -110,7 +119,7 @@ export default function HomeScreen({ navigation }){
     btnLogin1: {
       color: '#9E2A2B',
       fontWeight: 'bold',
-      fontSize: 10,
+      fontSize: 20,
     },
     btnLogin2: {
         color: '#FFF',
@@ -144,5 +153,9 @@ export default function HomeScreen({ navigation }){
       fontWeight: 'bold',
       fontSize: 16,
     },
+    searchBar: {
+      width: 100, 
+      height: 50,
+    }
   }) 
 
