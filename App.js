@@ -8,6 +8,9 @@ import StartScreen from './Screens/StartScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import OverviewScreen from './Screens/OverviewScreen';
 import MyReservationScreen from './Screens/MyReservationScreen';
+import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
+import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
+import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
 
 import MyDayScreen from './Screens/MyDayScreen';
 import MapScreen from './Screens/MapScreen';
@@ -47,6 +50,9 @@ export default function App() {
      <Stack.Navigator screenOptions={{ headerShown: false }}>
        <Stack.Screen name="Start" component={StartScreen} />
        <Stack.Screen name="Home" component={HomeScreen} />
+       <Stack.Screen name="AllRestaurants" component={AllRestaurantsScreen} />
+       <Stack.Screen name="AllCulturals" component={AllCulturalsScreen} />
+       <Stack.Screen name="AllNaturals" component={AllNaturalssScreen} />
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />
