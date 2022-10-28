@@ -60,6 +60,7 @@ export default function MyReservationScreen({ navigation }) {
     today: "Aujourd'hui",
   };
   LocaleConfig.defaultLocale = "fr";
+  
 
   return (
     <View style={styles.container}>
