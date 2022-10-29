@@ -23,6 +23,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import user from './reducers/users'
+import destinations from './reducers/destinations.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +31,7 @@ const persistConfig = {
   key: "voyagevoyage",
   storage: AsyncStorage,
 };
-const reducers = combineReducers({user})
+const reducers = combineReducers({user, destinations})
 
 
 

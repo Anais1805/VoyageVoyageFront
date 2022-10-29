@@ -14,7 +14,7 @@ import { RadioButton } from "react-native-paper";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { SignUp } from "../reducers/users";
-import createPersistoid from "redux-persist/es/createPersistoid";
+
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");

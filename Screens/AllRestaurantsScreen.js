@@ -12,8 +12,30 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
+import { useState, useEffect } from "react";
+import destinations from "../reducers/destinations";
+import { useSelector, useDispatch } from "react-redux";
+
 
 export default function AllRestaurantsScreen({navigation}) {
+
+const [allrestaurants, setAllRestaurants]=useState([])
+const dispatch = useDispatch()
+const destination = useSelector((state)=> state.destinations.value)
+
+
+    useEffect(()=> {
+        fetch(`http://192.168.1.43:4000/favorite/foods/${destination.lon}/${destination.lat}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+              if(data.result){ 
+                setAllRestaurants(data.foods)
+              
+
+              }
+            })
+    }, [])
+    console.log(allrestaurants)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -43,6 +65,7 @@ export default function AllRestaurantsScreen({navigation}) {
           source={require("../assets/bg.jpg")}
           style={styles.bg}
         >
+           
             <CardsRestaurantsComponent style={styles.cards}/>
         </ImageBackground>
         
@@ -98,6 +121,27 @@ const styles = StyleSheet.create({
   bg: {
     width: "100%",
     height: "100%",
+  },
+  searchContainer:{
+    flexDirection: 'row',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#E1E1E1",
+    padding: 5,
+    width: '46.5%',
+    marginBottom: 15,
+    backgroundColor:'white',
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  iconSearch: {
+    backgroundColor: '#9E2A2B',
+    padding: 5,
+    marginBottom: '50%',
   },
    cards: {
     width: 100,
