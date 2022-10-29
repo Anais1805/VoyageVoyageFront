@@ -34,6 +34,7 @@ export default function HomeScreen({ navigation }){
                <Text style={styles.btnLogin1}>Culturals</Text></TouchableOpacity>
                <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
                <Text style={styles.btnLogin1}>Naturals</Text></TouchableOpacity>
+              
 
                <TouchableOpacity onPress={() => navigation.navigate('Days')} style={styles.titleHome} activeOpacity={0.8}>
                     <Text style={styles.daysButton}>Days Resa</Text>
