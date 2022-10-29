@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
+  ScrollView,
+  FlatList,
+  SafeAreaView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
@@ -16,26 +19,44 @@ import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
 
+export default function AllRestaurantsScreen({ navigation }) {
+  const [allrestaurants, setAllRestaurants] = useState([]);
+  const dispatch = useDispatch();
+  const destination = useSelector((state) => state.destinations.value);
+  const [lonmax, setLongMax] = useState(destination.lon + 1);
+  const [latmax, setLatMax] = useState(destination.lat + 1);
+  console.log("lon", lonmax);
+  console.log("lat", latmax);
 
-export default function AllRestaurantsScreen({navigation}) {
+  useEffect(() => {
+    fetch(
+      `http://192.168.1.43:4000/foods/${destination.lon}/${lonmax}/${destination.lat}/${latmax}`
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.result) {
+          setAllRestaurants(data.foods);
+        }
+      });
+  }, []);
+  //  console.log("rest", allrestaurants);
+  const everyRestaurants = [...allrestaurants];
+  // console.log('every', everyRestaurants)
 
-const [allrestaurants, setAllRestaurants]=useState([])
-const dispatch = useDispatch()
-const destination = useSelector((state)=> state.destinations.value)
+  const restaurants = everyRestaurants.map((data, i) => {
+    if(i <100){
+    return (
+        <CardsRestaurantsComponent
+        key={i}
+        name={data.name}
+        kind={data.kinds}
+        style={styles.cards}
+      />
+    )}else {
+      return
+    }
+  });
 
-
-    useEffect(()=> {
-        fetch(`http://192.168.1.43:4000/favorite/foods/${destination.lon}/${destination.lat}`)
-            .then((resp) => resp.json())
-            .then((data) => {
-              if(data.result){ 
-                setAllRestaurants(data.foods)
-              
-
-              }
-            })
-    }, [])
-    console.log(allrestaurants)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -60,25 +81,24 @@ const destination = useSelector((state)=> state.destinations.value)
           />
         </View>
       </View>
-      <View style={styles.content}>
-        <ImageBackground
-          source={require("../assets/bg.jpg")}
-          style={styles.bg}
-        >
-           
-            <CardsRestaurantsComponent style={styles.cards}/>
+       
+        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+         <View style={styles.allcards}>
+          
+       {restaurants}
+         
+         </View> 
         </ImageBackground>
-        
-      </View>
-      </View>
+       
+      
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    height: "100%",
+    
   },
   header: {
     width: "100%",
@@ -115,36 +135,41 @@ const styles = StyleSheet.create({
     padding: 0,
     marginTop: 0,
   },
-  content: {
-    flex: 1,
-  },
+  
+ 
   bg: {
     width: "100%",
     height: "100%",
   },
-  searchContainer:{
-    flexDirection: 'row',
+  searchContainer: {
+    flexDirection: "row",
   },
   input: {
     borderWidth: 1,
     borderColor: "#E1E1E1",
     padding: 5,
-    width: '46.5%',
+    width: "46.5%",
     marginBottom: 15,
-    backgroundColor:'white',
+    backgroundColor: "white",
   },
   iconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    
+    justifyContent: "center",
+    alignItems: "center",
   },
   iconSearch: {
-    backgroundColor: '#9E2A2B',
+    backgroundColor: "#9E2A2B",
     padding: 5,
-    marginBottom: '50%',
+    marginBottom: "50%",
   },
-   cards: {
+  cards: {
     width: 100,
-    height: 100
-   }
+    height: 100,
+  },
+  allcards: {
+   height: '100%',
+   margin: 0,
+
+
+  }
+ 
 });
