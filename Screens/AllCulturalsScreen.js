@@ -8,10 +8,11 @@ import {
     Pressable,
     TouchableOpacity,
     KeyboardAvoidingView,
+    ImageBackground
   } from "react-native";
   import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-export default function AllCulturalsScreen () {
+export default function AllCulturalsScreen ({navigation}) {
     return (
  <View style={styles.container}>
       <View style={styles.header}>
@@ -26,7 +27,6 @@ export default function AllCulturalsScreen () {
             style={styles.icon}
             name="suitcase"
             size={40}
-            color={'#335C67'}
             onPress={() => navigation.navigate("Profile")}
           />
           <FontAwesome
@@ -36,6 +36,12 @@ export default function AllCulturalsScreen () {
             onPress={() => navigation.navigate("Profile")}
           />
         </View>
+      </View>
+      <View style={styles.content}>
+        <ImageBackground
+          source={require("../assets/bg.jpg")}
+          style={styles.bg}
+        ></ImageBackground>
       </View>
     </View>
     )
@@ -53,7 +59,6 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       borderBottomColor: "#9E2A2B",
       borderBottomWidth: 1,
-      marginBottom: 15,
     },
     menuHeader: {
       flexDirection: "row",
@@ -83,4 +88,11 @@ const styles = StyleSheet.create({
       padding: 0,
       marginTop: 0,
     },
+    content: {
+        flex: 1,
+      },
+      bg: {
+        width: "100%",
+        height: "100%",
+      },
 })
