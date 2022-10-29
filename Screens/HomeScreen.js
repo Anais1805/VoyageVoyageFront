@@ -15,14 +15,7 @@ const destination = useSelector((state)=> state.destinations.value)
  
 console.log(destination)
 const searchPress = () => {
-fetch("http://192.168.1.43:4000/favorite/city",{
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              city: city,
-              country:country
-            }),
-          })
+fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {

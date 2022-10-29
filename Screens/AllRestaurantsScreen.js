@@ -16,25 +16,26 @@ import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
 
+
 export default function AllRestaurantsScreen({navigation}) {
-const [city, setCity]=useState('')
-const [country, setCountry]=useState('')
+
+const [allrestaurants, setAllRestaurants]=useState([])
 const dispatch = useDispatch()
+const destination = useSelector((state)=> state.destinations.value)
+
 
     useEffect(()=> {
-        fetch("http://192.168.1.43:4000/favorite/city",{
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              city: city,
-              country:country
-            }),
-          })
+        fetch(`http://192.168.1.43:4000/favorite/foods/${destination.lon}/${destination.lat}`)
             .then((resp) => resp.json())
             .then((data) => {
-              console.log(data);
+              if(data.result){ 
+                setAllRestaurants(data.foods)
+              
+
+              }
             })
     }, [])
+    console.log(allrestaurants)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
