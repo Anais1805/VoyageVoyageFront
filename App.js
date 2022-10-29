@@ -12,6 +12,7 @@ import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
 import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
 import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
 
+
 import MyDayScreen from './Screens/MyDayScreen';
 import MapScreen from './Screens/MapScreen';
 import DaysScreen from './Screens/DaysScreen';

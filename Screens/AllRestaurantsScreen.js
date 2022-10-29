@@ -11,6 +11,7 @@ import {
   ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
 
 export default function AllRestaurantsScreen({navigation}) {
   return (
@@ -27,7 +28,7 @@ export default function AllRestaurantsScreen({navigation}) {
             style={styles.icon}
             name="suitcase"
             size={40}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("MyReservation")}
           />
           <FontAwesome
             style={styles.icon}
@@ -41,9 +42,12 @@ export default function AllRestaurantsScreen({navigation}) {
         <ImageBackground
           source={require("../assets/bg.jpg")}
           style={styles.bg}
-        ></ImageBackground>
+        >
+            <CardsRestaurantsComponent style={styles.cards}/>
+        </ImageBackground>
+        
       </View>
-    </View>
+      </View>
   );
 }
 
@@ -95,4 +99,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+   cards: {
+    width: 100,
+    height: 100
+   }
 });
