@@ -1,9 +1,42 @@
 
 import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground, TextInput } from 'react-native'
-
-
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import destinations from "../reducers/destinations";
+import { destinationSearch } from '../reducers/destinations';
 
 export default function HomeScreen({ navigation }){
+const [city, setCity]=useState('')
+const [country, setCountry]=useState('')
+const dispatch = useDispatch()
+
+const destination = useSelector((state)=> state.destinations.value)
+ 
+console.log(destination)
+const searchPress = () => {
+fetch("http://192.168.1.43:4000/favorite/city",{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              city: city,
+              country:country
+            }),
+          })
+            .then((resp) => resp.json())
+            .then((data) => {
+              if(data.result) {
+                dispatch(destinationSearch({
+                  city: data.city.name,
+                  country: data.city.country,
+                  lat: data.city.lat,
+                  lon: data.city.lon
+                }
+                ))
+
+              }
+            })
+          }
     return (
 
       <View style={styles.container}>
@@ -22,6 +55,29 @@ export default function HomeScreen({ navigation }){
         </View>
 
         <View style={styles.content}>
+        <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          onChangeText={(city) => setCity(city)}
+          value={city}
+          placeholder={"City"}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(country) => setCountry(country)}
+          value={country}
+          placeholder={"Ex : fr pour France"}
+        />
+        <View style={styles.iconContainer}>
+         <FontAwesome
+            style={styles.iconSearch}
+            name="search"
+            size={20}
+            color={'white'}
+            onPress={() => searchPress() }
+          />
+          </View>
+        </View>
         <ImageBackground source={require('../assets/bg.jpg')} style={styles.bg}>
             <View style={styles.titleHome}>
               <Text style={styles.title}>Nos suggestions</Text>
@@ -157,6 +213,27 @@ export default function HomeScreen({ navigation }){
     searchBar: {
       width: 100, 
       height: 50,
-    }
+    },
+    searchContainer:{
+      flexDirection: 'row',
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: "#E1E1E1",
+      padding: 5,
+      width: '46.5%',
+      marginBottom: 15,
+      backgroundColor:'white',
+    },
+    iconContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      
+    },
+    iconSearch: {
+      backgroundColor: '#9E2A2B',
+      padding: 5,
+      marginBottom: '50%',
+    },
   }) 
 
