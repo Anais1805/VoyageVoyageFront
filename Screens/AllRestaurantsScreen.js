@@ -12,16 +12,17 @@ import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
+import { $CombinedState } from "@reduxjs/toolkit";
 
 export default function AllRestaurantsScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
-  console.log(destination);
-  const [lonmax, setLonMax] = useState(destination.lon + 1);
-  const [latmax, setLatMax] = useState(destination.lat + 1);
-  console.log("lon", lonmax);
-  console.log("lat", latmax);
+  // console.log(destination);
+  // const [lonmax, setLonMax] = useState(destination.lon + 1);
+  // const [latmax, setLatMax] = useState(destination.lat + 1);
+  // console.log("lon", lonmax);
+  // console.log("lat", latmax);
 
   useEffect(() => {
     fetch(
@@ -35,20 +36,24 @@ export default function AllRestaurantsScreen({ navigation }) {
         }
       });
   }, []);
-  console.log("rest", [allrestaurants]);
+
+  // console.log("rest", allrestaurants);
+
   // const everyRestaurants = [...allrestaurants];
   // console.log('every', everyRestaurants)
 
   const restaurants = allrestaurants.map((data, i) => {
-    if(i <100){
+    if(i<100){
     return (
         <CardsRestaurantsComponent
         key={i}
         name={data.name}
         kind={data.kinds}
         style={styles.cards}
+
         
         />)
+
     } else {
       return
     }
@@ -56,13 +61,12 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   return (
     
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
      
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
-          onPress={() => navigation.navigate("Home")}
-        >
+          onPress={() => navigation.navigate("Home")}>
           <Image style={styles.logo} source={require("../assets/logo.png")} />
         </TouchableOpacity>
         <View style={styles.menuHeader}>
@@ -80,8 +84,10 @@ export default function AllRestaurantsScreen({ navigation }) {
           />
         </View>
       </View>
-      
+
+      <ScrollView contentContainerStyle={styles.allcards}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+
          <View style={styles.allcards}>
          
         {/* <ScrollView contentContainerStyle> */}
@@ -90,9 +96,8 @@ export default function AllRestaurantsScreen({ navigation }) {
          
          </View> 
         </ImageBackground>
-       
-        
-    </View>
+        </ScrollView> 
+      </SafeAreaView> 
     
   );
 }
@@ -100,7 +105,6 @@ export default function AllRestaurantsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
   },
   header: {
     width: "100%",
@@ -137,8 +141,6 @@ const styles = StyleSheet.create({
     padding: 0,
     marginTop: 0,
   },
-  
- 
   bg: {
     width: "100%",
     height: "100%",
@@ -165,15 +167,15 @@ const styles = StyleSheet.create({
   },
   cards: {
     width: 100,
-    height: 100,
+    height: 20,
   },
   allcards: {
+    flex:0.80,
    height: '100%',
    margin: 0,
   },
   scrollView: {
-    height: 20,
-  
-  }
+    height: '10%',
+  },
  
 });

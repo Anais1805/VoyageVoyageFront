@@ -45,7 +45,7 @@ import {
   
   const styles = StyleSheet.create({
     cards:{
-        height: '20%'
+        height:'20%',
       
     },
     cardcontainer: {
