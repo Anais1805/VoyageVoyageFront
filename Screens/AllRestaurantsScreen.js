@@ -1,17 +1,11 @@
 import {
   View,
-  Text,
-  Button,
-  TextInput,
   StyleSheet,
   Image,
-  Pressable,
   TouchableOpacity,
-  KeyboardAvoidingView,
   ImageBackground,
   ScrollView,
-  FlatList,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
@@ -23,27 +17,29 @@ export default function AllRestaurantsScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
-  const [lonmax, setLongMax] = useState(destination.lon + 1);
+  console.log(destination);
+  const [lonmax, setLonMax] = useState(destination.lon + 1);
   const [latmax, setLatMax] = useState(destination.lat + 1);
   console.log("lon", lonmax);
   console.log("lat", latmax);
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.43:4000/foods/${destination.lon}/${lonmax}/${destination.lat}/${latmax}`
+      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
     )
-      .then((resp) => resp.json())
-      .then((data) => {
+      .then(resp => resp.json())
+      .then(data => {
         if (data.result) {
           setAllRestaurants(data.foods);
+          // console.log(data.foods)
         }
       });
   }, []);
-  //  console.log("rest", allrestaurants);
+  // console.log("rest", allrestaurants);
   const everyRestaurants = [...allrestaurants];
   // console.log('every', everyRestaurants)
 
-  const restaurants = everyRestaurants.map((data, i) => {
+  const restaurants = allrestaurants.map((data, i) => {
     if(i <100){
     return (
         <CardsRestaurantsComponent
@@ -51,14 +47,16 @@ export default function AllRestaurantsScreen({ navigation }) {
         name={data.name}
         kind={data.kinds}
         style={styles.cards}
-      />
-    )}else {
+        />)
+    } else {
       return
     }
   });
 
   return (
+    
     <View style={styles.container}>
+     
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
@@ -81,17 +79,20 @@ export default function AllRestaurantsScreen({ navigation }) {
           />
         </View>
       </View>
-       
+      
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
          <View style={styles.allcards}>
-          
+         
+        <ScrollView contentContainerStyle>
        {restaurants}
+        </ScrollView>
          
          </View> 
         </ImageBackground>
        
-      
+        
     </View>
+    
   );
 }
 
@@ -168,8 +169,10 @@ const styles = StyleSheet.create({
   allcards: {
    height: '100%',
    margin: 0,
-
-
+  },
+  scrollView: {
+    height: 20,
+  
   }
  
 });
