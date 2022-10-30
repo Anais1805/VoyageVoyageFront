@@ -32,11 +32,13 @@ export default function AllRestaurantsScreen({ navigation }) {
       .then(data => {
         if (data.result) {
           setAllRestaurants(data.foods);
-          // console.log(data.foods)
+           
         }
       });
   }, []);
+
   // console.log("rest", allrestaurants);
+
   // const everyRestaurants = [...allrestaurants];
   // console.log('every', everyRestaurants)
 
@@ -48,8 +50,10 @@ export default function AllRestaurantsScreen({ navigation }) {
         name={data.name}
         kind={data.kinds}
         style={styles.cards}
-        />
-        )
+
+        
+        />)
+
     } else {
       return
     }
@@ -83,7 +87,14 @@ export default function AllRestaurantsScreen({ navigation }) {
 
       <ScrollView contentContainerStyle={styles.allcards}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+
+         <View style={styles.allcards}>
+         
+        {/* <ScrollView contentContainerStyle> */}
        {restaurants}
+        {/* </ScrollView> */}
+         
+         </View> 
         </ImageBackground>
         </ScrollView> 
       </SafeAreaView> 
