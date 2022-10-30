@@ -11,13 +11,15 @@ import {
   ImageBackground,
   ScrollView,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
+import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
+import { activitiesInfos } from "../reducers/activities";
 
 export default function AllRestaurantsScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
@@ -28,32 +30,51 @@ export default function AllRestaurantsScreen({ navigation }) {
   console.log("lon", lonmax);
   console.log("lat", latmax);
 
+  const activity = useSelector((state) => state.activities.value)
+  console.log('act', activity)
   useEffect(() => {
     fetch(
-      `http://192.168.1.43:4000/foods/${destination.lon}/${lonmax}/${destination.lat}/${latmax}`
+      `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then((resp) => resp.json())
       .then((data) => {
         if (data.result) {
-          setAllRestaurants(data.foods);
-        }
-      });
+          setAllRestaurants(data.foods)
+          console.log('food',data.xid)
+          dispatch(activitiesInfos({
+            xid: data.foods.xid,
+          })
+       ) }
+      }).then(
+        fetch(
+          `http://192.168.1.43:4000/infos/${activity}`
+        )
+          .then((resp) => resp.json())
+          .then((data) => {
+            if (data.result) {
+              console.log(data)
+              }
+          })
+      )
   }, []);
+
+  
   //  console.log("rest", allrestaurants);
-  const everyRestaurants = [...allrestaurants];
+  // const everyRestaurants = [...allrestaurants];
   // console.log('every', everyRestaurants)
 
-  const restaurants = everyRestaurants.map((data, i) => {
-    if(i <100){
-    return (
+  const restaurants = allrestaurants.map((data, i) => {
+    if (i < 100) {
+      return (
         <CardsRestaurantsComponent
-        key={i}
-        name={data.name}
-        kind={data.kinds}
-        style={styles.cards}
-      />
-    )}else {
-      return
+          key={i}
+          name={data.name}
+          kind={data.kinds}
+          style={styles.cards}
+        />
+      );
+    } else {
+      return;
     }
   });
 
@@ -81,16 +102,10 @@ export default function AllRestaurantsScreen({ navigation }) {
           />
         </View>
       </View>
-       
-        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
-         <View style={styles.allcards}>
-          
-       {restaurants}
-         
-         </View> 
-        </ImageBackground>
-       
-      
+
+      <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+        <View style={styles.allcards}>{restaurants}</View>
+      </ImageBackground>
     </View>
   );
 }
@@ -98,7 +113,6 @@ export default function AllRestaurantsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
   },
   header: {
     width: "100%",
@@ -135,8 +149,6 @@ const styles = StyleSheet.create({
     padding: 0,
     marginTop: 0,
   },
-  
- 
   bg: {
     width: "100%",
     height: "100%",
@@ -166,10 +178,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   allcards: {
-   height: '100%',
-   margin: 0,
-
-
-  }
- 
+    height: "100%",
+    margin: 0,
+  },
 });

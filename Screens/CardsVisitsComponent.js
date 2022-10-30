@@ -13,7 +13,7 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
 
-export default function CardsVisitsComponent() {
+export default function CardsVisitsComponent(props) {
   const [moreInfos, setMoreInfos] = useState(true);
 
   function infosPress() {
@@ -22,9 +22,9 @@ export default function CardsVisitsComponent() {
 
   let cards = {};
   if (moreInfos) {
-    cards = { height: "100%" };
+    cards = { height: "20%" };
   } else {
-    cards = { height: "170%" };
+    cards = { height: "70%" };
   }
 
   let image = {};
@@ -41,26 +41,21 @@ export default function CardsVisitsComponent() {
           <Image style={image} source={require("../assets/rando.jpg")}></Image>
         </View>
         <View style={styles.rightpart}>
-          <Text style={styles.title2}>Title</Text>
-          
-            <Text style={styles.description}>
-              Descritpion: Lorem ipsumDescritpion: Lorem ipsumDescritpion: Lorem
-              ipsumDescritpion: Lorem ipsumDescritpion: Lorem ipsumDescritpion:
-              Lorem ipsumDescritpion: Lorem ipsumDescritpion: Lorem
-              ipsumDescritpion: Lorem ipsumDescritpion: Lorem ipsumDescritpion:
-              Lorem ipsumDescritpion: Lorem ipsum
-            </Text>
-       
+          <Text style={styles.title2}>{props.name}</Text>
+
+          <Text style={styles.description}>{props.kind}</Text>
+
           <Pressable onPress={() => infosPress()}>
             {moreInfos && <Text style={styles.infos}>+ d'infos</Text>}
-          {!moreInfos &&  <Text style={styles.infos}>- d'infos</Text>}
+            {!moreInfos && <Text style={styles.infos}>- d'infos</Text>}
           </Pressable>
-           <View style={styles.button}>
-           {!moreInfos && <Pressable style={styles.planButton}>
-              <Text style={styles.buttonText}>Site Web</Text>
-            </Pressable>}
-            </View>
-          
+          <View style={styles.button}>
+            {!moreInfos && (
+              <Pressable style={styles.planButton}>
+                <Text style={styles.buttonText}>Site Web</Text>
+              </Pressable>
+            )}
+          </View>
         </View>
       </View>
     </View>
@@ -69,14 +64,12 @@ export default function CardsVisitsComponent() {
 
 const styles = StyleSheet.create({
   cardcontainer: {
-    flex: 0.2,
     flexDirection: "row",
     borderColor: "#9E2A2B",
     borderWidth: 1,
     borderRadius: 5,
     margin: "3%",
     backgroundColor: "white",
-    height: 50,
   },
   image: {
     width: "100%",
@@ -96,20 +89,20 @@ const styles = StyleSheet.create({
   },
   title2: {
     fontWeight: "bold",
-    marginVertical: '5%'
+    marginVertical: "5%",
   },
   description: {
     fontSize: 12,
-    marginVertical: '5%'
+    marginVertical: "5%",
   },
   infos: {
     fontSize: 12,
     color: "#9E2A2B",
-    marginVertical: '5%'
+    marginVertical: "5%",
   },
   button: {
-  marginLeft: '55%',
-  margin: '5%'
+    marginLeft: "55%",
+    margin: "5%",
   },
   planButton: {
     backgroundColor: "#335C67",
