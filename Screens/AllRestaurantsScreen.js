@@ -18,13 +18,16 @@ import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
 
+
 export default function AllRestaurantsScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [allDetails, setAllDetails]= useState([])
   const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
+
   console.log(destination);
+
 
 
   const activity = useSelector((state) => state.activities.value)
@@ -32,11 +35,26 @@ export default function AllRestaurantsScreen({ navigation }) {
   
   useEffect(() => {
     fetch(
-      `http://192.168.10.137:4000/foods/${destination.lon}/${destination.lat}`
+
+      `http://192.168.10.133:4000/foods/${destination.lon}/${destination.lat}`
+
     )
       .then(resp => resp.json())
       .then(data => {
         if (data.result) {
+
+          setAllRestaurants(data.foods);
+          // console.log(data.foods)
+        }
+      });
+  }, []);
+  // console.log("rest", allrestaurants);
+  // const everyRestaurants = [...allrestaurants];
+  // console.log('every', everyRestaurants)
+
+  const restaurants = allrestaurants.map((data, i) => {
+    if(i<100){
+
       
           setAllRestaurants(data.foods)
           let tmp = data.foods.map(e => e.xid) 
@@ -66,14 +84,16 @@ console.log('rest', allDetails)
   const restaurants = allDetails.map((data, i) => {
 
     if(i <100){
+
     return (
         <CardsRestaurantsComponent
         key={i}
         name={data.name}
         kind={data.kinds}
         style={styles.cards}
-        
+
         />)
+
     } else {
       return
 
@@ -82,13 +102,12 @@ console.log('rest', allDetails)
 
   return (
     
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
      
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
-          onPress={() => navigation.navigate("Home")}
-        >
+          onPress={() => navigation.navigate("Home")}>
           <Image style={styles.logo} source={require("../assets/logo.png")} />
         </TouchableOpacity>
         <View style={styles.menuHeader}>
@@ -107,20 +126,13 @@ console.log('rest', allDetails)
         </View>
       </View>
 
-      
-        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
-         <View style={styles.allcards}>
-         
-        {/* <ScrollView contentContainerStyle> */}
-       {restaurants}
-        {/* </ScrollView> */}
-         
-         </View> 
-        </ImageBackground>
-       
-        
 
-    </View>
+      <ScrollView contentContainerStyle={styles.allcards}>
+        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+       {restaurants}
+        </ImageBackground>
+        </ScrollView> 
+      </SafeAreaView> 
     
   );
 }
@@ -190,17 +202,18 @@ const styles = StyleSheet.create({
   },
   cards: {
     width: 100,
-    height: 100,
+    height: 20,
   },
   allcards: {
+
+  //  flex:0.80,
 
    height: '100%',
    margin: 0,
   },
   scrollView: {
-    height: 20,
-  
-  }
+    height: '10%',
+  },
  
 });
 
