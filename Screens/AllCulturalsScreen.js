@@ -18,16 +18,17 @@ import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
 
 
+
 export default function AllCulturalsScreen({ navigation }) {
 
   const [allCulturals, setAllCulturals] = useState([]);
   const [xid, setXid] = useState([]);
+
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
   useEffect(() => {
-    fetch(
-      `http://192.168.10.133:4000/visits/${destination.lon}/${destination.lat}`
+    fetch( `http://192.168.10.133:4000/visits/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
@@ -89,7 +90,11 @@ export default function AllCulturalsScreen({ navigation }) {
       </View>
       <ScrollView contentContainerStyle={styles.allcards}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+
        {restaurants}
+
+          <View style={styles.allcards}>{allVisits}</View>
+
         </ImageBackground>
         </ScrollView> 
       </SafeAreaView> 
@@ -146,6 +151,10 @@ const styles = StyleSheet.create({
   },
   cards: {
     width: 100,
-    height: 100
-   }
+    height: 100,
+  },
+  allcards: {
+    height: "100%",
+    margin: 0,
+  },
 });
