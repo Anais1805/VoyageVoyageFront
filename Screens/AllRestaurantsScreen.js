@@ -26,7 +26,7 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.10.133:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   allcards: {
-    flex:0.80,
+  //  flex:0.80,
    height: '100%',
    margin: 0,
   },
