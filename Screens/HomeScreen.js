@@ -13,6 +13,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import ModalSearch from "../components/ModalSearch";
 import places from "./places";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import destinations from "../reducers/destinations";
+import { destinationSearch } from '../reducers/destinations';
 
 const {width} = Dimensions.get('screen');
 
@@ -48,6 +53,36 @@ export default function HomeScreen({ navigation }) {
         <StatusBar />
         <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
 
+
+
+
+const [city, setCity]=useState('')
+const [country, setCountry]=useState('')
+const dispatch = useDispatch()
+
+const destination = useSelector((state)=> state.destinations.value)
+ 
+console.log(destination)
+const searchPress = () => {
+fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+              if(data.result) {
+                dispatch(destinationSearch({
+                  city: data.city.name,
+                  country: data.city.country,
+                  lat: data.city.lat,
+                  lon: data.city.lon
+
+                }
+                ))
+
+              }
+            })
+          }
+    return (
+
+
         <View style={styles.header}>
           <View>
             <Image
@@ -75,6 +110,7 @@ export default function HomeScreen({ navigation }) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{height: 120, paddingHorizontal: 20, paddingVertical: 20}}>
 
+
           <View style={styles.inputContainer}>
            <ModalSearch />
             <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
@@ -90,6 +126,7 @@ export default function HomeScreen({ navigation }) {
               data={places}
               renderItem={({item}) => <Card place={item} /> } />
             </View>
+
             
             <View style={{marginTop: 20}}>
             <Text style={styles.suggestTxt}>Nos coups de coeur</Text>
@@ -105,6 +142,7 @@ export default function HomeScreen({ navigation }) {
         </ImageBackground>
       </SafeAreaView>
 
+
           
 
     //     </View>
@@ -114,17 +152,7 @@ export default function HomeScreen({ navigation }) {
 
     //      
 
-    //       {/* <TouchableOpacity onPress={() => navigation.navigate('MyReservation')}>
-    //            <Text style={styles.btnLogin1}>Réservation</Text></TouchableOpacity>
-
-    //            <TouchableOpacity onPress={() => navigation.navigate('Days')} style={styles.titleHome} activeOpacity={0.8}>
-    //                 <Text style={styles.daysButton}>Days Resa</Text>
-    //             </TouchableOpacity>
-
-    //             <TouchableOpacity onPress={() => navigation.navigate('Overview')} style={styles.titleHome} activeOpacity={0.8}>
-    //                 <Text style={styles.title}>Direction Recap</Text>
-    //             </TouchableOpacity> */}
-    //       <View>
+    //       
 
     //       </View>
 
@@ -214,4 +242,11 @@ const styles = StyleSheet.create({
     borderRadius: 5   
   }
 });
+
+
+
+
+
+
+   
 

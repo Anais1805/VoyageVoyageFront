@@ -7,8 +7,17 @@ import StartScreen from './Screens/StartScreen';
 // import ReservedScreen from './Screens/ReservedScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import OverviewScreen from './Screens/OverviewScreen';
-// import MyReservationScreen from './Screens/MyReservationScreen';
+
+
 import DetailsScreen from './Screens/DetailsScreen';
+
+import MyReservationScreen from './Screens/MyReservationScreen';
+import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
+import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
+import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
+
+
+
 import MyDayScreen from './Screens/MyDayScreen';
 import MapScreen from './Screens/MapScreen';
 import DaysScreen from './Screens/DaysScreen';
@@ -19,6 +28,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import user from './reducers/users'
+import destinations from './reducers/destinations.js';
+import activities from './reducers/activities.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +37,7 @@ const persistConfig = {
   key: "voyagevoyage",
   storage: AsyncStorage,
 };
-const reducers = combineReducers({user})
+const reducers = combineReducers({user, destinations, activities})
 
 
 
@@ -47,6 +58,9 @@ export default function App() {
      <Stack.Navigator screenOptions={{ headerShown: false }}>
        <Stack.Screen name="Start" component={StartScreen} />
        <Stack.Screen name="Home" component={HomeScreen} />
+       <Stack.Screen name="AllRestaurants" component={AllRestaurantsScreen} />
+       <Stack.Screen name="AllCulturals" component={AllCulturalsScreen} />
+       <Stack.Screen name="AllNaturals" component={AllNaturalssScreen} />
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />

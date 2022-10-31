@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginBottom: "10%",
   },
+  
 });
 
 
