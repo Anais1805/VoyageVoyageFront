@@ -3,9 +3,38 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacit
 import { TextInput } from "react-native-paper";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from "react-native-safe-area-context";
+import destinations from "../reducers/destinations";
+import { destinationSearch } from '../reducers/destinations';
+
+import { useSelector, useDispatch } from 'react-redux';
 
 const ModalSearch = () => {
+
+
+const [city, setCity]=useState('')
+const [country, setCountry]=useState('')
   const [modalVisible, setModalVisible] = useState(false);
+  const destination = useSelector((state) => state.destinations.value)
+const dispatch = useDispatch()
+  console.log(destination)
+const searchPress = () => {
+fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+              if(data.result) {
+                dispatch(destinationSearch({
+                  city: data.city.name,
+                  country: data.city.country,
+                  lat: data.city.lat,
+                  lon: data.city.lon
+
+                }
+                ))
+
+              }
+            })
+   
+   }
   return (
     <>
     
@@ -24,13 +53,15 @@ const ModalSearch = () => {
             <Text style={styles.modalText}>Rechercher</Text>
             
             <SafeAreaView>
-              <TextInput style={styles.inputDestinationVille} placeholder="Ville"/>
-              <TextInput style={styles.inputDestinationPays} placeholder="Pays"/>
+              <TextInput style={styles.inputDestinationVille}  onChangeText={(city) => setCity(city)}
+          value={city} placeholder="Ville"/>
+              <TextInput style={styles.inputDestinationPays} onChangeText={(country) => setCountry(country)}
+          value={country} placeholder="Pays"/>
             
             
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {setModalVisible(!modalVisible); searchPress()}}
             >
               <Text style={styles.textStyle}>Valider</Text>
             </Pressable>
