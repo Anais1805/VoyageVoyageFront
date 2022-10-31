@@ -12,7 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore } from "../reducers/users";
 
 
+
+
+
+
+export default function ConnectionScreen({ navigation }) {
+
 const BACKEND_ADRESS = "http://192.168.10.152:4000";
+
 
 export default function ConnectionScreen({ navigation }) {
   const EMAIL_REGEX =
@@ -48,6 +55,43 @@ export default function ConnectionScreen({ navigation }) {
       });
   };
 
+
+
+    return (
+      <View style={styles.container}>
+
+        <View style={styles.header}>
+         
+          <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
+             <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
+          </TouchableOpacity>
+          
+        </View>
+{/* 
+        <View style={styles.part1}>
+          <View style={styles.connexion}>
+            <Text style={styles.title}>CONNEXION</Text>
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('MyDay')} style={styles.login} activeOpacity={0.8}>
+                    <Text style={styles.textButton}>Go to MyDay</Text>
+                </TouchableOpacity>
+        <TextInput style={styles.input} 
+                   placeholder='  ✉️️ Adresse Mail'
+                   autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
+                   keyboardType="email-address" // https://reactnative.dev/docs/textinput#keyboardtype
+                   textContentType="emailAddress" // https://reactnative.dev/docs/textinput#textcontenttype-ios
+                   autoComplete="email" // https://reactnative.dev/docs/textinput#autocomplete-android
+                   onChangeText={(signInEmail) => setSignInEmail(signInEmail)}
+                   value={signInEmail}/>
+          {emailError && <Text style={styles.error}>⚠️ Invalid email address</Text>}
+        <TextInput style={styles.input} 
+                   placeholder=' 🔒 Mot de Passe'
+                   onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
+                   value = {signInPassword}></TextInput>
+           <TouchableOpacity style={styles.textconnexion} onPress={() => handleSubmit()} activeOpacity={0.8}>
+              <Text style={styles.title2}>SE CONNECTER</Text>
+          </TouchableOpacity>
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -75,6 +119,7 @@ export default function ConnectionScreen({ navigation }) {
       <View style={styles.part1}>
         <View style={styles.connexion}>
           <Text style={styles.title}>CONNEXION</Text>
+
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate("MyDay")}
@@ -114,6 +159,7 @@ export default function ConnectionScreen({ navigation }) {
       <Text style={styles.compte}>________________ OU ________________</Text>
       <Text style={styles.compte}> Pas encore de compte ? </Text>
 
+
       <View style={styles.part2}>
         <TouchableOpacity
           onPress={() => navigation.navigate("Profile")}
@@ -137,6 +183,7 @@ export default function ConnectionScreen({ navigation }) {
         >
           <Text style={styles.text}>Connexion avec Facebook</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -174,6 +221,7 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 3,
+
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,

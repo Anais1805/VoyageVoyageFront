@@ -7,10 +7,15 @@ import StartScreen from './Screens/StartScreen';
 // import ReservedScreen from './Screens/ReservedScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import OverviewScreen from './Screens/OverviewScreen';
+
+
+import DetailsScreen from './Screens/DetailsScreen';
+
 import MyReservationScreen from './Screens/MyReservationScreen';
 import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
 import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
 import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
+
 
 
 import MyDayScreen from './Screens/MyDayScreen';
@@ -59,11 +64,11 @@ export default function App() {
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />
-       <Stack.Screen name="MyReservation" component={MyReservationScreen} />
+       {/* <Stack.Screen name="MyReservation" component={MyReservationScreen} /> */}
        <Stack.Screen name="Map" component={MapScreen} />  
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Days" component={DaysScreen} />
-
+       <Stack.Screen name="Details" component={DetailsScreen} />
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
 
         <Stack.Screen name="Overview" component={OverviewScreen} />*/}
