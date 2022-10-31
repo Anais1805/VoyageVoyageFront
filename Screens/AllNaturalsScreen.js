@@ -12,8 +12,42 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsVisitsComponent from "./CardsVisitsComponent";
+import { useState, useEffect } from "react";
+import destinations from "../reducers/destinations";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function AllNaturalssScreen({ navigation }) {
+  const [allNaturals, setAllNaturals] = useState([]);
+  const dispatch = useDispatch();
+  const destination = useSelector((state) => state.destinations.value);
+
+  useEffect(() => {
+    fetch(
+      `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.result) {
+          setAllNaturals(data.naturals);
+        }
+      });
+  }, []);
+
+  const hikes = allNaturals.map((data, i) => {
+    if (i < 100) {
+      return (
+        <CardsVisitsComponent
+          key={i}
+          name={data.name}
+          kind={data.kinds}
+          style={styles.cards}
+        />
+      );
+    } else {
+      return;
+    }
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -40,7 +74,7 @@ export default function AllNaturalssScreen({ navigation }) {
       </View>
       <View style={styles.content}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
-          <CardsVisitsComponent style={styles.cards} />
+          <View style={styles.allcards}>{hikes}</View>
         </ImageBackground>
       </View>
     </View>
@@ -97,6 +131,10 @@ const styles = StyleSheet.create({
   },
   cards: {
     width: 100,
-    height: 100
-   }
+    height: 100,
+  },
+  allcards: {
+    height: "100%",
+    margin: 0,
+  },
 });

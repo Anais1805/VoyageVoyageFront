@@ -15,6 +15,11 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { SignUp } from "../reducers/users";
 
+import createPersistoid from "redux-persist/es/createPersistoid";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+
+
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");
@@ -24,16 +29,15 @@ export default function ProfileScreen({ navigation }) {
   const [checked, setChecked] = useState("Seul(e)");
   const [checked2, setChecked2] = useState("€");
   const [checked3, setChecked3] = useState("Flexitarien");
-  const [alreadyPress, setAlreadyPress]=useState('false')
+  const [alreadyPress, setAlreadyPress] = useState("false");
   const [emailError, setEmailError] = useState(false);
   const dispatch = useDispatch();
 
-  
-  const user = useSelector((state)=> state.user.value)  
-  console.log(user)
-  const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const user = useSelector((state) => state.user.value);
+  console.log(user);
+  const EMAIL_REGEX =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
- 
   const submitClick = () => {
     fetch("http://192.168.1.43:4000/users/signup", {
       method: "POST",
@@ -54,7 +58,7 @@ export default function ProfileScreen({ navigation }) {
         console.log(data);
         if (data.result && EMAIL_REGEX.test(emailValue)) {
           dispatch(
-           SignUp({
+            SignUp({
               username: usernameValue,
               password: passwordValue,
               email: emailValue,
@@ -64,37 +68,40 @@ export default function ProfileScreen({ navigation }) {
               displacement: [...isSelected],
               isConnected: true,
             })
-          )
-          setSelected([])
+          );
+          setSelected([]);
         } else {
-            setEmailError(true);
+          setEmailError(true);
         }
       });
   };
   const addDisplacement = (newDisplacement) => {
-    
-    setSelected([...isSelected, newDisplacement])
-    console.log('r', isSelected)
-  }
+    setSelected([...isSelected, newDisplacement]);
+    console.log("r", isSelected);
+  };
   const removeDisplacement = (newDisplacement) => {
-    if(alreadyPress){
-    setSelected(isSelected.filter(e => e !== newDisplacement) )
-    
-}
-  }
+    if (alreadyPress) {
+      setSelected(isSelected.filter((e) => e !== newDisplacement));
+    }
+  };
   const checkedBox = () => {
-    setAlreadyPress(!alreadyPress)
-   
-  }
-  
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-      <TouchableOpacity  style={styles.logoContainer} onPress={() => navigation.navigate('Home')}>
-             <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
-          </TouchableOpacity>
-        </View>
+    setAlreadyPress(!alreadyPress);
+  };
 
+  return (
+    <SafeAreaView style={{flex: 1}}>
+    <View style={styles.container}>
+      
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/logo.png")}
+          ></Image>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{justifyContent: 'center', alignItems:'center'}}>
       <Image
         style={styles.avatar}
         source={{
@@ -106,13 +113,13 @@ export default function ProfileScreen({ navigation }) {
           style={styles.input}
           onChangeText={(usernameValue) => setUsernameValue(usernameValue)}
           value={usernameValue}
-          placeholder={"Username"}
+          placeholder={"Nom"}
         />
         <TextInput
           style={styles.input}
           onChangeText={(passwordValue) => setPasswordValue(passwordValue)}
           value={passwordValue}
-          placeholder={"Password"}
+          placeholder={"Mot de passe"}
           secureTextEntry={true}
         />
         <TextInput
@@ -120,13 +127,19 @@ export default function ProfileScreen({ navigation }) {
           onChangeText={(emailValue) => setEmailValue(emailValue)}
           value={emailValue}
           placeholder={"Email"}
-          textContentType='emailAddress'
+          textContentType="emailAddress"
           autoComplete="email"
         />
-        {emailError && <Text style={styles.error}> ⚠️ Invalid email address</Text>}
+        {emailError && (
+          <Text style={styles.error}> ⚠️ Invalid email address</Text>
+        )}
       </KeyboardAvoidingView>
-
+      </View>
+      
+      <View style={{justifyContent: 'center', alignItems:'center'}}>
       <Text style={styles.soustitre}>Profil Voyageur - Préférences</Text>
+      </View>
+      
 
       <View style={styles.allRadioButton}>
         <View style={styles.containerRadioButton}>
@@ -238,7 +251,11 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.subtitleRadio}>Déplacement :</Text>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {addDisplacement("A pied"); removeDisplacement(); ; checkedBox()}}
+              onPress={() => {
+                addDisplacement("A pied");
+                removeDisplacement();
+                checkedBox();
+              }}
               fillColor="#9E2A2B"
               text="A pied"
               textStyle={styles.textRadio}
@@ -246,16 +263,23 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {addDisplacement("En transports"); removeDisplacement("En transports"); checkedBox()}}
+              onPress={() => {
+                addDisplacement("En transports");
+                removeDisplacement("En transports");
+                checkedBox();
+              }}
               fillColor="#9E2A2B"
               text="En transports"
               textStyle={styles.textRadio}
-              
             />
           </View>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {addDisplacement("En voiture"); removeDisplacement("En voiture"); ; checkedBox()}}
+              onPress={() => {
+                addDisplacement("En voiture");
+                removeDisplacement("En voiture");
+                checkedBox();
+              }}
               fillColor="#9E2A2B"
               text="En voiture"
               textStyle={styles.textRadio}
@@ -263,38 +287,32 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
       </View>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
       <Pressable style={styles.button} onPress={() => submitClick()}>
         <Text style={styles.texteButton}>Valider</Text>
-      </Pressable>
+      </Pressable>  
+      </View>      
+      
     </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
   },
 
   header: {
-    width: '100%',
-    height: '12%',
-    flexDirection: 'row',
-    borderBottomColor: '#9E2A2B',
-    borderBottomWidth : 1,
-    marginBottom: 15
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderBottomColor: "#9E2A2B",
+    borderBottomWidth: 1,
   },
-  logoContainer: {
-    marginLeft: '-10%',
-    marginBottom: '-5%'
-  },
+  logoContainer: {},
   logo: {
-    width: "35%",
-    height: "50%",
-    marginLeft: "35%",
-    marginTop: "22%",
+    width: 30,
+    height: 30,
+    marginLeft: 10,
   },
 
   input: {
@@ -309,21 +327,21 @@ const styles = StyleSheet.create({
   avatar: {
     width: 70,
     height: 70,
-    marginBottom: 20,
+    marginVertical: 20,
     borderRadius: 50,
   },
   ligne: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     textDecorationLine: "underline",
   },
   soustitre: {
     borderWidth: 1,
     borderColor: "#9E2A2B",
     padding: 5,
-    width: 300,
+    width: 250,
     textAlign: "center",
+    justifyContent: 'center',
     borderRadius: 10,
-   
   },
   radioButton: {
     width: 10,
@@ -361,13 +379,16 @@ const styles = StyleSheet.create({
     color: "white",
     paddingHorizontal: 25,
     padding: 10,
-    borderRadius: 15,
+    borderRadius: 5,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   texteButton: {
     color: "white",
   },
   error: {
     marginTop: 0,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
 });

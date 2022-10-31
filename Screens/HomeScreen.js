@@ -1,12 +1,61 @@
-
-import { View, Text, TouchableOpacity, Image, StyleSheet, ImageBackground, TextInput } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ImageBackground,
+  StatusBar,
+  ScrollView,
+  FlatList,
+  Dimensions,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ModalSearch from "../components/ModalSearch";
+import places from "./places";
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import destinations from "../reducers/destinations";
 import { destinationSearch } from '../reducers/destinations';
 
-export default function HomeScreen({ navigation }){
+const {width} = Dimensions.get('screen');
+
+export default function HomeScreen({ navigation }) {
+  
+  const Card = ({place}) => {
+    return(
+      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
+      <ImageBackground style={styles.cardImage} source={place.image}>
+        
+        <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{place.name}</Text>
+            <Text style={{color: 'white', paddingHorizontal: 10}}>{place.location}</Text>
+          </View>
+        
+        <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text>
+        <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
+        
+        <View style={styles.btnToReserve}>
+          <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Réserver</Text>
+        </View>
+       
+        </View>
+        
+      </ImageBackground>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+      <SafeAreaView style={{ flex: 1}}>
+        <StatusBar />
+        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+
+
+
+
 const [city, setCity]=useState('')
 const [country, setCountry]=useState('')
 const dispatch = useDispatch()
@@ -33,201 +82,171 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
           }
     return (
 
-      <View style={styles.container}>
-        
+
         <View style={styles.header}>
-            <Image style= {styles.logo} source={require('../assets/logo.png')} />
-            <View style={styles.menuHeader}>
-                
-                <TouchableOpacity onPress={() => navigation.navigate('Connection')} style={styles.login1} activeOpacity={0.8}>
-                    <Text style={styles.btnLogin1}>S'inscrire</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.login2} activeOpacity={0.8}>
-                    <Text style={styles.btnLogin2}>Se connecter</Text>
-                </TouchableOpacity>
+          <View>
+            <Image
+              source={require("../assets/logo.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          </View>
+          <View style={styles.btnHeader}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Profile")}
+              style={styles.login1}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin1}>S'inscrire</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Connection")}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Se connecter</Text>
+            </TouchableOpacity>
           </View>
         </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{height: 120, paddingHorizontal: 20, paddingVertical: 20}}>
 
-        <View style={styles.content}>
-        <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.input}
-          onChangeText={(city) => setCity(city)}
-          value={city}
-          placeholder={"City"}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={(country) => setCountry(country)}
-          value={country}
-          placeholder={"Ex : fr pour France"}
-        />
-        <View style={styles.iconContainer}>
-         <FontAwesome
-            style={styles.iconSearch}
-            name="search"
-            size={20}
-            color={'white'}
-            onPress={() => searchPress() }
-          />
-          </View>
-        </View>
-        <ImageBackground source={require('../assets/bg.jpg')} style={styles.bg}>
-            <View style={styles.titleHome}>
-              <Text style={styles.title}>Nos suggestions</Text>
+
+          <View style={styles.inputContainer}>
+           <ModalSearch />
+            <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('MyReservation')}>
-               <Text style={styles.btnLogin1}>Réservation</Text></TouchableOpacity>
-               <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
-               <Text style={styles.btnLogin1}>Restaurants</Text></TouchableOpacity>
-               <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
-               <Text style={styles.btnLogin1}>Culturals</Text></TouchableOpacity>
-               <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
-               <Text style={styles.btnLogin1}>Naturals</Text></TouchableOpacity>
-              
+          </View>
 
-               <TouchableOpacity onPress={() => navigation.navigate('Days')} style={styles.titleHome} activeOpacity={0.8}>
-                    <Text style={styles.daysButton}>Days Resa</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => navigation.navigate('Overview')} style={styles.titleHome} activeOpacity={0.8}>
-                    <Text style={styles.title}>Direction Recap</Text>
-                </TouchableOpacity>
-                <TextInput style={styles.searchBar}> </TextInput>
-        </ImageBackground>
+            <View>
+            <Text style={styles.suggestTxt}>Nos suggestions</Text>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
 
             
-        </View>
-    </View> 
+            <View style={{marginTop: 20}}>
+            <Text style={styles.suggestTxt}>Nos coups de coeur</Text>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
+            
+        </ScrollView>
+        </ImageBackground>
+      </SafeAreaView>
 
-    );
-   }
+
+          
+
+    //     </View>
+
+    //     {/* CONTENT */}
+    //     <View style={styles.content}>
+
+    //      
+
+    //       
+
+    //       </View>
+
+    //     </View>
+    //   </ImageBackground>
+    // </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  btnHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  login1: {
+    width: 100,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#FFF",
+  },
+  login2: {
+    width: 100,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "#9E2A2B",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#9E2A2B",
+    marginLeft: 10,
+  },
+  btnLogin1: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 10,
+  },
+  btnLogin2: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 10,
+  },
+  headerTitle: {
+    color: "#9E2A2B",
+    fontSize: 23,
+    fontWeight: 'bold',
+  },
+  inputContainer: {
+    borderRadius: 10,
+    marginTop: 20, 
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20
+  },
+  suggestTxt: {
+    color: 'black',
+    fontWeight: 'bold',
+    marginHorizontal: 20,
+    fontSize: 15,
+    color: 'white'
+  },
+  cardImage: {
+    height: 300,
+    width: width / 1.5,
+    marginRight: 20,
+    marginTop: 20,
+    overflow: 'hidden',
+    borderRadius: 10,
+  },
+  btnToReserve: {
+    backgroundColor: '#9E2A2B',
+    width: 80,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 5, 
+    borderRadius: 5   
+  }
+});
 
 
 
 
-   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      width:'100%',
-      height: '100%',
-    },
-    header: {
-      width: '100%',
-      height: '12%',
-      flexDirection: 'row',
-    }, 
-    menuHeader: {
-        flexDirection: 'row',
-        width: '100%',
-        height: 100,
-        marginTop: '16%',
-        marginLeft: '35%',
-    },
-    logo: {
-      width: '10%',
-      height: '50%',
-      marginLeft: '10%',
-      marginTop: '12%',
-    },
-    login1: {
-      width: '18%',
-      height: '30%',
-      marginRight: '2%',
-      borderRadius: 8,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 1,
-      borderColor: '#9E2A2B',
-      shadowColor: "#9E2A2B",
-      shadowOffset: {
-            width: 0,
-            height: 3,
-            },
-      shadowOpacity: 0.27,
-      shadowRadius: 4.65,
-      elevation: 6,
-    },
-    login2: {
-        width: '20%',
-        height: '30%',
-        borderRadius: 8,
-        backgroundColor: '#9E2A2B',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: '#9E2A2B',
-        shadowColor: "#9E2A2B",
-        shadowOffset: {
-              width: 0,
-              height: 3,
-              },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        elevation: 6,
-      },
-    btnLogin1: {
-      color: '#9E2A2B',
-      fontWeight: 'bold',
-      fontSize: 20,
-    },
-    btnLogin2: {
-        color: '#FFF',
-        fontWeight: 'bold',
-        fontSize: 10,
-    },
-    content: {
-        flex: 1,
-    },
-    bg: {
-        width: '100%',
-        height: '100%',
-    },
-    titleHome: {
-        justifyContent: 'center',
-        marginLeft: '25%',
-        marginTop: '15%',
-        backgroundColor: '#9E2A2B',
-        width: '55%',
-        height: '6%',
-        borderRadius: 8,
-    },
-    title: {
-        fontSize: 20,
-        color: 'white',
-        textAlign: 'center',
-        lineHeight: 40,
-    },
-    daysButton: {
-      color: 'white',
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    searchBar: {
-      width: 100, 
-      height: 50,
-    },
-    searchContainer:{
-      flexDirection: 'row',
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: "#E1E1E1",
-      padding: 5,
-      width: '46.5%',
-      marginBottom: 15,
-      backgroundColor:'white',
-    },
-    iconContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      
-    },
-    iconSearch: {
-      backgroundColor: '#9E2A2B',
-      padding: 5,
-      marginBottom: '50%',
-    },
-  }) 
+
+
+   
 

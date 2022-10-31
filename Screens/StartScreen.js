@@ -1,47 +1,59 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 
 
 export default function StartScreen({ navigation }) {
 
     return (
+        
+        <ImageBackground source={require('../assets/bg.jpg')} style={{flex: 1}}>
+        
+
         <View style={styles.container}>
+            
             <View style={styles.part1}>
-                <Image style={styles.logo} source={require('../assets/logo.png')}></Image>
-                <Text style={styles.txt}>Préparer ses sorties pour en profiter au Maximum</Text>
+                <Image style={styles.logo} source={require('../assets/logoWhite.png')}></Image>
+                <Text style={styles.txt}>Préparer ses sorties</Text>
+                <Text style={styles.txt}>pour en profiter au Maximum</Text>
             </View>
             <View style={styles.part2}>
                 <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Home')} activeOpacity={0.8}>
                     <Text style={styles.title}>ORGANISER</Text>
                 </TouchableOpacity>
             </View>
+           
         </View>
+        </ImageBackground>
+    
+        
     )
 }
 
 const styles = StyleSheet.create({
     container: {
       flex:1,
-      backgroundColor: 'white',
+      backgroundColor: 'black',
+      opacity: 0.9
     },
     part1: {
         flex: 0.80,
         alignItems: 'center',
         justifyContent: 'center',
+        
     },
     part2: {
-        flex: 0.20,
+        
         alignItems: 'center',
         justifyContent: 'center', 
         marginBottom: '20%',
     },
     logo: {
-        marginBottom: '-20%',
-        width: '100%',
+        
+        width: 200,
         height: '100%',
         resizeMode: 'contain'
     },
     btn: {
-      width: '80%',
+      width: 200,
       height: '30%',
       borderRadius: 5,
       backgroundColor: '#9E2A2B',
@@ -66,9 +78,7 @@ const styles = StyleSheet.create({
     txt: {
         fontSize:20,
         fontWeight: 'bold',
-        color: '#335C67',
-        textAlign: 'center',
-        fontStyle: 'italic'
+        color: 'white',
     }
 
   }) 
