@@ -7,32 +7,40 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from './Screens/HomeScreen.js'
 import StartScreen from './Screens/StartScreen';
-import ReservedScreen from './Screens/ReservedScreen';
+// import ReservedScreen from './Screens/ReservedScreen';
 import ProfileScreen from './Screens/ProfileScreen';
-// import OverviewScreen from './Screens/OverviewScreen';
-import MyReservationScreen from './Screens/MyReservationScreen';
-import MapScreen from './Screens/MapScreen';
+import OverviewScreen from './Screens/OverviewScreen';
 
-import MyDayScreen from './Screens/MapScreen';
+
+import DetailsScreen from './Screens/DetailsScreen';
+
+import MyReservationScreen from './Screens/MyReservationScreen';
+import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
+import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
+import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
+
+
+
+import MyDayScreen from './Screens/MyDayScreen';
+import MapScreen from './Screens/MapScreen';
 import DaysScreen from './Screens/DaysScreen';
 import ConnectionScreen from './Screens/ConnectionScreen';
-
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import user from './reducers/users'
+import destinations from './reducers/destinations.js';
+import activities from './reducers/activities.js';
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
 
 const persistConfig = {
   key: "voyagevoyage",
   storage: AsyncStorage,
 };
-const reducers = combineReducers({user})
+const reducers = combineReducers({user, destinations, activities})
 
 
 
@@ -42,59 +50,39 @@ const store = configureStore({
 });
 let persistor = persistStore(store);
 
-
-const TabNavigator = () => {
-  return (
-    <Tab.Navigator screenOptions={({ route }) => ({
-      tabBarIcon: ({ color, size }) => {
-        let iconName = '';
- 
-        if (route.name === 'Home') {
-          iconName = 'home';
-        } else if (route.name === 'Profile') {
-          iconName = 'user';
-        }
- 
-        return <FontAwesome name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: '#2196f3',
-      tabBarInactiveTintColor: 'gray',
-      headerShown: false,
-    })}>
-      <Tab.Screen name="Home" component={HomeScreen} />
- 
-       <Tab.Screen name="Connection" component={ConnectionScreen} />
-    </Tab.Navigator>
-  );
- }
-
-
-
-
 export default function App() {
+  
+  
   return (
 
- <Provider store={store}>
-  <PersistGate persistor={persistor}>
-    <NavigationContainer>
-          
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Connection" component={ConnectionScreen} /> 
-            <Stack.Screen name="Profile" component={ProfileScreen} /> 
-            <Stack.Screen name="MyReservation" component={MyReservationScreen} /> 
-            <Stack.Screen name="Map" component={MapScreen} />   
-            <Stack.Screen name="Reserved" component={ReservedScreen} /> 
-            <Stack.Screen name="MyDay" component={MyDayScreen} /> 
-            {/* <Stack.Screen name="Overview" component={OverviewScreen} />  */}
-            <Stack.Screen name="TabNavigator" component={TabNavigator} />
-           </Stack.Navigator> 
-    </NavigationContainer>
-    </PersistGate>
-    </Provider> 
+<Provider store={store}>
+<PersistGate persistor={persistor}>
+<NavigationContainer>
+     <Stack.Navigator screenOptions={{ headerShown: false }}>
+       <Stack.Screen name="Start" component={StartScreen} />
+       <Stack.Screen name="Home" component={HomeScreen} />
+       <Stack.Screen name="AllRestaurants" component={AllRestaurantsScreen} />
+       <Stack.Screen name="AllCulturals" component={AllCulturalsScreen} />
+       <Stack.Screen name="AllNaturals" component={AllNaturalssScreen} />
+       <Stack.Screen name="Connection" component={ConnectionScreen} />
+       <Stack.Screen name="Profile" component={ProfileScreen} />
+       <Stack.Screen name="Overview" component={OverviewScreen} />
+       {/* <Stack.Screen name="MyReservation" component={MyReservationScreen} /> */}
+       <Stack.Screen name="Map" component={MapScreen} />  
+       <Stack.Screen name="MyDay" component={MyDayScreen} />
+       <Stack.Screen name="Days" component={DaysScreen} />
+       <Stack.Screen name="Details" component={DetailsScreen} />
+       {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
 
-    
-    
+        <Stack.Screen name="Overview" component={OverviewScreen} />*/}
+
+
+
+
+     </Stack.Navigator>
+   </NavigationContainer>
+   </PersistGate>
+   </Provider>
   );
 }
 
