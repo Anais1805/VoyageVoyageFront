@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
+  SafeAreaView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsVisitsComponent from "./CardsVisitsComponent";
@@ -16,41 +17,55 @@ import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
 
+
+
 export default function AllCulturalsScreen({ navigation }) {
+
   const [allCulturals, setAllCulturals] = useState([]);
+  const [xid, setXid] = useState([]);
+
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
   useEffect(() => {
-    fetch(
-      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+    fetch( `http://192.168.10.133:4000/visits/${destination.lon}/${destination.lat}`
     )
-      .then((resp) => resp.json())
-      .then((data) => {
+      .then(resp => resp.json())
+      .then(data => {
         if (data.result) {
-          setAllCulturals(data.visits);
+          setAllCulturals(data.cultural);
         }
       });
   }, []);
-  console.log("all", allCulturals);
 
-  const allVisits = allCulturals.map((data, i) => {
-    if (i < 100) {
-      return (
+  useEffect(() => {
+    xid.map(e => {
+    fetch(http://192.168.10.137:4000/infos/${e})
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+
+
+
+  const culturals = allCulturals.map((data, i) => {
+    if(i<100){
+    return (
         <CardsVisitsComponent
-          key={i}
-          name={data.name}
-          kind={data.kinds}
-          style={styles.cards}
+        key={i}
+        name={data.name}
+        kind={data.kinds}
+        style={styles.cards}
         />
-      );
+        )
     } else {
-      return;
+      return
     }
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
@@ -73,12 +88,16 @@ export default function AllCulturalsScreen({ navigation }) {
           />
         </View>
       </View>
-      <View style={styles.content}>
+      <ScrollView contentContainerStyle={styles.allcards}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+
+       {restaurants}
+
           <View style={styles.allcards}>{allVisits}</View>
+
         </ImageBackground>
-      </View>
-    </View>
+        </ScrollView> 
+      </SafeAreaView> 
   );
 }
 

@@ -20,6 +20,7 @@ import places from "./places";
 
 const {width} = Dimensions.get('screen');
 
+
 export default function AllRestaurantsScreen({ navigation }) {
 
   const Card = ({place}) => {
@@ -45,63 +46,87 @@ export default function AllRestaurantsScreen({ navigation }) {
 
 
   const [allrestaurants, setAllRestaurants] = useState([]);
+  const [allDetails, setAllDetails]= useState([])
+  const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
+
   console.log(destination);
-  const [lonmax, setLonMax] = useState(destination.lon + 1);
-  const [latmax, setLatMax] = useState(destination.lat + 1);
-  console.log("lon", lonmax);
-  console.log("lat", latmax);
 
-  // const activity = useSelector((state) => state.activities.value)
-  // console.log('act', activity)
-  // useEffect(() => {
-  //   fetch(
-  //     `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
-  //   )
-  //     .then(resp => resp.json())
-  //     .then(data => {
-  //       if (data.result) {
 
-  //         setAllRestaurants(data.foods)
-  //         console.log('food',data.xid)
-  //         dispatch(activitiesInfos({
-  //           xid: data.foods.xid,
-  //         })
-  //      ) }
-  //     }).then(
-  //       fetch(
-  //         `http://192.168.1.43:4000/infos/${activity}`
-  //       )
-  //         .then((resp) => resp.json())
-  //         .then((data) => {
-  //           if (data.result) {
-  //             console.log(data)
-  //             }
-  //         })
-  //     )
-  // }, []);
 
+
+
+  const activity = useSelector((state) => state.activities.value)
+  console.log('act', activity)
   
-  
-  // //  console.log("rest", allrestaurants);
+  useEffect(() => {
+    fetch(
+
+      `http://192.168.10.133:4000/foods/${destination.lon}/${destination.lat}`
+
+    )
+      .then(resp => resp.json())
+      .then(data => {
+        if (data.result) {
+
+          setAllRestaurants(data.foods);
+          // console.log(data.foods)
+        }
+      });
+  }, []);
+  // console.log("rest", allrestaurants);
+  // const everyRestaurants = [...allrestaurants];
+  // console.log('every', everyRestaurants)
+
+  const restaurants = allrestaurants.map((data, i) => {
+    if(i<100){
+
+      
+          setAllRestaurants(data.foods)
+          let tmp = data.foods.map(e => e.xid) 
+          setXid(tmp)
+      }
+    })    
+  }, [])
+
+
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.137:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+ 
+console.log('xid', xid)
+console.log('rest', allDetails)
+
+  //  console.log("rest", allrestaurants);
+
 
   // // const everyRestaurants = [...allrestaurants];
   // // console.log('every', everyRestaurants)
 
-  // const restaurants = allrestaurants.map((data, i) => {
 
-  //   if(i <100){
-  //   return (
-  //       <CardsRestaurantsComponent
-  //       key={i}
-  //       name={data.name}
-  //       kind={data.kinds}
-  //       style={styles.cards}
-        
-  //       />)
-  //   } else {
-  //     return
+  
+  const restaurants = allDetails.map((data, i) => {
+
+    if(i <100){
+
+    return (
+        <CardsRestaurantsComponent
+        key={i}
+        name={data.name}
+        kind={data.kinds}
+        style={styles.cards}
+
+        />)
+
+    } else {
+      return
+
 
   //   }
   // });
@@ -109,11 +134,15 @@ export default function AllRestaurantsScreen({ navigation }) {
   return (
     <SafeAreaView style={{flex: 1}}>
     
+
+
+    <SafeAreaView style={styles.container}>
+     
+
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
-          onPress={() => navigation.navigate("Home")}
-        >
+          onPress={() => navigation.navigate("Home")}>
           <Image style={styles.logo} source={require("../assets/logo.png")} />
         </TouchableOpacity>
         <View style={styles.menuHeader}>
@@ -131,6 +160,7 @@ export default function AllRestaurantsScreen({ navigation }) {
           />
         </View>
       </View>
+
 
       <View style={styles.titleRestoContainer}>
         <Text style={styles.titleResto}>Les restaurants à </Text>
@@ -154,6 +184,10 @@ export default function AllRestaurantsScreen({ navigation }) {
             </View>
 
     </SafeAreaView>
+
+
+     
+
     
   );
 }
@@ -212,14 +246,17 @@ const styles = StyleSheet.create({
   },
   cards: {
     width: 100,
-    height: 100,
+    height: 20,
   },
   allcards: {
+
+  //  flex:0.80,
 
    height: '100%',
    margin: 0,
   },
   scrollView: {
+
     height: 20,
   },
   titleRestoContainer: {
@@ -230,6 +267,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
   }
- 
+
 });
 
