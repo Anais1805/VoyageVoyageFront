@@ -20,50 +20,50 @@ import { activitiesInfos } from "../reducers/activities";
 
 export default function AllRestaurantsScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
+  const [allDetails, setAllDetails]= useState([])
+  const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
   console.log(destination);
-  const [lonmax, setLonMax] = useState(destination.lon + 1);
-  const [latmax, setLatMax] = useState(destination.lat + 1);
-  console.log("lon", lonmax);
-  console.log("lat", latmax);
+
 
   const activity = useSelector((state) => state.activities.value)
   console.log('act', activity)
+  
   useEffect(() => {
     fetch(
-      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.10.137:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
         if (data.result) {
-
+      
           setAllRestaurants(data.foods)
-          console.log('food',data.xid)
-          dispatch(activitiesInfos({
-            xid: data.foods.xid,
-          })
-       ) }
-      }).then(
-        fetch(
-          `http://192.168.1.43:4000/infos/${activity}`
-        )
-          .then((resp) => resp.json())
-          .then((data) => {
-            if (data.result) {
-              console.log(data)
-              }
-          })
-      )
-  }, []);
+          let tmp = data.foods.map(e => e.xid) 
+          setXid(tmp)
+      }
+    })    
+  }, [])
 
-  
+
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.137:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+ 
+console.log('xid', xid)
+console.log('rest', allDetails)
+
   //  console.log("rest", allrestaurants);
 
   // const everyRestaurants = [...allrestaurants];
   // console.log('every', everyRestaurants)
 
-  const restaurants = allrestaurants.map((data, i) => {
+  const restaurants = allDetails.map((data, i) => {
 
     if(i <100){
     return (
