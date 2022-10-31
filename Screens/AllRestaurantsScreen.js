@@ -3,12 +3,11 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ImageBackground,
-  ScrollView,
-
-  FlatList,
-
+  Text,
   SafeAreaView,
+  Dimensions, 
+  FlatList, 
+  ImageBackground
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
@@ -17,9 +16,35 @@ import destinations from "../reducers/destinations";
 import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
+import places from "./places";
+
+const {width} = Dimensions.get('screen');
 
 
 export default function AllRestaurantsScreen({ navigation }) {
+
+  const Card = ({place}) => {
+    return(
+      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
+      <ImageBackground style={styles.cardImage} source={place.image}>
+        
+        <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{place.name}</Text>
+            <Text style={{color: 'white', paddingHorizontal: 10}}>{place.location}</Text>
+          </View>
+        
+        <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text>
+        <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
+  
+        </View>
+        
+      </ImageBackground>
+      </TouchableOpacity>
+    );
+  };
+
+
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [allDetails, setAllDetails]= useState([])
   const [xid, setXid] = useState([]);
@@ -27,6 +52,8 @@ export default function AllRestaurantsScreen({ navigation }) {
   const destination = useSelector((state) => state.destinations.value);
 
   console.log(destination);
+
+
 
 
 
@@ -78,9 +105,12 @@ console.log('rest', allDetails)
 
   //  console.log("rest", allrestaurants);
 
-  // const everyRestaurants = [...allrestaurants];
-  // console.log('every', everyRestaurants)
 
+  // // const everyRestaurants = [...allrestaurants];
+  // // console.log('every', everyRestaurants)
+
+
+  
   const restaurants = allDetails.map((data, i) => {
 
     if(i <100){
@@ -97,13 +127,18 @@ console.log('rest', allDetails)
     } else {
       return
 
-    }
-  });
+
+  //   }
+  // });
 
   return (
+    <SafeAreaView style={{flex: 1}}>
     
+
+
     <SafeAreaView style={styles.container}>
      
+
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
@@ -114,74 +149,83 @@ console.log('rest', allDetails)
           <FontAwesome
             style={styles.icon}
             name="suitcase"
-            size={40}
+            size={30}
             onPress={() => navigation.navigate("MyReservation")}
           />
           <FontAwesome
-            style={styles.icon}
+            style={styles.iconUser}
             name="user-circle-o"
-            size={40}
+            size={30}
             onPress={() => navigation.navigate("Profile")}
           />
         </View>
       </View>
 
 
-      <ScrollView contentContainerStyle={styles.allcards}>
-        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+      <View style={styles.titleRestoContainer}>
+        <Text style={styles.titleResto}>Les restaurants à </Text>
+      </View>
+        {/* <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+         <View style={styles.allcards}>
+         
+        <ScrollView contentContainerStyle>
        {restaurants}
-        </ImageBackground>
-        </ScrollView> 
-      </SafeAreaView> 
+        </ScrollView>
+         
+         </View> 
+        </ImageBackground> */}
+        <View style={{marginTop: 20}}>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              vertical
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
+
+    </SafeAreaView>
+
+
+     
+
     
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   header: {
-    width: "100%",
-    height: "12%",
-    flexDirection: "row",
-    borderBottomColor: "#9E2A2B",
-    borderBottomWidth: 1,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    flexDirection:'row',
+    justifyContent: "space-between",
+  },
+  logo: {
+    width: 30,
+    height: 30,
   },
   menuHeader: {
     flexDirection: "row",
-    width: "100%",
-    height: 100,
-    marginTop: "12%",
-    marginLeft: "45%",
-  },
-  logoContainer: {
-    marginLeft: "-10%",
-    marginBottom: "-5%",
-  },
-  logo: {
-    width: "35%",
-    height: "50%",
-    marginLeft: "35%",
-    marginTop: "22%",
   },
   avatar: {
     width: "20%",
     height: "20%",
   },
   icon: {
-    marginLeft: "0.5%",
-    marginRight: "2%",
-    marginBottom: "15%",
-    padding: 0,
-    marginTop: 0,
+    marginHorizontal: 20,
   },
-  bg: {
-    width: "100%",
-    height: "100%",
+  iconUser: {
+    marginRight: 10,
   },
   searchContainer: {
     flexDirection: "row",
+  },
+  cardImage: {
+    height: 200,
+    width: 350,
+    marginRight: 20,
+    marginVertical: 10,
+    overflow: 'hidden',
+    borderRadius: 10,
   },
   input: {
     borderWidth: 1,
@@ -212,8 +256,17 @@ const styles = StyleSheet.create({
    margin: 0,
   },
   scrollView: {
-    height: '10%',
+
+    height: 20,
   },
- 
+  titleRestoContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  titleResto: {
+    fontSize: 26,
+    fontWeight: 'bold',
+  }
+
 });
 

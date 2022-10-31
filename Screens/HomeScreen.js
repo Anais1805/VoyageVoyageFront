@@ -48,19 +48,13 @@ export default function HomeScreen({ navigation }) {
     );
   };
 
-  return (
-      <SafeAreaView style={{ flex: 1}}>
-        <StatusBar />
-        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
-
-
-
+  
 
 const [city, setCity]=useState('')
 const [country, setCountry]=useState('')
 const dispatch = useDispatch()
 
-const destination = useSelector((state)=> state.destinations.value)
+const destination = useSelector((state) => state.destinations.value)
  
 console.log(destination)
 const searchPress = () => {
@@ -80,8 +74,14 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
               }
             })
           }
-    return (
-
+    
+      return (
+        <SafeAreaView style={{ flex: 1}}>
+          <StatusBar />
+          <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+  
+  
+  
 
         <View style={styles.header}>
           <View>
@@ -118,7 +118,12 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
           </View>
 
             <View>
-            <Text style={styles.suggestTxt}>Nos suggestions</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.suggestTxt}>Les restaurants</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
+            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+            </TouchableOpacity>
+            </View>
               <FlatList
               contentContainerStyle={{paddingLeft: 20}}
               horizontal
@@ -128,8 +133,34 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
             </View>
 
             
-            <View style={{marginTop: 20}}>
-            <Text style={styles.suggestTxt}>Nos coups de coeur</Text>
+            <View style={{marginTop: 30}}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+            <View>
+            <Text style={styles.suggestTxt}>Les activitées sportives</Text>
+            <Text style={styles.suggestTxt}>et randonnées</Text>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+            </TouchableOpacity>
+            </View>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
+
+            <View style={{marginTop: 30}}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+            <View>
+            <Text style={styles.suggestTxt}>Les visites culturelles</Text>
+            
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+            </TouchableOpacity>
+            </View>
               <FlatList
               contentContainerStyle={{paddingLeft: 20}}
               horizontal
@@ -143,22 +174,7 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
       </SafeAreaView>
 
 
-          
-
-    //     </View>
-
-    //     {/* CONTENT */}
-    //     <View style={styles.content}>
-
-    //      
-
-    //       
-
-    //       </View>
-
-    //     </View>
-    //   </ImageBackground>
-    // </View>
+        
   );
 }
 
@@ -221,7 +237,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginHorizontal: 20,
     fontSize: 15,
-    color: 'white'
   },
   cardImage: {
     height: 300,
@@ -240,7 +255,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 5, 
     borderRadius: 5   
-  }
+  },
 });
 
 

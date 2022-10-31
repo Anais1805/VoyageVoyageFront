@@ -1,7 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View,Text, Button, Image, TouchableOpacity } from 'react-native';
 
+import ModalSearch from './ModalSearch';
 
 export default function Header({navigation}) {
 
@@ -12,11 +13,11 @@ export default function Header({navigation}) {
 
           <View style={styles.iconHeader}>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                <Image style={styles.logo} source={require('../assets/logo.png')} />
+            <TouchableOpacity>
+                <Image style={styles.logo} source={require('../assets/logo.png')} onPress={() => navigation.navigate('Home')}/>
             </TouchableOpacity>
 
-            
+            <ModalSearch />
 
           </View>
         </View>
