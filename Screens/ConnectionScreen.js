@@ -6,17 +6,11 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  SafeAreaView
 } from "react-native";
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore } from "../reducers/users";
 
-
-
-
-
-
-export default function ConnectionScreen({ navigation }) {
 
 const BACKEND_ADRESS = "http://192.168.10.152:4000";
 
@@ -55,64 +49,16 @@ export default function ConnectionScreen({ navigation }) {
       });
   };
 
-
-
-    return (
-      <View style={styles.container}>
-
-        <View style={styles.header}>
-         
-          <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
-             <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
-          </TouchableOpacity>
-          
-        </View>
-{/* 
-        <View style={styles.part1}>
-          <View style={styles.connexion}>
-            <Text style={styles.title}>CONNEXION</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('MyDay')} style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Go to MyDay</Text>
-                </TouchableOpacity>
-        <TextInput style={styles.input} 
-                   placeholder='  ✉️️ Adresse Mail'
-                   autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
-                   keyboardType="email-address" // https://reactnative.dev/docs/textinput#keyboardtype
-                   textContentType="emailAddress" // https://reactnative.dev/docs/textinput#textcontenttype-ios
-                   autoComplete="email" // https://reactnative.dev/docs/textinput#autocomplete-android
-                   onChangeText={(signInEmail) => setSignInEmail(signInEmail)}
-                   value={signInEmail}/>
-          {emailError && <Text style={styles.error}>⚠️ Invalid email address</Text>}
-        <TextInput style={styles.input} 
-                   placeholder=' 🔒 Mot de Passe'
-                   onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
-                   value = {signInPassword}></TextInput>
-           <TouchableOpacity style={styles.textconnexion} onPress={() => handleSubmit()} activeOpacity={0.8}>
-              <Text style={styles.title2}>SE CONNECTER</Text>
-          </TouchableOpacity>
-
   return (
+    <SafeAreaView style={{flex: 1}}>
     <View style={styles.container}>
-      <View style={styles.header}>
-        {/* <Text>Connection Screen</Text> */}
-        {/* <Button
-            title="Go to Home"
-            onPress={() => navigation.navigate('Home')} 
-          /> */}
 
+      <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
             style={styles.logo}
             source={require("../assets/logo.png")}
           ></Image>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.login}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.textButton}>Sign Up</Text>
         </TouchableOpacity>
       </View>
 
@@ -186,6 +132,7 @@ export default function ConnectionScreen({ navigation }) {
 
       </View>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -197,14 +144,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   header: {
-    flex: 0.13,
-    width: "100%",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   logo: {
-    width: "15%",
-    height: "50%",
-    marginLeft: "6%",
-    marginTop: "14%",
+    width: 30,
+    height: 30,
   },
   login: {
     width: "20%",
@@ -319,4 +266,4 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
     marginTop: "2%",
   },
-});
+})

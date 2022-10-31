@@ -16,10 +16,16 @@ const ModalSearch = () => {
         visible={modalVisible}
       >
           <View style={styles.modalView}>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <View style={{justifyContent: 'center', alignItems:'flex-end', marginTop: -20, marginBottom: 20}}>
+              <Text style={{fontWeight: 'bold'}}>X</Text>
+            </View>
+            </TouchableOpacity>
             <Text style={styles.modalText}>Rechercher</Text>
             
             <SafeAreaView>
-              <TextInput style={styles.inputDestination} placeholder="Destination"/>
+              <TextInput style={styles.inputDestinationVille} placeholder="Ville"/>
+              <TextInput style={styles.inputDestinationPays} placeholder="Pays"/>
             
             
             <Pressable
@@ -53,18 +59,24 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   iconSearch: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     marginTop: 10,
   },
-  inputDestination: {
+  inputDestinationVille: {
     height: "10%",
     borderWidth: 1,
     backgroundColor: 'transparent',
     opacity: 0.3
   },
+  inputDestinationPays: {
+    height: "10%",
+    borderWidth: 1,
+    backgroundColor: 'transparent',
+    opacity: 0.3,
+    marginTop: 10,
+  },
   modalView: {
-    
     margin: 20,
     backgroundColor: "white",
     borderRadius: 10,
@@ -81,7 +93,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 5,
-    padding: 8,
+    padding: 10,
   },
   buttonOpen: {
     
