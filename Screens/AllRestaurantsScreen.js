@@ -89,7 +89,7 @@ export default function AllRestaurantsScreen({ navigation }) {
     fetch(`http://192.168.10.137:4000/infos/${e}`)
     .then(resp => resp.json())
     .then(data => 
-      setAllDetails(data),
+      setAllDetails([...data]),
       )
   })}, [xid])
  
