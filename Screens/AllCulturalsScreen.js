@@ -54,21 +54,32 @@ export default function AllRestaurantsScreen({ navigation }) {
     }
   });
   }, []);
- 
-const culturals = allDetails.map((data, i) => {
-  console.log('DAT', data.infos.image);
-console.log(culturals)
-  return (
-    <ImageBackground key={i} style={styles.cardImage} source={require('../assets/default.jpg')}>
-      <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
-          <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address.city}</Text>
-       </View>
-      </View>
-    </ImageBackground>)
-    });
- 
+
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.137:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+
+
+
+  const culturals = allCulturals.map((data, i) => {
+    if(i<100){
+    return (
+        <CardsVisitsComponent
+        key={i}
+        name={data.name}
+        kind={data.kinds}
+        style={styles.cards}
+        />
+        )
+    } else {
+      return
+    }
+  });
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
