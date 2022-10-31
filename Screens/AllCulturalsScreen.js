@@ -40,7 +40,7 @@ export default function AllCulturalsScreen({ navigation }) {
 
   useEffect(() => {
     xid.map(e => {
-    fetch(http://192.168.10.137:4000/infos/${e})
+    fetch('http://192.168.10.137:4000/infos/${e}')
     .then(resp => resp.json())
     .then(data => 
       setAllDetails(data),

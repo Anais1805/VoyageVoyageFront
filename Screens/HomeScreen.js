@@ -73,12 +73,14 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
 
               }
             })
-          }
-    
-      return (
-        <SafeAreaView style={{ flex: 1}}>
-          <StatusBar />
-          <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+   
+   }
+   
+    return (
+
+      <SafeAreaView style={{ flex: 1}}>
+        <StatusBar />
+        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
   
   
   
@@ -174,7 +176,7 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
       </SafeAreaView>
 
 
-        
+          
   );
 }
 
