@@ -70,7 +70,9 @@ export default function AllRestaurantsScreen({ navigation }) {
       .then(data => {
         if (data.result) {
 
-          setAllRestaurants(data.foods);
+          setAllRestaurants(data.foods)
+          let tmp = data.foods.map(e => e.xid) 
+          setXid(tmp)
           // console.log(data.foods)
         }
       });
@@ -79,16 +81,7 @@ export default function AllRestaurantsScreen({ navigation }) {
   // const everyRestaurants = [...allrestaurants];
   // console.log('every', everyRestaurants)
 
-  const restaurants = allrestaurants.map((data, i) => {
-    if(i<100){
 
-      
-          setAllRestaurants(data.foods)
-          let tmp = data.foods.map(e => e.xid) 
-          setXid(tmp)
-      }
-    })    
-  }, [])
 
 
   useEffect(() => {
@@ -128,8 +121,8 @@ console.log('rest', allDetails)
       return
 
 
-  //   }
-  // });
+    }
+  });
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -183,6 +176,7 @@ console.log('rest', allDetails)
               renderItem={({item}) => <Card place={item} /> } />
             </View>
 
+    </SafeAreaView>
     </SafeAreaView>
 
 
