@@ -6,6 +6,9 @@ import { addUserToStore } from '../reducers/users';
 
 const BACKEND_ADRESS='http://192.168.10.152:4000'
 
+
+
+
 export default function ConnectionScreen({ navigation }) {
 
   const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -41,21 +44,15 @@ export default function ConnectionScreen({ navigation }) {
 
     return (
       <View style={styles.container}>
+
         <View style={styles.header}>
-          {/* <Text>Connection Screen</Text> */}
-          {/* <Button
-            title="Go to Home"
-            onPress={() => navigation.navigate('Home')} 
-          /> */}
-          
+         
           <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
              <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}  style={styles.login} activeOpacity={0.8}>
-            <Text style={styles.textButton}>Sign Up</Text>
-          </TouchableOpacity>
+          
         </View>
-
+{/* 
         <View style={styles.part1}>
           <View style={styles.connexion}>
             <Text style={styles.title}>CONNEXION</Text>
@@ -94,7 +91,7 @@ export default function ConnectionScreen({ navigation }) {
           <TouchableOpacity onPress={() => handleFacebook()} style={styles.input} activeOpacity={0.8}>
             <Text style={styles.text}>Connexion avec Facebook</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     );
    }
@@ -107,16 +104,15 @@ export default function ConnectionScreen({ navigation }) {
       backgroundColor: 'white',
     },
     header: {
-      flex: 0.13,
+      marginTop: 20,
       width: '100%',
-     
+     height: "20",
       
     }, 
     logo: {
-      width: '15%',
-      height: '50%',
-      marginLeft: '6%',
-      marginTop: '14%',
+      width: '10%',
+      height: '40%',
+      marginLeft: 20
     },
     login: {
       width: '20%',
