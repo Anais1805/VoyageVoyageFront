@@ -42,14 +42,7 @@ export default function DaysScreen({ navigation }) {
     }
   }
 
-  const wait = (timeout) => {
-        return new Promise(resolve => setTimeout(resolve, timeout));
-  }
-    const [refreshing, setRefreshing] = useState(false);
-    const onRefresh = React.useCallback(() => {
-      setRefreshing(true);
-      wait(2000).then(() => setRefreshing(false));
-    }, []);
+
 
   let iconColor = {};
 
