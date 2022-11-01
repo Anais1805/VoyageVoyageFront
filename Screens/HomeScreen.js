@@ -189,7 +189,7 @@ fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
 
             <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
             <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
-
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
             <Text style={{fontSize: 12}}>Voir plus ...</Text>
 
