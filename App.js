@@ -17,6 +17,7 @@ import MyReservationScreen from './Screens/MyReservationScreen';
 import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
 import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
 import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
+import Card from './components/Card.js'
 
 
 
@@ -70,7 +71,7 @@ export default function App() {
        <Stack.Screen name="Map" component={MapScreen} />  
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Days" component={DaysScreen} />
-       <Stack.Screen name="Details" component={DetailsScreen} />
+       <Stack.Screen name="Card" component={Card} />
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
 
         <Stack.Screen name="Overview" component={OverviewScreen} />*/}
