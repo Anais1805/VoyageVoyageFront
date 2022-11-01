@@ -45,16 +45,9 @@ export default function AllRestaurantsScreen({ navigation }) {
       .then(resp => resp.json())
       .then(data => {
         if (data.result) {
-
-
-          setAllRestaurants(data.foods)
-          let tmp = data.foods.map(e => e.xid) 
-          setXid(tmp)
-
           setAllRestaurants(data.foods);
           let tmp = data.foods.map((e) => e.xid);
           // setXid(tmp);
-
           // console.log(data.foods)
           let resto = []
           tmp.forEach((e) => {
@@ -72,51 +65,8 @@ export default function AllRestaurantsScreen({ navigation }) {
         }
       });
   }, []);
+ 
 
-  // console.log("rest", allrestaurants);
-  // const everyRestaurants = [...allrestaurants];
-  // console.log('every', everyRestaurants)
-
-
-
-  useEffect(() => {
-    xid.map(e => {
-    fetch(`http://192.168.1.21:4000/infos/${e}`) 
-    .then(resp => resp.json())
-    .then(data => 
-      setAllDetails(data),
-      )
-  })}, [xid])
-
-
-
-
-
-    }
-  });
-
-  return (
-    <SafeAreaView style={{flex: 1}}>
-    
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.logoContainer}
-          onPress={() => navigation.navigate("Home")}>
-          <Image style={styles.logo} source={require("../assets/logo.png")} />
-        </TouchableOpacity>
-        <View style={styles.menuHeader}>
-          <FontAwesome
-            style={styles.icon}
-            name="suitcase"
-            size={30}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
-          <FontAwesome
-            style={styles.iconUser}
-            name="user-circle-o"
-            size={30}
-            onPress={() => navigation.navigate("Profile")}
-          />
 
   // useEffect(() => {
   //   xid.map((e) => {
@@ -157,7 +107,6 @@ console.log('DETAILS', allDetails)
         
          {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
          <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
-
 
         </View>
         </ImageBackground>
@@ -309,3 +258,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   }
 });
+

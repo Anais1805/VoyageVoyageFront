@@ -28,7 +28,6 @@ export default function AllNaturalssScreen({ navigation }) {
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
-
   const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
@@ -39,26 +38,6 @@ export default function AllNaturalssScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           setAllNaturals(data.naturals);
-
-        }
-      });
-  }, []);
-
-  const hikes = allNaturals.map((data, i) => {
-    if (i < 100) {
-      return (
-        <CardsVisitsComponent
-          key={i}
-          name={data.name}
-          kind={data.kinds}
-          style={styles.cards}
-        />
-      );
-    } else {
-      return;
-    }
-  });
-
           let tmp = data.naturals.map((e) => e.xid);
           // setXid(tmp);
           console.log("DDDDDD", data.naturals);
@@ -132,7 +111,6 @@ export default function AllNaturalssScreen({ navigation }) {
 
   console.log(destination.city);
 
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -152,7 +130,8 @@ export default function AllNaturalssScreen({ navigation }) {
           <FontAwesome
             style={styles.iconUser}
             name="user-circle-o"
-            size={30} onPress={() => navigation.navigate("Profile")}
+            size={30}
+            onPress={() => navigation.navigate("Profile")}
           />
         </View>
       </View>
@@ -242,3 +221,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 });
+
