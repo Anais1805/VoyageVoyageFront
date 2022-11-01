@@ -125,6 +125,13 @@ fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
             >
               <Text style={styles.btnLogin2}>Se connecter</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Days")}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Days</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
