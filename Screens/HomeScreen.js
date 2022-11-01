@@ -76,7 +76,7 @@ const destination = useSelector((state) => state.destinations.value)
  
 console.log(destination)
 const searchPress = () => {
-fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
+fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {
@@ -91,12 +91,14 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
 
               }
             })
-          }
-    
-      return (
-        <SafeAreaView style={{ flex: 1}}>
-          <StatusBar />
-          <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+   
+   }
+   
+    return (
+
+      <SafeAreaView style={{ flex: 1}}>
+        <StatusBar />
+        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
   
   
   
@@ -131,7 +133,9 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
 
           <View style={styles.inputContainer}>
            <ModalSearch />
+           
             <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
+           
             </View>
           </View>
 
@@ -175,8 +179,13 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
             <Text style={styles.suggestTxt}>Les visites culturelles</Text>
             
             </View>
+
             <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
             <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
+
+            <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
+            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+
             </TouchableOpacity>
             </View>
               <FlatList
@@ -192,7 +201,7 @@ fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
       </SafeAreaView>
 
 
-        
+          
   );
 }
 
