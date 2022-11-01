@@ -161,7 +161,7 @@ fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
             <Text style={styles.suggestTxt}>Les visites culturelles</Text>
             
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+            <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
             <Text style={{fontSize: 12}}>Voir plus ...</Text>
             </TouchableOpacity>
             </View>

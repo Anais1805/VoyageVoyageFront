@@ -27,10 +27,9 @@ import places from "./places";
  
 
 export default function AllRestaurantsScreen({ navigation }) {
-  const [city, setCity]=useState('')
+
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
-  const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
@@ -85,11 +84,7 @@ export default function AllRestaurantsScreen({ navigation }) {
 console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
-  
-     
-    
       const image = ''
-
       // if(data.infos.preview.image === undefined){
       //   image = require('../assets/Unknown.png')
       // } else {
