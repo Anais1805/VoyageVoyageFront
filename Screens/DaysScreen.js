@@ -19,24 +19,29 @@ import { useSelector } from "react-redux";
 export default function DaysScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
-  
-
   const destination = useSelector((state) => state.destinations.value);
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [details, setDetails] = useState([]);
 
   const dispatch = useDispatch();
 
+  function fisherYatesShuffle(arr){
+    for(var i =arr.length-1 ; i>0 ;i--){
+        var j = Math.floor( Math.random() * (i + 1) ); //random index
+        [arr[i],arr[j]]=[arr[j],arr[i]]; // swap
+    }
+  }
+
   const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
+        return new Promise(resolve => setTimeout(resolve, timeout));
   }
     const [refreshing, setRefreshing] = useState(false);
-  
     const onRefresh = React.useCallback(() => {
       setRefreshing(true);
       wait(2000).then(() => setRefreshing(false));
     }, []);
 
+    
   useEffect(() => {
     fetch(
       `http://192.168.1.18:4000/visits/${destination.lon}/${destination.lat}`
@@ -46,8 +51,6 @@ export default function DaysScreen({ navigation }) {
         if (data.result) {
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
-          // setXid(tmp);
-          // console.log(data.foods)
           let cult = [];
           tmp.forEach((e) => {
             fetch(`http://192.168.1.18:4000/infos/${e}`)
@@ -57,6 +60,7 @@ export default function DaysScreen({ navigation }) {
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setAllDetails([...allDetails, ...cult]));
+               fisherYatesShuffle(allDetails)
           });
         }
       });
@@ -82,10 +86,13 @@ export default function DaysScreen({ navigation }) {
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setDetails([...details, ...resto]));
+               fisherYatesShuffle(details)
           });
         }
       });
   }, []);
+ 
+
 
   const visit = allDetails.map((data, i) => {
     // const image = data.infos.wikipedia_extracts
@@ -145,17 +152,17 @@ export default function DaysScreen({ navigation }) {
         </ImageBackground>
         // </TouchableOpacity>
       );
+      
     } else {
       return;
     }
-
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
 
   const restaurants = details.map((data, j) => {
     const image = "";
 
-    console.log("DAT", image);
+    // console.log("DAT", image);
     if (j < 2) {
       return (
         <ImageBackground
@@ -216,7 +223,11 @@ export default function DaysScreen({ navigation }) {
 
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
-
+   
+  // const shuffle = () => {
+  //   fisherYatesShuffle(restaurants)
+  //   fisherYatesShuffle(visit)
+  // }
   //compteur
   const [count, setCount] = useState(1);
 
@@ -285,7 +296,13 @@ export default function DaysScreen({ navigation }) {
           {visit}
           {restaurants}
         </ScrollView>
-   
+        <TouchableOpacity
+              onPress={() => shuffle()}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Shuffle</Text>
+            </TouchableOpacity>
       </ImageBackground>
     </SafeAreaView>
 
