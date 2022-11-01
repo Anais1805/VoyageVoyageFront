@@ -55,7 +55,16 @@ export default function AllCulturalsScreen({ navigation }) {
         }
       });
   }, []);
- 
+
+
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.137:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
 
 
   const visit = allDetails.map((data, i) => {
