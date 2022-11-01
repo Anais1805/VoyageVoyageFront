@@ -9,7 +9,7 @@ const initialState = {
     budget: null,
     diet: null,
     displacement: null,
-    isConnected: true,
+    isConnected: false,
   },
   
 };
@@ -28,9 +28,21 @@ export const userSlice = createSlice({
         state.value.diet = action.payload.diet
         state.value.displacement = action.payload.displacement
         
-    }
+    },
+    login: (state, action)=> {
+      console.log('obj', action.payload)
+          if(action.payload.email){        
+      state.value.isConnected = true,
+      state.value.email = action.payload
+          }
+          
+     },
+     logout: (state, action) => {
+      state.value.isConnected = false
+      state.value.email = null
+  }
   },
 });
 
-export const {SignUp} = userSlice.actions;
+export const {SignUp, login, logout} = userSlice.actions;
 export default userSlice.reducer;
