@@ -9,21 +9,31 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import destinations from "../reducers/destinations";
+import mylikedays from "../reducers/mylikedays";
+import { addMyDay, addActivities } from "../reducers/mylikedays";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 export default function DaysScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
+
+  const [heart, setHeart] = useState(false);
+
+
   const destination = useSelector((state) => state.destinations.value);
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [details, setDetails] = useState([]);
+  const [myvisits, setMyVisits]=useState([])
 
   const dispatch = useDispatch();
+
 
   function fisherYatesShuffle(arr){
     for(var i =arr.length-1 ; i>0 ;i--){
@@ -41,6 +51,30 @@ export default function DaysScreen({ navigation }) {
       wait(2000).then(() => setRefreshing(false));
     }, []);
 
+  let iconColor = {};
+
+  if (heart) {
+    iconColor = { color: "#9E2A2B" };
+  } else {
+    iconColor = { color: "#335C67" };
+  }
+
+  const heartPress = () => {
+    setHeart(!heart);
+  };
+  console.log(heart);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+
     
   useEffect(() => {
     fetch(
@@ -51,20 +85,28 @@ export default function DaysScreen({ navigation }) {
         if (data.result) {
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
+
           let cult = [];
           tmp.forEach((e) => {
             fetch(`http://192.168.1.18:4000/infos/${e}`)
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
+
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setAllDetails([...allDetails, ...cult]));
                fisherYatesShuffle(allDetails)
+
           });
         }
       });
   }, []);
+
+  const mydays = useSelector((state) => state.mylikedays.value);
+  const myactivities = useSelector((state) => state.mylikedays.myday);
+  console.log("DEST", mydays);
+  console.log("ACTIVITES", myactivities);
 
   useEffect(() => {
     fetch(
@@ -94,12 +136,17 @@ export default function DaysScreen({ navigation }) {
  
 
 
+  console.log('VISIT', allDetails)
+  
+
   const visit = allDetails.map((data, i) => {
     // const image = data.infos.wikipedia_extracts
 
     // console.log('DAT', image)
     if (i < 2) {
       return (
+       
+       
         <ImageBackground
           key={i}
           style={styles.cardImage}
@@ -158,6 +205,8 @@ export default function DaysScreen({ navigation }) {
     }
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
+
+
 
   const restaurants = details.map((data, j) => {
     const image = "";
@@ -272,11 +321,11 @@ export default function DaysScreen({ navigation }) {
               <Text style={styles.btnLogin2}>Se connecter</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Days")}
+              onPress={() => navigation.navigate("MyReservation")}
               style={styles.login2}
               activeOpacity={0.8}
             >
-              <Text style={styles.btnLogin2}>Days</Text>
+              <Text style={styles.btnLogin2}>Mes réservations</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -286,16 +335,28 @@ export default function DaysScreen({ navigation }) {
           <Text style={styles.titleResto}>
             Votre journée à {destination.city}
           </Text>
-        </View>
-        <ScrollView showsVerticalScrollIndicator={false}  refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
+          <FontAwesome
+            style={iconColor}
+            name="heart"
+            size={40}
+            // color={'#335C67'}
+            onPress={() => {
+            // dispatch(addActivities({activities: }))
+              dispatch(addMyDay(destination.city));
+              heartPress();
+            }}
           />
-        }>
+        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           {visit}
           {restaurants}
         </ScrollView>
+
         <TouchableOpacity
               onPress={() => shuffle()}
               style={styles.login2}
@@ -303,6 +364,7 @@ export default function DaysScreen({ navigation }) {
             >
               <Text style={styles.btnLogin2}>Shuffle</Text>
             </TouchableOpacity>
+
       </ImageBackground>
     </SafeAreaView>
 

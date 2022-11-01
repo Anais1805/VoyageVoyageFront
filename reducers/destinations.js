@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: {
-    city: '',
-    country: '',
-    lat: '',
-    lon: ''
-  },
+
+// value : {   city: '',
+//     country: '',
+//     lat: '',
+//     lon: '',},
+  mydays: [],
   
 };
 
@@ -19,11 +19,17 @@ export const destinationSlice = createSlice({
         state.value.country = action.payload.country
         state.value.lat = action.payload.lat
         state.value.lon = action.payload.lon
+       
      
         
+    },
+    destinationPerDay: (state, action) =>{
+     console.log('ACT', action.payload.city) 
+       
+     state.mydays.push(action.payload.city)
     }
   },
 });
 
-export const {destinationSearch} = destinationSlice.actions;
+export const {destinationSearch, destinationPerDay} = destinationSlice.actions;
 export default destinationSlice.reducer;
