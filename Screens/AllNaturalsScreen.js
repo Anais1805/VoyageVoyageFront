@@ -47,32 +47,32 @@ export default function AllNaturalssScreen({ navigation }) {
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
-  // useEffect(() => {
-  //   fetch(
-  //     `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
-  //   )
-  //     .then((resp) => resp.json())
-  //     .then((data) => {
-  //       if (data.result) {
-  //         setAllNaturals(data.naturals);
-  //       }
-  //     });
-  // }, []);
+  useEffect(() => {
+    fetch(
+      `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.result) {
+          setAllNaturals(data.naturals);
+        }
+      });
+  }, []);
 
-  // const hikes = allNaturals.map((data, i) => {
-  //   if (i < 100) {
-  //     return (
-  //       <CardsVisitsComponent
-  //         key={i}
-  //         name={data.name}
-  //         kind={data.kinds}
-  //         style={styles.cards}
-  //       />
-  //     );
-  //   } else {
-  //     return;
-  //   }
-  // });
+  const hikes = allNaturals.map((data, i) => {
+    if (i < 100) {
+      return (
+        <CardsVisitsComponent
+          key={i}
+          name={data.name}
+          kind={data.kinds}
+          style={styles.cards}
+        />
+      );
+    } else {
+      return;
+    }
+  });
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -94,8 +94,7 @@ export default function AllNaturalssScreen({ navigation }) {
           <FontAwesome
             style={styles.iconUser}
             name="user-circle-o"
-            size={30}
-            onPress={() => navigation.navigate("Profile")}
+            size={30} onPress={() => navigation.navigate("Profile")}
           />
         </View>
       </View>
