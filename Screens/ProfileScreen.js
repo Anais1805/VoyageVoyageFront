@@ -18,9 +18,6 @@ import { SignUp } from "../reducers/users";
 import createPersistoid from "redux-persist/es/createPersistoid";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
-
-
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -39,7 +36,7 @@ export default function ProfileScreen({ navigation }) {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const submitClick = () => {
-    fetch("http://192.168.1.43:4000/users/signup", {
+    fetch("http://192.168.10.129:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -75,6 +72,7 @@ export default function ProfileScreen({ navigation }) {
         }
       });
   };
+
   const addDisplacement = (newDisplacement) => {
     setSelected([...isSelected, newDisplacement]);
     console.log("r", isSelected);
@@ -288,9 +286,9 @@ export default function ProfileScreen({ navigation }) {
         </View>
       </View>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      <Pressable style={styles.button} onPress={() => submitClick()}>
+      <TouchableOpacity style={styles.button} onPress={() => submitClick()}>
         <Text style={styles.texteButton}>Valider</Text>
-      </Pressable>  
+      </TouchableOpacity>  
       </View>      
       
     </View>
@@ -299,16 +297,12 @@ export default function ProfileScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
-
   header: {
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderBottomColor: "#9E2A2B",
     borderBottomWidth: 1,
   },
-  logoContainer: {},
   logo: {
     width: 30,
     height: 30,
