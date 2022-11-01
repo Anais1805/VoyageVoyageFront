@@ -67,11 +67,7 @@ export default function AllNaturalssScreen({ navigation }) {
         <ImageBackground
           key={i}
           style={styles.cardImage}
-          source={
-            data.infos.image
-              ? data.infos.image
-              : require("../assets/Unknown.png")
-          }
+          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg/400px-Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg'}}
         >
           <View
             style={{
@@ -104,8 +100,8 @@ export default function AllNaturalssScreen({ navigation }) {
             </View>
 
             {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
-            {/* <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
-             */}
+           <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
+           
           </View>
         </ImageBackground>
       // </TouchableOpacity>

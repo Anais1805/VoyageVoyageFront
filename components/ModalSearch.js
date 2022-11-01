@@ -8,7 +8,7 @@ import { destinationSearch } from '../reducers/destinations';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-const ModalSearch = () => {
+export default function ModalSearch ({navigation})  {
 
 
 const [city, setCity]=useState('')
@@ -61,7 +61,7 @@ fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
             
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => {setModalVisible(!modalVisible); searchPress()}}
+              onPress={() => {setModalVisible(!modalVisible); searchPress();  navigation.navigate("DayScreen")}}
             >
               <Text style={styles.textStyle}>Valider</Text>
             </Pressable>
@@ -147,4 +147,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ModalSearch;
