@@ -61,7 +61,7 @@ fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
             
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => {setModalVisible(!modalVisible); searchPress();  navigation.navigate("DayScreen")}}
+              onPress={() => {setModalVisible(!modalVisible); searchPress()}}
             >
               <Text style={styles.textStyle}>Valider</Text>
             </Pressable>
