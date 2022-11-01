@@ -50,6 +50,7 @@ export default function AllCulturalsScreen({ navigation }) {
       });
   }, []);
 
+
   const visit = allDetails.map((data, i) => {
     const image = data.infos.wikipedia_extracts;
 

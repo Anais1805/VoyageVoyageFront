@@ -73,12 +73,7 @@ export default function App() {
        <Stack.Screen name="Days" component={DaysScreen} />
        <Stack.Screen name="Card" component={Card} />
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
-
         <Stack.Screen name="Overview" component={OverviewScreen} />*/}
-
-
-
-
      </Stack.Navigator>
    </NavigationContainer>
    </PersistGate>

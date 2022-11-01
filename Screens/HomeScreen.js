@@ -13,15 +13,33 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import ModalSearch from "../components/ModalSearch";
 import places from "./places";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import destinations from "../reducers/destinations";
 import { destinationSearch } from '../reducers/destinations';
+import * as Location from 'expo-location';
 
 const {width} = Dimensions.get('screen');
 
 export default function HomeScreen({ navigation }) {
+
+  const [currentPosition, setCurrentPosition] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status === 'granted') {
+        Location.watchPositionAsync({ distanceInterval: 10 },
+          (location) => {
+            console.log(location);
+            // setCurrentPosition(location.coords);
+          });
+      }
+    })();
+    //  insert code here
+}, []);
   
   const Card = ({place}) => {
     return(
@@ -132,7 +150,7 @@ fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.suggestTxt}>Les restaurants</Text>
             <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
-            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
             </TouchableOpacity>
             </View>
               <FlatList
@@ -151,7 +169,7 @@ fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
             <Text style={styles.suggestTxt}>et randonnées</Text>
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
-            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
             </TouchableOpacity>
             </View>
               <FlatList
@@ -168,8 +186,13 @@ fetch(`http://192.168.10.137:4000/favorite/${city}/${country}`)
             <Text style={styles.suggestTxt}>Les visites culturelles</Text>
             
             </View>
+
+            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
+
             <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
             <Text style={{fontSize: 12}}>Voir plus ...</Text>
+
             </TouchableOpacity>
             </View>
               <FlatList
