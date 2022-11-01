@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsVisitsComponent from "./CardsVisitsComponent";
@@ -21,74 +21,98 @@ import places from "./places";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AllNaturalssScreen({ navigation }) {
-
-
-  const [city, setCity]=useState('')
+  const [city, setCity] = useState("");
   const [allNaturals, setAllNaturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
   const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
-
-
   const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.18:4000/naturals/${destination.lon}/${destination.lat}`
+      `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
     )
-      .then(resp => resp.json())
-      .then(data => {
+      .then((resp) => resp.json())
+      .then((data) => {
         if (data.result) {
-          setAllNaturals(data.naturals)
+          setAllNaturals(data.naturals);
           let tmp = data.naturals.map((e) => e.xid);
           // setXid(tmp);
-           console.log('DDDDDD', data.naturals)
-          let nature = []
+          console.log("DDDDDD", data.naturals);
+          let nature = [];
           tmp.forEach((e) => {
-            fetch(`http://192.168.10.137:4000/infos/${e}`)
-              .then(resp => resp.json())
-              .then(data => {
-                nature.push(data)
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
+              .then((resp) => resp.json())
+              .then((data) => {
+                nature.push(data);
                 // setAllDetails([...allDetails,data])
-        
-              }).finally(()=> setAllDetails([...allDetails,...nature]))
-            
-            })
-            
-            
+              })
+              .finally(() => setAllDetails([...allDetails, ...nature]));
+          });
         }
       });
   }, []);
 
-  console.log(allDetails)
+  console.log(allDetails);
   const hikes = allDetails.map((data, i) => {
-    console.log('DAT', data.infos.image);
+    console.log("DAT", data.infos.image);
 
     return (
-      <ImageBackground key={i} style={styles.cardImage} source={require('../assets/Unknown.png')}>
-      <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
-          <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address.city}</Text>
-        </View>
-      
-      {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
-      {/* <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
- */}
-      </View>
-      </ImageBackground>)
-      
+      // <TouchableOpacity
+      //   activeOpacity={0.8}
+      //   onPress={() => navigation.navigate("Details", allDetails)}
+      // >
+        <ImageBackground
+          key={i}
+          style={styles.cardImage}
+          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg/400px-Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg'}}
+        >
+          <View
+            style={{
+              backgroundColor: "#335C67",
+              opacity: 0.9,
+              width: "100%",
+              height: "40%",
+              top: "60%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}
+              >
+                {data.infos.name}
+              </Text>
+              <Text style={{ color: "white", paddingHorizontal: 10 }}>
+                {data.infos.address.city}
+              </Text>
+            </View>
+
+            {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
+           <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
+           
+          </View>
+        </ImageBackground>
+      // </TouchableOpacity>
+    );
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
 
-  console.log(destination.city)
- 
+  console.log(destination.city);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-        
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
@@ -112,8 +136,10 @@ export default function AllNaturalssScreen({ navigation }) {
         </View>
       </View>
       <View style={styles.titleRestoContainer}>
-          <Text style={styles.titleResto}>Les randonnées à {destination.city}</Text>
-        </View>
+        <Text style={styles.titleResto}>
+          Les randonnées à {destination.city}
+        </Text>
+      </View>
       {/* <View style={styles.content}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
           <View style={styles.allcards}>{hikes}</View>
@@ -127,10 +153,7 @@ export default function AllNaturalssScreen({ navigation }) {
               data={places}
               renderItem={({item}) => <Card place={item} /> } />
             </View> */}
-             <ScrollView style={styles.scrollViewer}>
-        
-        {hikes}
-      </ScrollView>
+      <ScrollView style={styles.scrollViewer}>{hikes}</ScrollView>
     </SafeAreaView>
   );
 }
@@ -139,7 +162,7 @@ const styles = StyleSheet.create({
   header: {
     paddingVertical: 20,
     paddingHorizontal: 20,
-    flexDirection:'row',
+    flexDirection: "row",
     justifyContent: "space-between",
   },
   logo: {
@@ -167,7 +190,7 @@ const styles = StyleSheet.create({
     width: 350,
     marginRight: 20,
     marginVertical: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 10,
   },
   content: {
@@ -194,7 +217,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   scrollViewer: {
-    height: '100%',
+    height: "100%",
     marginLeft: 20,
-  }
+  },
 });
+

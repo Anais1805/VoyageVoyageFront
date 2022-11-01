@@ -9,6 +9,7 @@ import {
   FlatList,
   ImageBackground,
   ScrollView,
+
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
@@ -21,10 +22,9 @@ import places from "./places";
 
 
 export default function AllRestaurantsScreen({ navigation }) {
-  const [city, setCity]=useState('')
+
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
-  const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
@@ -35,7 +35,8 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
+
+      `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
@@ -46,7 +47,9 @@ export default function AllRestaurantsScreen({ navigation }) {
           // console.log(data.foods)
           let resto = []
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.18:4000/infos/${e}`)
+
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
+
               .then(resp => resp.json())
               .then(data => {
                 resto.push(data)
@@ -55,7 +58,7 @@ export default function AllRestaurantsScreen({ navigation }) {
               }).finally(()=> setAllDetails([...allDetails,...resto]))
             
             })
-            
+
             
         }
       });
@@ -67,20 +70,41 @@ export default function AllRestaurantsScreen({ navigation }) {
 console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
-      // console.log('DAT', data.image);
+
+      const image = ''
+      // if(data.infos.preview.image === undefined){
+      //   image = require('../assets/Unknown.png')
+      // } else {
+      //   image = data.infos.preview.source
+      // }
+      console.log('DAT', image)
 
       return (
-        <ImageBackground key={i} style={styles.cardImage} source={require('../assets/Unknown.png')}>
+      //   <TouchableOpacity
+      //   activeOpacity={0.8}
+      //   onPress={() => navigation.navigate("Details", allDetails)}
+      // >
+        //source={{uri : `data: {data.infos.image}` ? `data: ${data.infos.image}` : require('../assets/Unknown.png')}}
+        // source={{uri: data.infos.preview ? data.infos.image : require('../assets/Unknown.png')}}
+        <ImageBackground key={i} style={styles.cardImage}    source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg/400px-Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg'}} >
         <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
             <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.city || destination.city}</Text>
           </View>
         
-        
+
+         {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
+         <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
+
         </View>
-        </ImageBackground>)
-})
+        </ImageBackground>
+        // </TouchableOpacity>
+        )
+        
+      // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
+    });
+ 
 
     console.log(destination.city)
    
@@ -224,3 +248,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   }
 });
+
