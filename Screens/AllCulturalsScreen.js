@@ -53,7 +53,7 @@ export default function AllCulturalsScreen({ navigation }) {
   const visit = allDetails.map((data, i) => {
     const image = data.infos.wikipedia_extracts;
 
-    console.log("DAT", image);
+    // console.log("DAT", image);
     return (
       <ImageBackground
         key={i}
