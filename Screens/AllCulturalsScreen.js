@@ -1,22 +1,19 @@
 import {
   View,
-  Text,
-  Button,
-  TextInput,
   StyleSheet,
   Image,
-  Pressable,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  ImageBackground,
+  Text,
   SafeAreaView,
   ScrollView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import CardsVisitsComponent from "./CardsVisitsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
+import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
+import { activitiesInfos } from "../reducers/activities";
+import places from "./places";
 
 export default function AllCulturalsScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
@@ -25,9 +22,11 @@ export default function AllCulturalsScreen({ navigation }) {
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
+  const activity = useSelector((state) => state.activities.value);
+
   useEffect(() => {
     fetch(
-      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+      `http://192.168.1.18:4000/visits/${destination.lon}/${destination.lat}`
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -38,7 +37,7 @@ export default function AllCulturalsScreen({ navigation }) {
           // console.log(data.foods)
           let cult = [];
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.43:4000/infos/${e}`)
+            fetch(`http://192.168.1.18:4000/infos/${e}`)
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
@@ -54,7 +53,7 @@ export default function AllCulturalsScreen({ navigation }) {
   const visit = allDetails.map((data, i) => {
     const image = data.infos.wikipedia_extracts;
 
-    console.log("DAT", image);
+    // console.log("DAT", image);
     return (
       <ImageBackground
         key={i}

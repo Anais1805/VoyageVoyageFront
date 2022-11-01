@@ -57,7 +57,7 @@ export default function AllNaturalssScreen({ navigation }) {
 
   console.log(allDetails);
   const hikes = allDetails.map((data, i) => {
-    console.log("DAT", data.infos.image);
+    // console.log("DAT", data.infos.image);
 
     return (
       // <TouchableOpacity

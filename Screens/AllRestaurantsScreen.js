@@ -40,7 +40,7 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
@@ -51,7 +51,7 @@ export default function AllRestaurantsScreen({ navigation }) {
           // console.log(data.foods)
           let resto = []
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.43:4000/infos/${e}`)
+            fetch(`http://192.168.1.18:4000/infos/${e}`)
               .then(resp => resp.json())
               .then(data => {
                 resto.push(data)
@@ -90,7 +90,7 @@ console.log('DETAILS', allDetails)
       // } else {
       //   image = data.infos.preview.source
       // }
-      console.log('DAT', image)
+      // console.log('DAT', image)
       return (
       //   <TouchableOpacity
       //   activeOpacity={0.8}
