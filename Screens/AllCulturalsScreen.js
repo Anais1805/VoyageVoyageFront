@@ -32,54 +32,47 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.10.133:4000/visits/${destination.lon}/${destination.lat}`
+      `http://192.168.1.18:4000/visits/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
         if (data.result) {
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
-          // setXid(tmp);
+          setXid(tmp);
           // console.log(data.foods)
           
       let visit = [];
       tmp.forEach((e) => {
-        fetch(`http://192.168.10.133:4000/infos/${e}`)
+        fetch(`http://192.168.1.18:4000/infos/${e}`)
           .then(resp => resp.json())
           .then(data => {
             visit.push(data)
+            setAllDetails([...allDetails,data])
           })
           .finally(()=> setAllDetails([...allDetails, ...visit]))
       })   
     }
   });
   }, []);
-
-  useEffect(() => {
-    xid.map(e => {
-    fetch(`http://192.168.10.137:4000/infos/${e}`)
-    .then(resp => resp.json())
-    .then(data => 
-      setAllDetails(data),
-      )
-  })}, [xid])
+  console.log('DETAILS', allDetails)
 
 
 
   const culturals = allCulturals.map((data, i) => {
-    if(i<100){
+   
     return (
-        <CardsVisitsComponent
-        key={i}
-        name={data.name}
-        kind={data.kinds}
-        style={styles.cards}
-        />
-        )
-    } else {
-      return
-    }
-  });
+        <ImageBackground key={i} style={styles.cardImage} source={require('../assets/Unknown.png')}>
+        <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
+            <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.city || destination.city}</Text>
+          </View>
+        
+        
+        </View>
+        </ImageBackground>)
+})
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -110,15 +103,14 @@ export default function AllRestaurantsScreen({ navigation }) {
     <View style={styles.titleRestoContainer}>
       <Text style={styles.titleResto}>Les restaurants à </Text>
     </View>
-    {/* <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+  <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
      <View style={styles.allcards}>
-     
     <ScrollView contentContainerStyle>
-   {restaurants}
-    </ScrollView>
+   {culturals}
+   </ScrollView>
      
      </View> 
-    </ImageBackground> */}
+    </ImageBackground> *
  <View style={{ marginTop: 20 }}>
       {/* <FlatList
         contentContainerStyle={{ paddingLeft: 20 }}

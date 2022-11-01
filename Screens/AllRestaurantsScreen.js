@@ -20,11 +20,6 @@ import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
 
 
-
-
-
- 
-
 export default function AllRestaurantsScreen({ navigation }) {
   const [city, setCity]=useState('')
   const [allrestaurants, setAllRestaurants] = useState([]);
@@ -40,22 +35,22 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.10.137:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
         if (data.result) {
           setAllRestaurants(data.foods);
           let tmp = data.foods.map((e) => e.xid);
-          // setXid(tmp);
+          setXid(tmp);
           // console.log(data.foods)
           let resto = []
           tmp.forEach((e) => {
-            fetch(`http://192.168.10.137:4000/infos/${e}`)
+            fetch(`http://192.168.1.18:4000/infos/${e}`)
               .then(resp => resp.json())
               .then(data => {
                 resto.push(data)
-                // setAllDetails([...allDetails,data])
+               setAllDetails([...allDetails,data])
         
               }).finally(()=> setAllDetails([...allDetails,...resto]))
             
@@ -68,41 +63,25 @@ export default function AllRestaurantsScreen({ navigation }) {
  
 
 
-  // useEffect(() => {
-  //   xid.map((e) => {
-  //     fetch(`http://192.168.10.137:4000/infos/${e}`)
-  //       .then((resp) => resp.json())
-  //       .then((data) => {
-    
-          
-  //         setAllDetails([...allDetails, data])
-  //       });
-  //     })   
-  // }, [xid]);
-
 
 console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
-      console.log('DAT', data.infos.image);
+      // console.log('DAT', data.image);
 
       return (
         <ImageBackground key={i} style={styles.cardImage} source={require('../assets/Unknown.png')}>
         <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
-            <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address.city}</Text>
+            <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.city || destination.city}</Text>
           </View>
         
-        {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
-        {/* <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
-   */}
+        
         </View>
         </ImageBackground>)
-        
-      // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
-    });
- 
+})
+
     console.log(destination.city)
    
   return (

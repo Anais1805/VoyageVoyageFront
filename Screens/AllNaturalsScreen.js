@@ -36,7 +36,7 @@ export default function AllNaturalssScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.10.137:4000/naturals/${destination.lon}/${destination.lat}`
+      `http://192.168.1.18:4000/naturals/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
