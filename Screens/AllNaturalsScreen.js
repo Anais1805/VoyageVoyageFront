@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  FlatList,
   Button,
   TextInput,
   StyleSheet,
@@ -10,109 +9,108 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
-  ScrollView,
+  SafeAreaView,
+  ScrollView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsVisitsComponent from "./CardsVisitsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
-import places from "./places";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function AllNaturalssScreen({ navigation }) {
-  const [city, setCity] = useState("");
-  const [allNaturals, setAllNaturals] = useState([]);
-  const [allDetails, setAllDetails] = useState([]);
+
+
+export default function AllCulturalsScreen({ navigation }) {
+
+  const [allCulturals, setAllCulturals] = useState([]);
   const [xid, setXid] = useState([]);
+  const [allDetails, setAllDetails] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
+
   const activity = useSelector((state) => state.activities.value);
+
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
+      `http://192.168.10.124:4000/visits/${destination.lon}/${destination.lat}`
     )
-      .then((resp) => resp.json())
-      .then((data) => {
+      .then(resp => resp.json())
+      .then(data => {
         if (data.result) {
+
+          setAllCulturals(data.visits);
+          let tmp = data.visits.map((e) => e.xid);
+
           setAllNaturals(data.naturals);
           let tmp = data.naturals.map((e) => e.xid);
+
           // setXid(tmp);
-          console.log("DDDDDD", data.naturals);
-          let nature = [];
+          // console.log(data.foods)
+          let cult = []
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.43:4000/infos/${e}`)
-              .then((resp) => resp.json())
-              .then((data) => {
-                nature.push(data);
+            fetch(`http://192.168.10.124:4000/infos/${e}`)
+              .then(resp => resp.json())
+              .then(data => {
+                cult.push(data)
                 // setAllDetails([...allDetails,data])
-              })
-              .finally(() => setAllDetails([...allDetails, ...nature]));
-          });
+        
+              }).finally(()=> setAllDetails([...allDetails,...cult]))
+            
+            })
+            
+            
         }
       });
   }, []);
+
 
   console.log(allDetails);
   const hikes = allDetails.map((data, i) => {
     // console.log("DAT", data.infos.image);
 
-    return (
-      // <TouchableOpacity
-      //   activeOpacity={0.8}
-      //   onPress={() => navigation.navigate("Details", allDetails)}
-      // >
-        <ImageBackground
-          key={i}
-          style={styles.cardImage}
-          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg/400px-Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg'}}
-        >
-          <View
-            style={{
-              backgroundColor: "#335C67",
-              opacity: 0.9,
-              width: "100%",
-              height: "40%",
-              top: "60%",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                }}
-              >
-                {data.infos.name}
-              </Text>
-              <Text style={{ color: "white", paddingHorizontal: 10 }}>
-                {data.infos.address.city}
-              </Text>
-            </View>
 
-            {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
-           <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
-           
-          </View>
-        </ImageBackground>
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.124:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+
+
+  const visit = allDetails.map((data, i) => {
+    const image = data.infos.wikipedia_extracts
+  
+    console.log('DAT', image)
+    return (
+ 
+      <ImageBackground key={i} style={styles.cardImage}    source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG/400px-Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG'}} >
+      <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
+          <Text style={{color: 'white', paddingHorizontal: 10}}>{destination.city}</Text>
+        </View>
+      
+       {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
+       <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
+
+      </View>
+      </ImageBackground>
       // </TouchableOpacity>
-    );
+      )
+      
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
 
   console.log(destination.city);
 
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.logoContainer}
@@ -135,26 +133,38 @@ export default function AllNaturalssScreen({ navigation }) {
           />
         </View>
       </View>
+
       <View style={styles.titleRestoContainer}>
-        <Text style={styles.titleResto}>
-          Les randonnées à {destination.city}
-        </Text>
+        <Text style={styles.titleResto}>Les visites à {destination.city}</Text>
       </View>
-      {/* <View style={styles.content}>
-        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
-          <View style={styles.allcards}>{hikes}</View>
-        </ImageBackground>
-      </View> */}
-      {/* <View style={{marginTop: 20}}>
-              <FlatList
-              contentContainerStyle={{paddingLeft: 20}}
-              vertical
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => <Card place={item} /> } />
-            </View> */}
-      <ScrollView style={styles.scrollViewer}>{hikes}</ScrollView>
+      {/* <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+       <View style={styles.allcards}>
+       
+      <ScrollView contentContainerStyle>
+     {restaurants}
+      </ScrollView>
+       
+       </View> 
+      </ImageBackground> */}
+ 
+        {/* <FlatList
+          contentContainerStyle={{ paddingLeft: 20 }}
+          vertical
+          showsHorizontalScrollIndicator={false}
+          data={allDetails}
+          renderItem={({ item }) => <Card allDetails={item}/>}
+          
+          
+        /> */}
+      
+      <ScrollView style={styles.scrollViewer}>
+      
+          {visit}
+        </ScrollView>
+        
     </SafeAreaView>
+  </SafeAreaView>
+  
   );
 }
 
@@ -193,20 +203,35 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 10,
   },
-  content: {
-    flex: 1,
+  input: {
+    borderWidth: 1,
+    borderColor: "#E1E1E1",
+    padding: 5,
+    width: "46.5%",
+    marginBottom: 15,
+    backgroundColor: "white",
   },
-  bg: {
-    width: "100%",
-    height: "100%",
+  iconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  iconSearch: {
+    backgroundColor: "#9E2A2B",
+    padding: 5,
+    marginBottom: "50%",
   },
   cards: {
     width: 100,
-    height: 100,
+    height: 20,
   },
   allcards: {
+    //  flex:0.80,
+
     height: "100%",
     margin: 0,
+  },
+  scrollView: {
+    height: 20,
   },
   titleRestoContainer: {
     marginTop: 20,
@@ -217,8 +242,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   scrollViewer: {
-    height: "100%",
+    height: '100%',
+   
+
     marginLeft: 20,
-  },
+  }
+
+ 
 });
 
