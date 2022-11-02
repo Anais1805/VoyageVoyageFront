@@ -1,19 +1,22 @@
 import {
   View,
+  Text,
+  Button,
+  TextInput,
   StyleSheet,
   Image,
+  Pressable,
   TouchableOpacity,
-  Text,
+  KeyboardAvoidingView,
+  ImageBackground,
   SafeAreaView,
   ScrollView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import CardsVisitsComponent from "./CardsVisitsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
-import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
-import { activitiesInfos } from "../reducers/activities";
-import places from "./places";
 
 export default function AllCulturalsScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
@@ -21,8 +24,6 @@ export default function AllCulturalsScreen({ navigation }) {
   const [allDetails, setAllDetails] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
-
-  const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
     fetch(`http://192.168.10.136:4000/visits/${destination.lon}/${destination.lat}`)
@@ -50,22 +51,10 @@ export default function AllCulturalsScreen({ navigation }) {
   }, []);
 
 
-
-  useEffect(() => {
-    xid.map(e => {
-    fetch(`http://192.168.10.124:4000/infos/${e}`)
-    .then(resp => resp.json())
-    .then(data => 
-      setAllDetails(data),
-      )
-  })}, [xid])
-
-
-
   const visit = allDetails.map((data, i) => {
-    // const image = data.infos.wikipedia_extracts;
-   
-    // console.log("DAT", image);
+    const image = data.infos.wikipedia_extracts;
+
+    console.log("DAT", image);
     return (
       <ImageBackground
         key={i}
@@ -240,3 +229,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 });
+
