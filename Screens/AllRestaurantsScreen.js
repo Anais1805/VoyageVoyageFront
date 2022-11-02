@@ -21,8 +21,12 @@ import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
+
+import { $CombinedState } from "@reduxjs/toolkit";
+
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
+
 
 
 export default function AllRestaurantsScreen({ navigation }) {
@@ -31,6 +35,19 @@ export default function AllRestaurantsScreen({ navigation }) {
   const [allDetails, setAllDetails] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
+
+  // console.log(destination);
+  // const [lonmax, setLonMax] = useState(destination.lon + 1);
+  // const [latmax, setLatMax] = useState(destination.lat + 1);
+  // console.log("lon", lonmax);
+  // console.log("lat", latmax);
+
+  const activity = useSelector((state) => state.activities.value)
+  console.log('act', activity)
+  useEffect(() => {
+    fetch(
+      `http://192.168.10.133:4000/foods/${destination.lon}/${destination.lat}`
+=======
 
 
 
@@ -44,6 +61,7 @@ export default function AllRestaurantsScreen({ navigation }) {
       `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
 
       `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
+
 
     )
       .then(resp => resp.json())
@@ -78,6 +96,25 @@ export default function AllRestaurantsScreen({ navigation }) {
  
 
 
+  // console.log("rest", allrestaurants);
+
+
+
+
+  const restaurants = allrestaurants.map((data, i) => {
+    if(i <100){
+
+    return (
+        <CardsRestaurantsComponent
+        key={i}
+        name={data.name}
+        kind={data.kinds}
+        style={styles.cards}
+        />
+        )
+
+    } else {
+      return
 
 console.log('DETAILS', allDetails)
 
@@ -106,6 +143,7 @@ console.log('DETAILS', allDetails)
           </View>
         
 
+
          {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
          <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
 
@@ -121,6 +159,30 @@ console.log('DETAILS', allDetails)
     console.log(destination.city)
    
   return (
+
+    
+    <SafeAreaView style={styles.container}>
+     
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.logoContainer}
+          onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.logo} source={require("../assets/logo.png")} />
+        </TouchableOpacity>
+        <View style={styles.menuHeader}>
+          <FontAwesome
+            style={styles.icon}
+            name="suitcase"
+            size={40}
+            onPress={() => navigation.navigate("MyReservation")}
+          />
+          <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={40}
+            onPress={() => navigation.navigate("Profile")}
+          />
+=======
     <SafeAreaView style={{ flex: 1 }}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -144,7 +206,19 @@ console.log('DETAILS', allDetails)
               onPress={() => navigation.navigate("Profile")}
             />
           </View>
+
         </View>
+
+
+
+      <ScrollView contentContainerStyle={styles.allcards}>
+        <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+       {restaurants}
+        </ImageBackground>
+        </ScrollView> 
+      </SafeAreaView> 
+
+    
 
         <View style={styles.titleRestoContainer}>
           <Text style={styles.titleResto}>Les restaurants à {destination.city}</Text>
@@ -177,6 +251,7 @@ console.log('DETAILS', allDetails)
       </SafeAreaView>
     </SafeAreaView>
   
+
   );
 }
 
@@ -237,6 +312,15 @@ const styles = StyleSheet.create({
     height: 20,
   },
   allcards: {
+
+   height: '100%',
+   margin: 0,
+  },
+  scrollView: {
+    height: '10%',
+  },
+ 
+
     //  flex:0.80,
 
     height: "100%",
@@ -259,6 +343,7 @@ const styles = StyleSheet.create({
 
     marginLeft: 20,
   }
+
 });
 
 
