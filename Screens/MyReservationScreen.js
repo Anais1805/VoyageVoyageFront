@@ -19,11 +19,7 @@ import mylikedays from "../reducers/mylikedays";
 import { useSelector } from "react-redux";
 
 export default function MyReservationScreen({ navigation }) {
-  // const [showCalendar, setShowCalendar] = useState(false);
-  const [daySelected, setDaySelected] = useState("");
-  // const [dayBooked, setDayBooked] = useState(false);
-  // const [myDaysSelected, setMyDaySelected] = useState(Array(mydays?.length).fill())
-
+  
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -70,8 +66,9 @@ export default function MyReservationScreen({ navigation }) {
 
   const myBookings = mydays.map((data, i) => {
     const [showCalendar, setShowCalendar] = useState(false);
-    const [dayBooked, setDayBooked] = useState(false);
-    const [myDaysSelected, setMyDaySelected] = useState('')
+  const [daySelected, setDaySelected] = useState("");
+  const [dayBooked, setDayBooked] = useState(false);
+
     return(
       <ImageBackground
       key={i}
@@ -87,7 +84,7 @@ export default function MyReservationScreen({ navigation }) {
           width: "100%",
           height: "40%",
           top: "60%",
-
+         
         }}
       >
         <View
@@ -102,7 +99,7 @@ export default function MyReservationScreen({ navigation }) {
               color: "white",
               paddingHorizontal: 10,
               paddingVertical: 5,
-
+            
             }}
           >
             {data}
@@ -112,35 +109,34 @@ export default function MyReservationScreen({ navigation }) {
         <Pressable style={styles.btnToReserve}  onPress={() => setShowCalendar(!showCalendar)}
 >
         {!dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Je plannifie</Text>}
-        {dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>{myDaysSelected}</Text>}
-        
+        {dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>{daySelected}</Text>}
         {showCalendar && (
-      <Calendar
-        minDate={"2022-10-01"}
-        maxDate={"2026-10-01"}
-        onDayPress={(day) => {
-          console.log("selected day", day);
-          setMyDaySelected(day.dateString);
-          setDayBooked(true);
-          setShowCalendar(!showCalendar)
-        }}
-        markedDates={{
-          [daySelected]: {
-            selected: true,
-            selectedColor: "#335C67",
-          },
-        }}
-        markingType={"dot"}
-        theme={{
-          arrowColor: "#9E2A2B",
-          selectedDayBackgroundColor: "#F4F1F1",
-          monthTextColor: "#9E2A2B",
-          // textMonthFontWeight: 'bold'
-        }}
-        
-      />
-    )}
-    </Pressable>
+          <Calendar
+            minDate={"2022-10-01"}
+            maxDate={"2026-10-01"}
+            onDayPress={(day) => {
+              console.log("selected day", day);
+              setDaySelected(day.dateString);
+              setDayBooked(true);
+              setShowCalendar(!showCalendar)
+            }}
+            markedDates={{
+              [daySelected]: {
+                selected: true,
+                selectedColor: "#335C67",
+              },
+            }}
+            markingType={"dot"}
+            theme={{
+              arrowColor: "#9E2A2B",
+              selectedDayBackgroundColor: "#F4F1F1",
+              monthTextColor: "#9E2A2B",
+              // textMonthFontWeight: 'bold'
+            }}
+            
+          />
+        )}
+        </Pressable>
         {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
         <Text
           style={{
@@ -161,48 +157,49 @@ export default function MyReservationScreen({ navigation }) {
 
   return (
 
-  <SafeAreaView style={{ flex: 1 }}>
-    <StatusBar />
-    
-      <View style={styles.header}>
-        <View>
-          <Image
-            source={require("../assets/logo.png")}
-            style={{ width: 30, height: 30 }}
-            onPress={() => navigation.navigate("Home")}
-          />
-        </View>
-        <View style={styles.btnHeader}>
-        <FontAwesome
-        style={{marginRight: 10}}
-        name="suitcase"
-        size={40}
-        color={'#9E2A2B'}
-        onPress={() => navigation.navigate("MyReservation")}
-      />
-
-            <FontAwesome
-        style={styles.icon}
-        name="user-circle-o"
-        size={40}
-        onPress={() => navigation.navigate("Profile")}
-      />
-            
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar />
         
-        </View>
-      </View>
+          <View style={styles.header}>
+            <View>
+              <Image
+                source={require("../assets/logo.png")}
+                style={{ width: 30, height: 30 }}
+                onPress={() => navigation.navigate("Home")}
+              />
+            </View>
+            <View style={styles.btnHeader}>
+            <FontAwesome
+            style={{marginRight: 10}}
+            name="suitcase"
+            size={40}
+            color={'#9E2A2B'}
+            onPress={() => navigation.navigate("MyReservation")}
+          />
+
+                <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={40}
+            onPress={() => navigation.navigate("Profile")}
+          />
+                
+            
+            </View>
+          </View>
   
-      <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
-      <View style={styles.titleRestoContainer}>
-        <Text style={styles.titleResto}>
-          Vos journées réservées
-          
-        </Text>
-        </View>
-     
-      <ScrollView showsVerticalScrollIndicator={false}
-      >
-       
+          <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
+          <View style={styles.titleRestoContainer}>
+            <Text style={styles.titleResto}>
+              Vos journées réservées
+              
+            </Text>
+            </View>
+         
+          <ScrollView showsVerticalScrollIndicator={false}
+          >
+           
+           
  {myBookings}
  <Pressable style={styles.btnToReserve}  onPress={() => navigation.navigate('Overview')}
 >
@@ -211,7 +208,7 @@ export default function MyReservationScreen({ navigation }) {
         </Pressable>
           </ScrollView>
      
-
+   
       </SafeAreaView>
   
   );
@@ -278,7 +275,7 @@ const styles = StyleSheet.create({
   scrollViewer: {
     height: "100%",
 
-marginLeft: 20,
+    marginLeft: 20,
   },
   cardImage: {
     height: 130,
@@ -297,6 +294,10 @@ marginLeft: 20,
     marginLeft: '70%',
     marginBottom: 40, 
 
-borderRadius: 5   
+    borderRadius: 5   
   },
 });
+
+
+
+
