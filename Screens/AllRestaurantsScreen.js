@@ -40,7 +40,7 @@ export default function AllRestaurantsScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
@@ -51,7 +51,7 @@ export default function AllRestaurantsScreen({ navigation }) {
           // console.log(data.foods)
           let resto = []
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.18:4000/infos/${e}`)
+            fetch(`http://192.168.10.127:4000/infos/${e}`)
               .then(resp => resp.json())
               .then(data => {
                 resto.push(data)
@@ -81,16 +81,11 @@ export default function AllRestaurantsScreen({ navigation }) {
   // }, [xid]);
 
 
-console.log('DETAILS', allDetails)
+// console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
       const image = ''
-      // if(data.infos.preview.image === undefined){
-      //   image = require('../assets/Unknown.png')
-      // } else {
-      //   image = data.infos.preview.source
-      // }
-      // console.log('DAT', image)
+      console.log('DATA', data.infos.preview)
       return (
       //   <TouchableOpacity
       //   activeOpacity={0.8}
@@ -116,7 +111,7 @@ console.log('DETAILS', allDetails)
       // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
     });
  
-    console.log(destination.city)
+    // console.log(destination.city)
    
   return (
     <SafeAreaView style={{ flex: 1 }}>

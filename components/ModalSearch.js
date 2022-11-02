@@ -16,11 +16,11 @@ const [country, setCountry]=useState('')
 
   const destination = useSelector((state) => state.destinations.value)
 const dispatch = useDispatch()
-  console.log(destination)
+  // console.log(destination)
 
 
 const searchPress = () => {
-fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
+fetch(`http://192.168.10.127:4000/favorite/${city}/${country}`)
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {
