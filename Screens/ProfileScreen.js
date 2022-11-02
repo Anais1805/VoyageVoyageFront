@@ -38,7 +38,7 @@ export default function ProfileScreen({ navigation }) {
 
   const submitClick = () => {
 
-    fetch("http://192.168.10.127:4000/users/signup", {
+    fetch("http://192.168.10.136:4000/users/signup", {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -14,7 +14,9 @@ import {
   FlatList
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import CardsVisitsComponent from "./CardsVisitsComponent";
+
+// import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
+
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,7 +34,7 @@ export default function AllCulturalsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
-      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.10.136:4000/foods/${destination.lon}/${destination.lat}`
 
     )
       .then(resp => resp.json())
@@ -48,7 +50,7 @@ export default function AllCulturalsScreen({ navigation }) {
           let cult = []
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.10.127:4000/infos/${e}`)
+            fetch(`http://192.168.10.136:4000/infos/${e}`)
 
               .then(resp => resp.json())
               .then(data => {

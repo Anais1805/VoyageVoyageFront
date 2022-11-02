@@ -132,7 +132,9 @@ const user = useSelector((state) => state.user.value)
  
 // console.log('USER', user.isConnected)
 const searchPress = () => {
-fetch(`http://192.168.10.127:4000/favorite/${city}/${country}`)
+
+fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
+
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {
@@ -182,7 +184,7 @@ fetch(`http://192.168.10.127:4000/favorite/${city}/${country}`)
               <Text style={styles.btnLogin1}>S'inscrire</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Connection")}
+              onPress={() => handleLogout()}
               style={styles.login2}
               activeOpacity={0.8}
             >

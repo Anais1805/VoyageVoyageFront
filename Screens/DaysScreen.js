@@ -26,11 +26,11 @@ export default function DaysScreen({ navigation }) {
 
   const [heart, setHeart] = useState(false);
 
-
   const destination = useSelector((state) => state.destinations.value);
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [details, setDetails] = useState([]);
   const [myvisits, setMyVisits]=useState([])
+
 
   const dispatch = useDispatch();
 
@@ -38,11 +38,15 @@ export default function DaysScreen({ navigation }) {
   function fisherYatesShuffle(arr){
     for(var i =arr.length-1 ; i>0 ;i--){
         var j = Math.floor( Math.random() * (i + 1) ); //random index
-        [arr[i],arr[j]]=[arr[j],arr[i]]; // swap
+        [arr[i],arr[j]]=[arr[j],arr[i]];// swap
     }
   }
 
-
+  const shuffle = () => {
+    fisherYatesShuffle(allDetails);
+    fisherYatesShuffle(details);
+    shuffleState ? setShuffleState(false) : setShuffleState(true) ;
+  }
 
   let iconColor = {};
 
@@ -55,23 +59,35 @@ export default function DaysScreen({ navigation }) {
   const heartPress = () => {
     setHeart(!heart);
   };
-  console.log(heart);
+  // console.log(heart);
 
-  const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-  };
-  const [refreshing, setRefreshing] = useState(false);
+  // const wait = (timeout) => {
+  //   return new Promise((resolve) => setTimeout(resolve, timeout));
+  // };
+  // const [refreshing, setRefreshing] = useState(false);
+  const [shuffleState, setShuffleState] = useState(false);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
+  // const onRefresh = React.useCallback(() => {
+  //   shuffleState ? setShuffleState(false) : setShuffleState(true) ;
+  //    setRefreshing(()=>true);
+  //   wait(2000).then(() => setRefreshing(()=>false));
+    
+  // }, []);
+//essai forcer render suite au shuffle = marche une seule fois
+    // useEffect(() => {
+    
+  //   fisherYatesShuffle(allDetails)
+  //   fisherYatesShuffle(details)
+
+  // }, [shuffleState]);
 
 
     
   useEffect(() => {
     fetch(
-      `http://192.168.10.127:4000/visits/${destination.lon}/${destination.lat}`
+
+      `http://192.168.10.136:4000/visits/${destination.lon}/${destination.lat}`
+
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -81,7 +97,9 @@ export default function DaysScreen({ navigation }) {
 
           let cult = [];
           tmp.forEach((e) => {
-            fetch(`http://192.168.10.127:4000/infos/${e}`)
+
+            fetch(`http://192.168.10.136:4000/infos/${e}`)
+
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
@@ -89,21 +107,26 @@ export default function DaysScreen({ navigation }) {
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setAllDetails([...allDetails, ...cult]));
-               fisherYatesShuffle(allDetails)
+      
+              // fisherYatesShuffle(allDetails)
 
           });
         }
       });
   }, []);
 
+
+
   const mydays = useSelector((state) => state.mylikedays.value);
   const myactivities = useSelector((state) => state.mylikedays.myday);
   console.log("DEST", mydays);
-  console.log("ACTIVITES", myactivities);
+  // console.log("ACTIVITES", myactivities);
 
   useEffect(() => {
     fetch(
-      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
+
+      `http://192.168.10.136:4000/foods/${destination.lon}/${destination.lat}`
+
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -114,14 +137,16 @@ export default function DaysScreen({ navigation }) {
           // console.log(data.foods)
           let resto = [];
           tmp.forEach((e) => {
-            fetch(`http://192.168.10.127:4000/infos/${e}`)
+
+            fetch(`http://192.168.10.136:4000/infos/${e}`)
+
               .then((resp) => resp.json())
               .then((data) => {
                 resto.push(data);
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setDetails([...details, ...resto]));
-               fisherYatesShuffle(details)
+              //  fisherYatesShuffle(details)
           });
         }
       });
@@ -129,7 +154,7 @@ export default function DaysScreen({ navigation }) {
  
 
 
-  console.log('VISIT', allDetails)
+  // console.log('VISIT', allDetails)
   
 
   const visit = allDetails.map((data, i) => {
@@ -266,10 +291,7 @@ export default function DaysScreen({ navigation }) {
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
    
-  // const shuffle = () => {
-  //   fisherYatesShuffle(restaurants)
-  //   fisherYatesShuffle(visit)
-  // }
+
   //compteur
   const [count, setCount] = useState(1);
 
@@ -341,10 +363,10 @@ export default function DaysScreen({ navigation }) {
           />
         </View>
         <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+        //   showsVerticalScrollIndicator={false}
+        //   refreshControl={
+        //     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        //   }
         >
           {visit}
           {restaurants}
