@@ -50,6 +50,18 @@ export default function AllCulturalsScreen({ navigation }) {
   }, []);
 
 
+
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.124:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+
+
+
   const visit = allDetails.map((data, i) => {
     // const image = data.infos.wikipedia_extracts;
    
