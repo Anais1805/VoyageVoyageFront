@@ -7,17 +7,19 @@ import {
   TextInput,
   Pressable,
   SafeAreaView,
+  StatusBar,
+  ScrollView,
+  ImageBackground
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Calendar } from "react-native-calendars";
 import { useState } from "react";
 import { LocaleConfig } from "react-native-calendars";
+import mylikedays from "../reducers/mylikedays";
+import { useSelector } from "react-redux";
 
 export default function MyReservationScreen({ navigation }) {
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [daySelected, setDaySelected] = useState("");
-  const [dayBooked, setDayBooked] = useState(false);
-
+  
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -60,54 +62,54 @@ export default function MyReservationScreen({ navigation }) {
     today: "Aujourd'hui",
   };
   LocaleConfig.defaultLocale = "fr";
+  const mydays = useSelector((state) => state.mylikedays.value)
 
+  const myBookings = mydays.map((data, i) => {
+    const [showCalendar, setShowCalendar] = useState(false);
+  const [daySelected, setDaySelected] = useState("");
+  const [dayBooked, setDayBooked] = useState(false);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.logoContainer}
-          onPress={() => navigation.navigate("Home")}
+    return(
+      <ImageBackground
+      key={i}
+      style={styles.cardImage}
+      source={{
+        uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG/400px-Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG",
+      }}
+    >
+      <View
+        style={{
+          backgroundColor: "#335C67",
+          opacity: 0.9,
+          width: "100%",
+          height: "40%",
+          top: "60%",
+         
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
         >
-          <Image style={styles.logo} source={require("../assets/logo.png")} />
-        </TouchableOpacity>
-        <View style={styles.menuHeader}>
-         <FontAwesome
-            style={styles.icon}
-            name="suitcase"
-            size={40}
-            color={'#335C67'}
-            onPress={() => navigation.navigate("Profile")}
-          />
-          <FontAwesome
-            style={styles.icon}
-            name="user-circle-o"
-            size={40}
-            onPress={() => navigation.navigate("Profile")}
-          />
+          <Text
+            style={{
+              color: "white",
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            
+            }}
+          >
+            {data}
+          </Text>
+       
         </View>
-      </View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Mes réservations</Text>
-      </View>
-      <View style={styles.bookingsContainer}>
-        <View style={styles.bookingCards}>
-          <Text style={styles.titleCard}>Journée "" </Text>
-          <View style={styles.buttonContainer}>
-            <Pressable style={styles.persoButton}>
-              <Text style={styles.buttonText}>Je personnalise</Text>
-            </Pressable>
-            <Pressable
-              style={styles.planButton}
-              onPress={() => setShowCalendar(!showCalendar)}
-            >
-              {!dayBooked && <Text style={styles.buttonText}>Je planifie</Text>}
-              {dayBooked && (
-                <Text style={styles.buttonText}>{daySelected}</Text>
-              )}
-            </Pressable>
-          </View>
-        </View>
+        <Pressable style={styles.btnToReserve}  onPress={() => setShowCalendar(!showCalendar)}
+>
+        {!dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Je plannifie</Text>}
+        {dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>{daySelected}</Text>}
         {showCalendar && (
           <Calendar
             minDate={"2022-10-01"}
@@ -116,6 +118,7 @@ export default function MyReservationScreen({ navigation }) {
               console.log("selected day", day);
               setDaySelected(day.dateString);
               setDayBooked(true);
+              setShowCalendar(!showCalendar)
             }}
             markedDates={{
               [daySelected]: {
@@ -130,138 +133,171 @@ export default function MyReservationScreen({ navigation }) {
               monthTextColor: "#9E2A2B",
               // textMonthFontWeight: 'bold'
             }}
+            
           />
         )}
-        <View style={styles.submitContainer}>
-          <Pressable
-            style={styles.submitButton}
-            onPress={() => navigation.navigate("Overview")}
-          >
-            <Text style={styles.buttonText}>Valider</Text>
-          </Pressable>
-        </View>
+        </Pressable>
+        {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
+        <Text
+          style={{
+            color: "white",
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            fontSize: 12,
+          }}
+        >
+          Activités
+        </Text>
+        
       </View>
-    </View>
+      
+    </ImageBackground>
+    )
+  })
+
+  return (
+
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar />
+        
+          <View style={styles.header}>
+            <View>
+              <Image
+                source={require("../assets/logo.png")}
+                style={{ width: 30, height: 30 }}
+                onPress={() => navigation.navigate("Home")}
+              />
+            </View>
+            <View style={styles.btnHeader}>
+            <FontAwesome
+            style={{marginRight: 10}}
+            name="suitcase"
+            size={40}
+            color={'#9E2A2B'}
+            onPress={() => navigation.navigate("MyReservation")}
+          />
+
+                <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={40}
+            onPress={() => navigation.navigate("Profile")}
+          />
+                
+            
+            </View>
+          </View>
+  
+          <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
+          <View style={styles.titleRestoContainer}>
+            <Text style={styles.titleResto}>
+              Vos journées réservées
+              
+            </Text>
+            </View>
+         
+          <ScrollView showsVerticalScrollIndicator={false}
+          >
+           
+           
+ {myBookings}
+ <Pressable style={styles.btnToReserve}  onPress={() => navigation.navigate('Overview')}
+>
+       <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Valider</Text>
+        
+        </Pressable>
+          </ScrollView>
+     
+   
+      </SafeAreaView>
+  
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
   header: {
-    width: "100%",
-    height: "12%",
-    flexDirection: "row",
-    borderBottomColor: "#9E2A2B",
-    borderBottomWidth: 1,
-    marginBottom: 15,
-  },
-  menuHeader: {
-    flexDirection: "row",
-    width: "100%",
-    height: 100,
-    marginTop: "12%",
-    marginLeft: "45%",
-  },
-  logoContainer: {
-    marginLeft: "-10%",
-    marginBottom: "-5%",
-  },
-  logo: {
-    width: "35%",
-    height: "50%",
-    marginLeft: "35%",
-    marginTop: "22%",
-  },
-  avatar: {
-    width: "20%",
-    height: "20%",
-  },
-  icon: {
-    marginLeft: "0.5%",
-    marginRight: "2%",
-    marginBottom: "15%",
-    padding: 0,
-    marginTop: 0,
-  },
-
-  titleContainer: {
-    alignItems: "center",
-    marginTop: "5%",
-  },
-  title: {
-    color: "#9E2A2B",
-    fontWeight: "bold",
-    width: "80%",
-    padding: 5,
-    textAlign: "center",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#9E2A2B",
-    padding: 7,
-    paddingHorizontal: 45,
-    marginBottom: 10,
-  },
-  bookingsContainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-  },
-  bookingCards: {
-    borderWidth: 1,
-    borderColor: "#9E2A2B",
-    width: "80%",
-    padding: 10,
-    borderRadius: 10,
-  },
-  titleCard: {
-    fontWeight: "bold",
-    padding: 5,
-    width: 300,
-    textAlign: "center",
-    borderRadius: 10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  persoButton: {
-    backgroundColor: "#9E2A2B",
-    padding: 7,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  planButton: {
-    backgroundColor: "#335C67",
-    padding: 7,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  submitButton: {
-    backgroundColor: "#9E2A2B",
-    padding: 7,
+    paddingVertical: 15,
     paddingHorizontal: 20,
-    borderRadius: 10,
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  btnHeader: {
+    flexDirection: "row",
     alignItems: "center",
   },
-  submitContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: "10%",
+  login1: {
+    width: 100,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#FFF",
   },
-  
+  login2: {
+    width: 100,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "#9E2A2B",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#9E2A2B",
+    marginLeft: 10,
+  },
+  btnLogin1: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 10,
+  },
+  btnLogin2: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 10,
+  },
+  headerTitle: {
+    color: "#9E2A2B",
+    fontSize: 23,
+    fontWeight: "bold",
+  },
+  scrollView: {
+    height: 20,
+  },
+  titleRestoContainer: {
+    alignItems: "center",
+  },
+  titleResto: {
+    fontSize: 26,
+    fontWeight: "bold",
+    paddingBottom: 5,
+  },
+  scrollViewer: {
+    height: "100%",
+
+    marginLeft: 20,
+  },
+  cardImage: {
+    height: 130,
+    width: 350,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    overflow: "hidden",
+    borderRadius: 10,
+  },
+  btnToReserve: {
+    backgroundColor: '#9E2A2B',
+    width: 80,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '70%',
+    marginBottom: 40, 
+
+    borderRadius: 5   
+  },
 });
+
 
 
 

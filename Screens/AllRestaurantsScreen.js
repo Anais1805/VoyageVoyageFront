@@ -12,7 +12,11 @@ import {
 
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
+
+
+// import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
+
+
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import activities from "../reducers/activities";
@@ -36,7 +40,11 @@ export default function AllRestaurantsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
+
       `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
+
+      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
+
     )
       .then(resp => resp.json())
       .then(data => {
@@ -49,6 +57,10 @@ export default function AllRestaurantsScreen({ navigation }) {
           tmp.forEach((e) => {
 
             fetch(`http://192.168.1.43:4000/infos/${e}`)
+
+            fetch(`http://192.168.10.127:4000/infos/${e}`)
+
+
 
               .then(resp => resp.json())
               .then(data => {
@@ -248,4 +260,5 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   }
 });
+
 
