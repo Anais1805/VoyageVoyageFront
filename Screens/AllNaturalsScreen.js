@@ -32,7 +32,7 @@ export default function AllNaturalssScreen({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
+      `http://192.168.10.136:4000/naturals/${destination.lon}/${destination.lat}`
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -43,7 +43,7 @@ export default function AllNaturalssScreen({ navigation }) {
           console.log("DDDDDD", data.naturals);
           let nature = [];
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.43:4000/infos/${e}`)
+            fetch(`http://192.168.10.136:4000/infos/${e}`)
               .then((resp) => resp.json())
               .then((data) => {
                 nature.push(data);
