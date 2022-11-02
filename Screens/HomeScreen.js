@@ -17,13 +17,22 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import destinations from "../reducers/destinations";
+
 import { destinationSearch } from "../reducers/destinations";
 import * as Location from "expo-location";
+
+import { destinationSearch } from '../reducers/destinations';
+import * as Location from 'expo-location';
+import users from "../reducers/users";
+import {login, logout} from "../reducers/users"
 
 const { width } = Dimensions.get("screen");
 
 export default function HomeScreen({ navigation }) {
   const [currentPosition, setCurrentPosition] = useState(null);
+  const handleLogout = () => {
+		dispatch(logout())
+	}
 
   useEffect(() => {
     (async () => {
@@ -109,6 +118,27 @@ export default function HomeScreen({ navigation }) {
   const [country, setCountry] = useState("");
   const dispatch = useDispatch();
 
+  
+
+const [city, setCity]=useState('')
+const [country, setCountry]=useState('')
+const dispatch = useDispatch()
+
+const destination = useSelector((state) => state.destinations.value)
+const user = useSelector((state) => state.user.value)
+ 
+console.log('USER', user)
+const searchPress = () => {
+fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+              if(data.result) {
+                dispatch(destinationSearch({
+                  city: data.city.name,
+                  country: data.city.country,
+                  lat: data.city.lat,
+                  lon: data.city.lon
+
   const destination = useSelector((state) => state.destinations.value);
 
   console.log(destination);
@@ -140,7 +170,7 @@ export default function HomeScreen({ navigation }) {
               style={{ width: 30, height: 30 }}
             />
           </View>
-          <View style={styles.btnHeader}>
+         {!user.isConnected && <View style={styles.btnHeader}>
             <TouchableOpacity
               onPress={() => navigation.navigate("Profile")}
               style={styles.login1}
@@ -155,8 +185,33 @@ export default function HomeScreen({ navigation }) {
             >
               <Text style={styles.btnLogin2}>Se connecter</Text>
             </TouchableOpacity>
-          </View>
-        </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Days")}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Days</Text>
+            </TouchableOpacity>
+          </View> }
+          {user.isConnected &&  <View style={styles.btnHeader}>
+            <FontAwesome
+            style={{marginRight: 10}}
+            name="suitcase"
+            size={40}
+            color={'#9E2A2B'}
+            onPress={() => navigation.navigate("MyReservation")}
+          />
+
+                <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={40}
+            onPress={() => navigation.navigate("Profile")}
+          />
+                
+            
+            </View>}
+        </View> 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{ height: 120, paddingHorizontal: 20, paddingVertical: 20 }}
@@ -236,6 +291,15 @@ export default function HomeScreen({ navigation }) {
               >
                 <Text style={{ fontSize: 12 }}>Voir plus ...</Text>
               </TouchableOpacity>
+
+
+            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
+            <Text style={{fontSize: 12}}>Voir plus ...</Text>
+
+            </TouchableOpacity>
             </View>
             <FlatList
               contentContainerStyle={{ paddingLeft: 20 }}

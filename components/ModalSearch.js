@@ -10,15 +10,17 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function ModalSearch ({navigation})  {
 
-
 const [city, setCity]=useState('')
 const [country, setCountry]=useState('')
   const [modalVisible, setModalVisible] = useState(false);
+
   const destination = useSelector((state) => state.destinations.value)
 const dispatch = useDispatch()
   console.log(destination)
+
+
 const searchPress = () => {
-fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
+fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {
@@ -28,54 +30,54 @@ fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
                   lat: data.city.lat,
                   lon: data.city.lon
 
-                }
-                ))
+            }
+            ))
 
-              }
-            })
+          }
+        })
    
    }
   return (
     <>
     
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-      >
-          <View style={styles.modalView}>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <View style={{justifyContent: 'center', alignItems:'flex-end', marginTop: -20, marginBottom: 20}}>
-              <Text style={{fontWeight: 'bold'}}>X</Text>
-            </View>
-            </TouchableOpacity>
-            <Text style={styles.modalText}>Rechercher</Text>
-            
-            <SafeAreaView>
-              <TextInput style={styles.inputDestinationVille}  onChangeText={(city) => setCity(city)}
-          value={city} placeholder="Ville"/>
-              <TextInput style={styles.inputDestinationPays} onChangeText={(country) => setCountry(country)}
-          value={country} placeholder="Pays"/>
-            
-            
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => {setModalVisible(!modalVisible); searchPress();  navigation.navigate("DayScreen")}}
-            >
-              <Text style={styles.textStyle}>Valider</Text>
-            </Pressable>
-            </SafeAreaView>
-          </View>
-
+  <Modal
+    animationType="slide"
+    transparent={true}
+    visible={modalVisible}
+  >
+      <View style={styles.modalView}>
+        <TouchableOpacity onPress={() => setModalVisible(false)}>
+        <View style={{justifyContent: 'center', alignItems:'flex-end', marginTop: -20, marginBottom: 20}}>
+          <Text style={{fontWeight: 'bold'}}>X</Text>
+        </View>
+        </TouchableOpacity>
+        <Text style={styles.modalText}>Rechercher</Text>
         
-      </Modal>
+        <SafeAreaView>
+          <TextInput style={styles.inputDestinationVille}  onChangeText={(city) => setCity(city)}
+      value={city} placeholder="Ville"/>
+          <TextInput style={styles.inputDestinationPays} onChangeText={(country) => setCountry(country)}
+      value={country} placeholder="Pays"/>
+        
+        
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => {setModalVisible(!modalVisible); searchPress()}}
+        >
+          <Text style={styles.textStyle}>Valider</Text>
+        </Pressable>
+        </SafeAreaView>
+      </View>
+
+    
+  </Modal>
 
    
 
-    <TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.searchIcon]}>
-    
-    <Image style={styles.iconSearch} source={require('../assets/search.png')}/>  
+<TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.searchIcon]}>
+
+<Image style={styles.iconSearch} source={require('../assets/search.png')}/>  
    </TouchableOpacity>
   </>
   );
@@ -83,8 +85,8 @@ fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
 
 const styles = StyleSheet.create({
   centeredView: {
-    
-    
+
+
   },
   searchIcon:{
     marginRight: 20,
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonOpen: {
-    
+
   },
   buttonClose: {
     backgroundColor: "#9E2A2B",
@@ -146,4 +148,3 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   }
 });
-

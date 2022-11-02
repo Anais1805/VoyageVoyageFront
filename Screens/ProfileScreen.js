@@ -26,8 +26,9 @@ export default function ProfileScreen({ navigation }) {
   const [checked, setChecked] = useState("Seul(e)");
   const [checked2, setChecked2] = useState("€");
   const [checked3, setChecked3] = useState("Flexitarien");
-  const [alreadyPress, setAlreadyPress] = useState("false");
+  const [alreadyPress, setAlreadyPress] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [connected, setConnected]=useState(true)
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.value);
@@ -37,6 +38,8 @@ export default function ProfileScreen({ navigation }) {
 
   const submitClick = () => {
     fetch("http://192.168.10.124:4000/users/signup", {
+
+    fetch("http://192.168.1.43:4000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -47,7 +50,7 @@ export default function ProfileScreen({ navigation }) {
         budget: checked2,
         diet: checked3,
         displacement: [...isSelected],
-        isConnected: true,
+        isConnected: connected,
       }),
     })
       .then((resp) => resp.json())
@@ -63,7 +66,7 @@ export default function ProfileScreen({ navigation }) {
               budget: checked2,
               diet: checked3,
               displacement: [...isSelected],
-              isConnected: true,
+              isConnected: connected,
             })
           );
           setSelected([]);

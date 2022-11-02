@@ -28,6 +28,10 @@ export default function AllCulturalsScreen({ navigation }) {
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
+
+  const activity = useSelector((state) => state.activities.value);
+
+
   useEffect(() => {
     fetch(
       `http://192.168.10.124:4000/visits/${destination.lon}/${destination.lat}`
@@ -35,8 +39,13 @@ export default function AllCulturalsScreen({ navigation }) {
       .then(resp => resp.json())
       .then(data => {
         if (data.result) {
+
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
+
+          setAllNaturals(data.naturals);
+          let tmp = data.naturals.map((e) => e.xid);
+
           // setXid(tmp);
           // console.log(data.foods)
           let cult = []
@@ -55,6 +64,11 @@ export default function AllCulturalsScreen({ navigation }) {
         }
       });
   }, []);
+
+
+  console.log(allDetails);
+  const hikes = allDetails.map((data, i) => {
+    // console.log("DAT", data.infos.image);
 
 
   useEffect(() => {
@@ -90,6 +104,9 @@ export default function AllCulturalsScreen({ navigation }) {
       
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
+
+  console.log(destination.city);
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -233,3 +250,4 @@ const styles = StyleSheet.create({
 
  
 });
+

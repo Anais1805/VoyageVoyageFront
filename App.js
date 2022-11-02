@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import user from './reducers/users'
 import destinations from './reducers/destinations.js';
 import activities from './reducers/activities.js';
+import mylikedays from './reducers/mylikedays.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +41,7 @@ const persistConfig = {
   key: "voyagevoyage",
   storage: AsyncStorage,
 };
-const reducers = combineReducers({user, destinations, activities})
+const reducers = combineReducers({user, destinations, activities, mylikedays})
 
 
 
@@ -67,7 +68,7 @@ export default function App() {
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />
-       {/* <Stack.Screen name="MyReservation" component={MyReservationScreen} /> */}
+        <Stack.Screen name="MyReservation" component={MyReservationScreen} /> 
        <Stack.Screen name="Map" component={MapScreen} />  
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Days" component={DaysScreen} />
