@@ -37,7 +37,9 @@ export default function ProfileScreen({ navigation }) {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const submitClick = () => {
+
     fetch("http://192.168.10.136:4000/users/signup", {
+
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

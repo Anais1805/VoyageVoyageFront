@@ -13,19 +13,22 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import ModalSearch from "../components/ModalSearch";
 import places from "./places";
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import destinations from "../reducers/destinations";
+
+import { destinationSearch } from "../reducers/destinations";
+import * as Location from "expo-location";
+
 import { destinationSearch } from '../reducers/destinations';
 import * as Location from 'expo-location';
 import users from "../reducers/users";
 import {login, logout} from "../reducers/users"
 
-const {width} = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 
 export default function HomeScreen({ navigation }) {
-
   const [currentPosition, setCurrentPosition] = useState(null);
   const handleLogout = () => {
 		dispatch(logout())
@@ -35,41 +38,88 @@ export default function HomeScreen({ navigation }) {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
+
       if (status === 'granted') {
         Location.watchPositionAsync({ distanceInterval: 10 },
           (location) => {
-            console.log(location);
+            // console.log(location);
             // setCurrentPosition(location.coords);
           });
+
       }
     })();
     //  insert code here
-}, []);
-  
-  const Card = ({place}) => {
-    return(
-      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
-      <ImageBackground style={styles.cardImage} source={place.image}>
-        
-        <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{place.name}</Text>
-            <Text style={{color: 'white', paddingHorizontal: 10}}>{place.location}</Text>
+  }, []);
+
+  const Card = ({ place }) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("Details", place)}
+      >
+        <ImageBackground style={styles.cardImage} source={place.image}>
+          <View
+            style={{
+              backgroundColor: "#335C67",
+              opacity: 0.9,
+              width: "100%",
+              height: "40%",
+              top: "60%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}
+              >
+                {place.name}
+              </Text>
+              <Text style={{ color: "white", paddingHorizontal: 10 }}>
+                {place.location}
+              </Text>
+            </View>
+
+            <Text
+              style={{ color: "white", paddingHorizontal: 10, fontSize: 12 }}
+            >
+              {place.hour}
+            </Text>
+            <Text
+              style={{
+                color: "white",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                fontSize: 12,
+              }}
+            >
+              {place.details2}
+            </Text>
+
+            <View style={styles.btnToReserve}>
+              <Text
+                style={{ color: "white", fontSize: 12, fontWeight: "bold" }}
+              >
+                Réserver
+              </Text>
+            </View>
           </View>
-        
-        <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text>
-        <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
-        
-        <View style={styles.btnToReserve}>
-          <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Réserver</Text>
-        </View>
-       
-        </View>
-        
-      </ImageBackground>
+        </ImageBackground>
       </TouchableOpacity>
     );
   };
+
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const dispatch = useDispatch();
 
   
 
@@ -80,9 +130,11 @@ const dispatch = useDispatch()
 const destination = useSelector((state) => state.destinations.value)
 const user = useSelector((state) => state.user.value)
  
-console.log('USER', user)
+// console.log('USER', user.isConnected)
 const searchPress = () => {
+
 fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
+
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {
@@ -92,23 +144,30 @@ fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
                   lat: data.city.lat,
                   lon: data.city.lon
 
-                }
-                ))
+  const destination = useSelector((state) => state.destinations.value);
 
-              }
+  console.log(destination);
+  const searchPress = () => {
+    fetch(`http://192.168.10.124:4000/favorite/${city}/${country}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(
+            destinationSearch({
+              city: data.city.name,
+              country: data.city.country,
+              lat: data.city.lat,
+              lon: data.city.lon,
             })
-   
-   }
-   
-    return (
+          );
+        }
+      });
+  };
 
-      <SafeAreaView style={{ flex: 1}}>
-        <StatusBar />
-        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
-  
-  
-  
-
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar />
+      <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
         <View style={styles.header}>
           <View>
             <Image
@@ -159,57 +218,85 @@ fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
             </View>}
         </View> 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{height: 120, paddingHorizontal: 20, paddingVertical: 20}}>
+          <View
+            style={{ height: 120, paddingHorizontal: 20, paddingVertical: 20 }}
+          >
+            <View style={styles.inputContainer}>
+              <ModalSearch />
 
-
-          <View style={styles.inputContainer}>
-           <ModalSearch />
-           
-            <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
-           
+              <Text style={styles.headerTitle}>Organisez vos sorties</Text>
             </View>
           </View>
 
-            <View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.suggestTxt}>Les restaurants</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
-            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
-            </TouchableOpacity>
+          <View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={styles.suggestTxt}>Les restaurants</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AllRestaurants")}
+              >
+                <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "#9E2A2B" }}
+                >
+                  Voir plus ...
+                </Text>
+              </TouchableOpacity>
             </View>
-              <FlatList
-              contentContainerStyle={{paddingLeft: 20}}
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
               horizontal
               showsHorizontalScrollIndicator={false}
               data={places}
-              renderItem={({item}) => <Card place={item} /> } />
-            </View>
+              renderItem={({ item }) => <Card place={item} />}
+            />
+          </View>
 
-            
-            <View style={{marginTop: 30}}>
-            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-            <View>
-            <Text style={styles.suggestTxt}>Les activitées sportives</Text>
-            <Text style={styles.suggestTxt}>et randonnées</Text>
+          <View style={{ marginTop: 30 }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+              <View>
+                <Text style={styles.suggestTxt}>Les activitées sportives</Text>
+                <Text style={styles.suggestTxt}>et randonnées</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AllNaturals")}
+              >
+                <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "#9E2A2B" }}
+                >
+                  Voir plus ...
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
-            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
-            </TouchableOpacity>
-            </View>
-              <FlatList
-              contentContainerStyle={{paddingLeft: 20}}
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
               horizontal
               showsHorizontalScrollIndicator={false}
               data={places}
-              renderItem={({item}) => <Card place={item} /> } />
-            </View>
+              renderItem={({ item }) => <Card place={item} />}
+            />
+          </View>
 
-            <View style={{marginTop: 30}}>
-            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-            <View>
-            <Text style={styles.suggestTxt}>Les visites culturelles</Text>
-            
+          <View style={{ marginTop: 30 }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+              <View>
+                <Text style={styles.suggestTxt}>Les visites culturelles</Text>
+              </View>
             </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AllNaturals")}
+              >
+                <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "#9E2A2B" }}
+                >
+                  Voir plus ...
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AllCulturals")}
+              >
+                <Text style={{ fontSize: 12 }}>Voir plus ...</Text>
+              </TouchableOpacity>
+
 
             <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
             <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
@@ -219,20 +306,17 @@ fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
 
             </TouchableOpacity>
             </View>
-              <FlatList
-              contentContainerStyle={{paddingLeft: 20}}
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
               horizontal
               showsHorizontalScrollIndicator={false}
               data={places}
-              renderItem={({item}) => <Card place={item} /> } />
-            </View>
-            
+              // renderItem={({item}) => <Card place={item} /> }
+            />
+          </View>
         </ScrollView>
-        </ImageBackground>
-      </SafeAreaView>
-
-
-          
+      </ImageBackground>
+    </SafeAreaView>
   );
 }
 
@@ -281,18 +365,18 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: "#9E2A2B",
     fontSize: 23,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   inputContainer: {
     borderRadius: 10,
-    marginTop: 20, 
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20
+    marginTop: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
   },
   suggestTxt: {
-    color: 'black',
-    fontWeight: 'bold',
+    color: "black",
+    fontWeight: "bold",
     marginHorizontal: 20,
     fontSize: 15,
   },
@@ -301,25 +385,17 @@ const styles = StyleSheet.create({
     width: width / 1.5,
     marginRight: 20,
     marginTop: 20,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 10,
   },
   btnToReserve: {
-    backgroundColor: '#9E2A2B',
+    backgroundColor: "#9E2A2B",
     width: 80,
     height: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginLeft: 10,
-    marginTop: 5, 
-    borderRadius: 5   
+    marginTop: 5,
+    borderRadius: 5,
   },
 });
-
-
-
-
-
-
-   
-

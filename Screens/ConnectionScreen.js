@@ -15,6 +15,7 @@ import { addUserToStore, login, logout } from "../reducers/users";
 const BACKEND_ADRESS = "http://192.168.10.136:4000";
 
 
+
 export default function ConnectionScreen({ navigation }) {
   const EMAIL_REGEX =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

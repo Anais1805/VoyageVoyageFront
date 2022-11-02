@@ -25,9 +25,7 @@ export default function AllCulturalsScreen({ navigation }) {
   const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
-    fetch(
-      `http://192.168.10.136:4000/visits/${destination.lon}/${destination.lat}`
-    )
+    fetch(`http://192.168.10.136:4000/visits/${destination.lon}/${destination.lat}`)
       .then((resp) => resp.json())
       .then((data) => {
         if (data.result) {
@@ -37,7 +35,9 @@ export default function AllCulturalsScreen({ navigation }) {
           // console.log(data.foods)
           let cult = [];
           tmp.forEach((e) => {
+
             fetch(`http://192.168.10.136:4000/infos/${e}`)
+
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
@@ -50,9 +50,21 @@ export default function AllCulturalsScreen({ navigation }) {
   }, []);
 
 
-  const visit = allDetails.map((data, i) => {
-    const image = data.infos.wikipedia_extracts;
 
+  useEffect(() => {
+    xid.map(e => {
+    fetch(`http://192.168.10.124:4000/infos/${e}`)
+    .then(resp => resp.json())
+    .then(data => 
+      setAllDetails(data),
+      )
+  })}, [xid])
+
+
+
+  const visit = allDetails.map((data, i) => {
+    // const image = data.infos.wikipedia_extracts;
+   
     // console.log("DAT", image);
     return (
       <ImageBackground
