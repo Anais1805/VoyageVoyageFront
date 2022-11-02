@@ -12,8 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore, login, logout } from "../reducers/users";
 
 
-const BACKEND_ADRESS = "http://192.168.10.124:4000";
-
+const BACKEND_ADRESS = "http://192.168.10.127:4000";
 
 
 

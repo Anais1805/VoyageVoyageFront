@@ -38,11 +38,14 @@ export default function HomeScreen({ navigation }) {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
-      if (status === "granted") {
-        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          console.log(location);
-          // setCurrentPosition(location.coords);
-        });
+
+      if (status === 'granted') {
+        Location.watchPositionAsync({ distanceInterval: 10 },
+          (location) => {
+            // console.log(location);
+            // setCurrentPosition(location.coords);
+          });
+
       }
     })();
     //  insert code here
@@ -127,9 +130,9 @@ const dispatch = useDispatch()
 const destination = useSelector((state) => state.destinations.value)
 const user = useSelector((state) => state.user.value)
  
-console.log('USER', user)
+// console.log('USER', user.isConnected)
 const searchPress = () => {
-fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
+fetch(`http://192.168.10.127:4000/favorite/${city}/${country}`)
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {

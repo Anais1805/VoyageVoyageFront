@@ -32,9 +32,8 @@ export default function AllCulturalsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
-      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
 
-      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
     )
       .then(resp => resp.json())
       .then(data => {
@@ -48,8 +47,9 @@ export default function AllCulturalsScreen({ navigation }) {
           // console.log(data.foods)
           let cult = []
           tmp.forEach((e) => {
-            fetch(`http://192.168.1.21:4000/infos/${e}`)
-            fetch(`http://192.168.1.18:4000/infos/${e}`)
+
+            fetch(`http://192.168.10.127:4000/infos/${e}`)
+
               .then(resp => resp.json())
               .then(data => {
                 cult.push(data)
@@ -137,16 +137,11 @@ export default function AllCulturalsScreen({ navigation }) {
   // }, [xid]);
 
 
-console.log('DETAILS', allDetails)
+// console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
       const image = ''
-      // if(data.infos.preview.image === undefined){
-      //   image = require('../assets/Unknown.png')
-      // } else {
-      //   image = data.infos.preview.source
-      // }
-      // console.log('DAT', image)
+      console.log('DATA', data.infos.preview)
       return (
       //   <TouchableOpacity
       //   activeOpacity={0.8}
@@ -165,7 +160,42 @@ console.log('DETAILS', allDetails)
          <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
 
         </View>
-      </View>
+
+        </ImageBackground>
+        // </TouchableOpacity>
+        )
+        
+      // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
+    });
+ 
+    // console.log(destination.city)
+   
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.logoContainer}
+            onPress={() => navigation.navigate("Home")}
+          >
+            <Image style={styles.logo} source={require("../assets/logo.png")} />
+          </TouchableOpacity>
+          <View style={styles.menuHeader}>
+            <FontAwesome
+              style={styles.icon}
+              name="suitcase"
+              size={30}
+              onPress={() => navigation.navigate("MyReservation")}
+            />
+            <FontAwesome
+              style={styles.iconUser}
+              name="user-circle-o"
+              size={30}
+              onPress={() => navigation.navigate("Profile")}
+            />
+          </View>
+        </View>
+
 
       <View style={styles.titleRestoContainer}>
         <Text style={styles.titleResto}>Les visites à {destination.city}</Text>
