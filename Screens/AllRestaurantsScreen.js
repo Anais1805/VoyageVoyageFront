@@ -25,11 +25,6 @@ import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
 
 
-
-
-
- 
-
 export default function AllRestaurantsScreen({ navigation }) {
 
   const [allrestaurants, setAllRestaurants] = useState([]);
@@ -45,6 +40,9 @@ export default function AllRestaurantsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
+
+      `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
+
       `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
 
     )
@@ -53,10 +51,12 @@ export default function AllRestaurantsScreen({ navigation }) {
         if (data.result) {
           setAllRestaurants(data.foods);
           let tmp = data.foods.map((e) => e.xid);
-          // setXid(tmp);
+          setXid(tmp);
           // console.log(data.foods)
           let resto = []
           tmp.forEach((e) => {
+
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
 
             fetch(`http://192.168.10.127:4000/infos/${e}`)
 
@@ -65,12 +65,12 @@ export default function AllRestaurantsScreen({ navigation }) {
               .then(resp => resp.json())
               .then(data => {
                 resto.push(data)
-                // setAllDetails([...allDetails,data])
+               setAllDetails([...allDetails,data])
         
               }).finally(()=> setAllDetails([...allDetails,...resto]))
             
             })
-            
+
             
         }
       });
@@ -78,22 +78,11 @@ export default function AllRestaurantsScreen({ navigation }) {
  
 
 
-  // useEffect(() => {
-  //   xid.map((e) => {
-  //     fetch(`http://192.168.10.137:4000/infos/${e}`)
-  //       .then((resp) => resp.json())
-  //       .then((data) => {
-    
-          
-  //         setAllDetails([...allDetails, data])
-  //       });
-  //     })   
-  // }, [xid]);
-
 
 console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
+
       const image = ''
       // if(data.infos.preview.image === undefined){
       //   image = require('../assets/Unknown.png')
@@ -101,6 +90,7 @@ console.log('DETAILS', allDetails)
       //   image = data.infos.preview.source
       // }
       console.log('DAT', image)
+
       return (
       //   <TouchableOpacity
       //   activeOpacity={0.8}
@@ -112,9 +102,10 @@ console.log('DETAILS', allDetails)
         <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
-            <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address.city}</Text>
+            <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.city || destination.city}</Text>
           </View>
         
+
          {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
          <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
 
@@ -126,6 +117,7 @@ console.log('DETAILS', allDetails)
       // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
     });
  
+
     console.log(destination.city)
    
   return (

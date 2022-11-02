@@ -21,7 +21,11 @@ const dispatch = useDispatch()
 
 const searchPress = () => {
 
+
+fetch(`http://192.168.1.43:4000/favorite/${city}/${country}`)
+
 fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
+
 
             .then((resp) => resp.json())
             .then((data) => {

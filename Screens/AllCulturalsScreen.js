@@ -1,32 +1,40 @@
 import {
   View,
-  Text,
-  Button,
-  TextInput,
   StyleSheet,
   Image,
-  Pressable,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  ImageBackground,
+  Text,
   SafeAreaView,
   ScrollView,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import CardsVisitsComponent from "./CardsVisitsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
+import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
+import { activitiesInfos } from "../reducers/activities";
+import places from "./places";
+
 
 export default function AllCulturalsScreen({ navigation }) {
+
   const [allCulturals, setAllCulturals] = useState([]);
-  const [xid, setXid] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
+  const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
+  const activity = useSelector((state) => state.activities.value);
+
   useEffect(() => {
+
+    fetch(
+
+      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+    )
+
     fetch(`http://192.168.10.136:4000/visits/${destination.lon}/${destination.lat}`)
+
       .then((resp) => resp.json())
       .then((data) => {
         if (data.result) {
@@ -49,7 +57,6 @@ export default function AllCulturalsScreen({ navigation }) {
         }
       });
   }, []);
-
 
   const visit = allDetails.map((data, i) => {
     const image = data.infos.wikipedia_extracts;
@@ -111,6 +118,7 @@ export default function AllCulturalsScreen({ navigation }) {
 
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -208,9 +216,9 @@ const styles = StyleSheet.create({
   },
   allcards: {
     //  flex:0.80,
-
     height: "100%",
     margin: 0,
+
   },
   scrollView: {
     height: 20,
@@ -224,6 +232,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   scrollViewer: {
+
     height: "100%",
 
     marginLeft: 20,
