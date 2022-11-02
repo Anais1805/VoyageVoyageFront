@@ -15,32 +15,27 @@ import {
   import { useState } from "react";
   import AllRestaurantsScreen from "./AllRestaurantsScreen";
   
-  export default function CardsRestaurantsComponent(props) {
-   
   
-    return (
-      <View style={styles.cards}>
-        <View style={styles.cardcontainer}>
-          <View style={styles.leftpart}>
-            <Image style={styles.image} source={require("../assets/rando.jpg")}></Image>
+  export default function  CardsRestaurantsComponent  (props)  {
+    return(
+      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details', allDetails)}>
+      <ImageBackground style={styles.cardImage} source={props.source}>
+        
+        <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{props.name}</Text>
+            <Text style={{color: 'white', paddingHorizontal: 10}}>{props.city}</Text>
           </View>
-          <View style={styles.rightpart}>
-            <Text style={styles.title2}>{props.name}</Text> 
-         
-              <Text style={styles.description}>
-                {props.kind} 
-              </Text>
-         
-             <View style={styles.button}>
-          <Pressable style={styles.planButton}>
-            <Text style={styles.buttonText}>Réserver</Text>
-              </Pressable>
-              </View>
-            
-          </View>
+        
+        {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
+        {/* <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{place.details2}</Text>
+   */}
         </View>
-      </View>
+        
+      </ImageBackground> 
+      </TouchableOpacity>
     );
+
   }
   
   const styles = StyleSheet.create({
@@ -83,21 +78,16 @@ import {
       marginVertical: '5%'
     },
 
-    button: {
-    marginLeft: '55%',
-    margin: '5%'
-    },
-    planButton: {
-      backgroundColor: "#335C67",
-      padding: 7,
-      borderRadius: 15,
-      justifyContent: "center",
-      alignItems: "center",
-      fontSize: 12,
-    },
-    buttonText: {
-      color: "white",
-      fontWeight: "bold",
-    },
-  });
-  
+  };
+
+
+  const styles = StyleSheet.create({
+  cardImage: {
+    height: 200,
+    width: 350,
+    marginRight: 20,
+    marginVertical: 10,
+    overflow: "hidden",
+    borderRadius: 10,
+  }
+})

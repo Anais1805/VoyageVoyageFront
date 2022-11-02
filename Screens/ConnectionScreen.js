@@ -6,19 +6,14 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  SafeAreaView
 } from "react-native";
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from "react-redux";
-import { addUserToStore } from "../reducers/users";
+import { addUserToStore, login, logout } from "../reducers/users";
 
 
+const BACKEND_ADRESS = "http://192.168.10.136:4000";
 
-
-
-
-export default function ConnectionScreen({ navigation }) {
-
-const BACKEND_ADRESS = "http://192.168.10.152:4000";
 
 
 export default function ConnectionScreen({ navigation }) {
@@ -27,7 +22,7 @@ export default function ConnectionScreen({ navigation }) {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  console.log(user);
+  // console.log(user);
 
   const [emailError, setEmailError] = useState(false);
   const [signInEmail, setSignInEmail] = useState("");
@@ -43,9 +38,10 @@ export default function ConnectionScreen({ navigation }) {
       .then((data) => {
         console.log(data.result);
         if (data.result && EMAIL_REGEX.test(signInEmail)) {
-          dispatch(
-            addUserToStore({ email: setSignInEmail, token: data.token })
-          );
+          // dispatch(
+          //   addUserToStore({ email: setSignInEmail, token: data.token })
+          // );
+          dispatch(login(signInEmail))
           navigation.navigate("MyReservation");
           setSignInEmail("");
           setSignInPassword("");
@@ -55,71 +51,20 @@ export default function ConnectionScreen({ navigation }) {
       });
   };
 
-
-
-    return (
-      <View style={styles.container}>
-
-        <View style={styles.header}>
-         
-          <TouchableOpacity  onPress={() => navigation.navigate('Home')}>
-             <Image style= {styles.logo} source={require('../assets/logo.png')}></Image>
-          </TouchableOpacity>
-          
-        </View>
-{/* 
-        <View style={styles.part1}>
-          <View style={styles.connexion}>
-            <Text style={styles.title}>CONNEXION</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('MyDay')} style={styles.login} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Go to MyDay</Text>
-                </TouchableOpacity>
-        <TextInput style={styles.input} 
-                   placeholder='  ✉️️ Adresse Mail'
-                   autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
-                   keyboardType="email-address" // https://reactnative.dev/docs/textinput#keyboardtype
-                   textContentType="emailAddress" // https://reactnative.dev/docs/textinput#textcontenttype-ios
-                   autoComplete="email" // https://reactnative.dev/docs/textinput#autocomplete-android
-                   onChangeText={(signInEmail) => setSignInEmail(signInEmail)}
-                   value={signInEmail}/>
-          {emailError && <Text style={styles.error}>⚠️ Invalid email address</Text>}
-        <TextInput style={styles.input} 
-                   placeholder=' 🔒 Mot de Passe'
-                   onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
-                   value = {signInPassword}></TextInput>
-           <TouchableOpacity style={styles.textconnexion} onPress={() => handleSubmit()} activeOpacity={0.8}>
-              <Text style={styles.title2}>SE CONNECTER</Text>
-          </TouchableOpacity>
-
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.header}>
-        {/* <Text>Connection Screen</Text> */}
-        {/* <Button
-            title="Go to Home"
-            onPress={() => navigation.navigate('Home')} 
-          /> */}
-
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
             style={styles.logo}
             source={require("../assets/logo.png")}
           ></Image>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.login}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.textButton}>Sign Up</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.part1}>
         <View style={styles.connexion}>
           <Text style={styles.title}>CONNEXION</Text>
-
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate("MyDay")}
@@ -129,7 +74,7 @@ export default function ConnectionScreen({ navigation }) {
           <Text style={styles.textButton}>Go to MyDay</Text>
         </TouchableOpacity>
         <TextInput
-          style={styles.input}
+          style={styles.inputEmail}
           placeholder="  ✉️️ Adresse Mail"
           autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
           keyboardType="email-address" // https://reactnative.dev/docs/textinput#keyboardtype
@@ -142,11 +87,12 @@ export default function ConnectionScreen({ navigation }) {
           <Text style={styles.error}>⚠️ Invalid email address</Text>
         )}
         <TextInput
-          style={styles.input}
+          style={styles.inputMdp}
           placeholder=" 🔒 Mot de Passe"
           onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
           value={signInPassword}
         ></TextInput>
+
         <TouchableOpacity
           style={styles.textconnexion}
           onPress={() => handleSubmit()}
@@ -155,56 +101,54 @@ export default function ConnectionScreen({ navigation }) {
           <Text style={styles.title2}>SE CONNECTER</Text>
         </TouchableOpacity>
       </View>
-
+      
+      <View style={{marginTop: 40}}>
       <Text style={styles.compte}>________________ OU ________________</Text>
       <Text style={styles.compte}> Pas encore de compte ? </Text>
-
+      </View>
 
       <View style={styles.part2}>
         <TouchableOpacity
           onPress={() => navigation.navigate("Profile")}
-          style={styles.input}
+          style={styles.inputMail}
           activeOpacity={0.8}
         >
           <Text style={styles.text}>Inscritpion avec email</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleGoogle()}
-          style={styles.input}
+          style={styles.inputGoogle}
           activeOpacity={0.8}
         >
           <Text style={styles.text}>Connexion avec Google</Text>
         </TouchableOpacity>
        
+       <View style={styles.facebook}>
         <TouchableOpacity
           onPress={() => handleFacebook()}
-          style={styles.input}
+          style={styles.inputFacebook}
           activeOpacity={0.8}
         >
+          
           <Text style={styles.text}>Connexion avec Facebook</Text>
         </TouchableOpacity>
-
+        </View>
       </View>
-    </View>
+    
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
-  },
   header: {
-    flex: 0.13,
-    width: "100%",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+
   },
   logo: {
-    width: "15%",
-    height: "50%",
-    marginLeft: "6%",
-    marginTop: "14%",
+    width: 30,
+    height: 30,
+    marginLeft: 10,
   },
   login: {
     width: "20%",
@@ -233,29 +177,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   part1: {
-    flex: 0.4,
-    width: "100%",
+    width: 400,
+    height: 200,
     alignItems: "center",
     justifyContent: "space-around",
-    marginTop: "10%",
+    marginTop: 20,
   },
   part2: {
-    flex: 0.36,
-    width: "100%",
+    width: 400,
     alignItems: "center",
     justifyContent: "space-around",
-    marginTop: "-5%",
+    marginVertical: 40
   },
-  input: {
+  inputEmail: {
     width: "70%",
-    height: "15%",
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#9E2A2B",
-    shadowColor: "#9E2A2B",
+    borderColor: "grey",
+    shadowColor: "grey",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -264,14 +207,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 6,
   },
-  connexion: {
-    width: "80%",
-    height: "15%",
+  inputMdp: {
+    width: "70%",
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 5,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#9E2A2B",
-    shadowColor: "#9E2A2B",
+    borderColor: "grey",
+    shadowColor: "grey",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -279,18 +224,73 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
     elevation: 6,
+    marginVertical: 20
+  },
+  inputMail: {
+    width: "70%",
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 5,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "grey",
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
   },
+  inputGoogle: {
+    width: "70%",
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "grey",
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    marginVertical: 20,
+  },
+  inputFacebook: {
+    width: "70%",
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "grey",
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+  },
+ 
   title: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#9E2A2B",
   },
   textconnexion: {
-    width: "80%",
+    width: "70%",
     height: "15%",
-    borderRadius: 20,
+    borderRadius: 5,
     backgroundColor: "#9E2A2B",
     borderWidth: 1,
     borderColor: "#9E2A2B",
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title2: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
     color: "white",
   },
@@ -314,9 +314,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   compte: {
-    backgroundColor: "white",
     textAlign: "center",
-    marginBottom: "5%",
-    marginTop: "2%",
+    marginTop: 20,
   },
-});
+  facebook: {
+    width: 400,
+    height: 40,
+    flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center'
+  },
+  iconfb: {
+    width: 20,
+    height: 20
+  }
+})

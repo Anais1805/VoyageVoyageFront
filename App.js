@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from './Screens/HomeScreen.js'
 import StartScreen from './Screens/StartScreen';
 // import ReservedScreen from './Screens/ReservedScreen';
@@ -15,6 +17,7 @@ import MyReservationScreen from './Screens/MyReservationScreen';
 import AllCulturalsScreen from './Screens/AllCulturalsScreen.js';
 import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
 import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
+import Card from './components/Card.js'
 
 
 
@@ -30,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import user from './reducers/users'
 import destinations from './reducers/destinations.js';
 import activities from './reducers/activities.js';
+import mylikedays from './reducers/mylikedays.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +41,7 @@ const persistConfig = {
   key: "voyagevoyage",
   storage: AsyncStorage,
 };
-const reducers = combineReducers({user, destinations, activities})
+const reducers = combineReducers({user, destinations, activities, mylikedays})
 
 
 
@@ -64,18 +68,13 @@ export default function App() {
        <Stack.Screen name="Connection" component={ConnectionScreen} />
        <Stack.Screen name="Profile" component={ProfileScreen} />
        <Stack.Screen name="Overview" component={OverviewScreen} />
-       {/* <Stack.Screen name="MyReservation" component={MyReservationScreen} /> */}
+        <Stack.Screen name="MyReservation" component={MyReservationScreen} /> 
        <Stack.Screen name="Map" component={MapScreen} />  
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Days" component={DaysScreen} />
-       <Stack.Screen name="Details" component={DetailsScreen} />
+       <Stack.Screen name="Card" component={Card} />
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
-
         <Stack.Screen name="Overview" component={OverviewScreen} />*/}
-
-
-
-
      </Stack.Navigator>
    </NavigationContainer>
    </PersistGate>
