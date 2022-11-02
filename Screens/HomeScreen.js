@@ -82,7 +82,9 @@ const user = useSelector((state) => state.user.value)
  
 console.log('USER', user)
 const searchPress = () => {
+
 fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
+
             .then((resp) => resp.json())
             .then((data) => {
               if(data.result) {
@@ -100,53 +102,50 @@ fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
    
    }
 
-    return (
 
-  <SafeAreaView style={{ flex: 1}}>
-    <StatusBar />
-    <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
-  
-  
-  
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar />
+      <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+        <View style={styles.header}>
+          <View>
+            <Image
+              source={require("../assets/logo.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          </View>
+         {!user.isConnected && <View style={styles.btnHeader}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Profile")}
+              style={styles.login1}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin1}>S'inscrire</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleLogout()}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Se connecter</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Days")}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Days</Text>
+            </TouchableOpacity>
+          </View> }
+          {user.isConnected &&  <View style={styles.btnHeader}>
+            <FontAwesome
+            style={{marginRight: 10}}
+            name="suitcase"
+            size={40}
+            color={'#9E2A2B'}
+            onPress={() => navigation.navigate("MyReservation")}
+          />
 
-    <View style={styles.header}>
-      <View>
-        <Image
-          source={require("../assets/logo.png")}
-          style={{ width: 30, height: 30 }}
-        />
-      </View>
-     {!user.isConnected && <View style={styles.btnHeader}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.login1}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.btnLogin1}>S'inscrire</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleLogout()}
-          style={styles.login2}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.btnLogin2}>Se connecter</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Days")}
-          style={styles.login2}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.btnLogin2}>Days</Text>
-        </TouchableOpacity>
-      </View> }
-      {user.isConnected &&  <View style={styles.btnHeader}>
-        <FontAwesome
-        style={{marginRight: 10}}
-        name="suitcase"
-        size={40}
-        color={'#9E2A2B'}
-        onPress={() => navigation.navigate("MyReservation")}
-      />
 
             <FontAwesome
         style={styles.icon}
