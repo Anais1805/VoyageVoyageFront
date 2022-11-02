@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore } from "../reducers/users";
 
 
-const BACKEND_ADRESS = "http://192.168.10.152:4000";
+const BACKEND_ADRESS = "http://192.168.10.124:4000";
 
 
 export default function ConnectionScreen({ navigation }) {
