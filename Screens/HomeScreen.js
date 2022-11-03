@@ -189,19 +189,13 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
           {user.isConnected &&  <View style={styles.btnHeader}>
         
             <FontAwesome
-            style={{marginRight: 10}}
+            style={styles.icon}
             name="suitcase"
             size={40}
             color={'#9E2A2B'}
-            onPress={() => navigation.navigate("Overview")}
+            onPress={() => navigation.navigate("MyReservation")}
           />
-            <TouchableOpacity
-              onPress={() => handleLogout()}
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Se connecter</Text>
-            </TouchableOpacity>
+         
 
                 <FontAwesome
             style={styles.icon}
@@ -408,6 +402,9 @@ const styles = StyleSheet.create({
     borderColor: "#9E2A2B",
     marginLeft: 10,
     marginLeft: '20%'
+  },
+  icon: {
+    marginLeft: 14
   }
 });
 
