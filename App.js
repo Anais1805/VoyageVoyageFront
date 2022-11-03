@@ -36,8 +36,6 @@ import activities from './reducers/activities.js';
 import mylikedays from './reducers/mylikedays.js';
 import favorite from './reducers/favorites';
 import dates from './reducers/dates.js';
-import markers from './reducers/markers.js';
-import currentPosition from './reducers/currentPosition.js';
 
 
 const Stack = createNativeStackNavigator();
@@ -47,7 +45,7 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const reducers = combineReducers({user, destinations, activities, mylikedays, favorite, dates, markers, currentPosition})
+const reducers = combineReducers({user, destinations, activities, mylikedays, favorite, dates})
 
 
 
