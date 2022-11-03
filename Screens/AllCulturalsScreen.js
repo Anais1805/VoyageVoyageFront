@@ -6,6 +6,7 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
+  ImageBackground
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState, useEffect } from "react";
@@ -67,7 +68,7 @@ export default function AllCulturalsScreen({ navigation }) {
         key={i}
         style={styles.cardImage}
         source={{
-          uri: image }}
+          uri: image ?? 'https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg'}}
       >
         <View
           style={{

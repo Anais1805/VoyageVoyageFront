@@ -27,12 +27,12 @@ export default function MyReservationScreen({ navigation }) {
    const dispatch = useDispatch()
   const poub = useSelector((state) => state.mylikedays.value)
   const dates = useSelector((state) => state.dates.value)
-  const[myDays, setMyDays]= useState([])
+  // const[myDays, setMyDays]= useState([])
   console.log('DATES', dates)
- 
-  useEffect(() => {
-   dispatch(addMyDates(myDays))
-  }, [myDays]);
+  // useEffect(() => {
+  //   dispatch(addMyDates(myDays))
+  //  }, [myDays]);
+
 
   LocaleConfig.locales["fr"] = {
     monthNames: [
@@ -84,7 +84,10 @@ export default function MyReservationScreen({ navigation }) {
   const [daySelected, setDaySelected] = useState("");
   const [dayBooked, setDayBooked] = useState(false);
   
-  
+
+
+
+
     return(
       <View key={i}>
       <ImageBackground
@@ -153,7 +156,7 @@ export default function MyReservationScreen({ navigation }) {
           setDaySelected(day.dateString);
           setDayBooked(true);
           setShowCalendar(!showCalendar)
-          setMyDays(daySelected)
+          // setMyDays(daySelected)
         }}
         markedDates={{
           [daySelected]: {

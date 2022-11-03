@@ -20,7 +20,7 @@ import destinations from "../reducers/destinations";
 import favorite from "../reducers/favorites";
 import { addActivities, cleanActivities } from "../reducers/favorites";
 import mylikedays, { removeMyDays } from "../reducers/mylikedays";
-import { addMyDay, addActivities } from "../reducers/mylikedays";
+import { addMyDay } from "../reducers/mylikedays";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 
 export default function DaysScreen({ navigation }) {
@@ -38,7 +38,21 @@ export default function DaysScreen({ navigation }) {
   const dispatch = useDispatch();
   const mydays = useSelector((state) => state.mylikedays.value);
   const favorites = useSelector((state) => state.favorite.value);
- 
+  
+  useEffect(() => {
+    fetch('http://192.168.1.43:4000/destinations', {
+
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        city: destination.city,
+        lat: destination.lat,
+        lon: destination.lon
+      }),
+    })
+      
+   }, [heart]);
+
 
   function fisherYatesShuffle(arr){
     for(var i =arr.length-1 ; i>0 ;i--){
@@ -174,9 +188,12 @@ export default function DaysScreen({ navigation }) {
     // console.log('DAT', image)
     if (i < 2) {
 
-      // if(heart && data){
-      // dispatch(addActivities({activities:data.infos.name}))}
-      // console.log('visit à envoyer dans reducer', addActivities({activities:data.infos.name}))}
+    // if(heart && data){
+    
+    //   dispatch(addActivities({activities:data.infos.name}))
+      
+    // }
+     
 
       return (
        
@@ -248,9 +265,10 @@ export default function DaysScreen({ navigation }) {
 
     // console.log("DAT", image);
     if (j < 2) {
-      if(heart ){
-      dispatch(addActivities({foods:data.infos.name}))}
-      console.log(data.infos.name)
+      // if(heart ){
+      //   // state.value = state.value.filter(bookmark => bookmark.title !== action.payload.title);
+      // dispatch(addActivities({foods:(data.infos.name).filter(e => e !== action.payload)}))}
+      // console.log(data.infos.name)
 
       return (
         <ImageBackground
@@ -380,7 +398,7 @@ export default function DaysScreen({ navigation }) {
             // color={'#335C67'}
             onPress={() => {
             // dispatch(addActivities({activities: }))
-              dispatch(addMyDay(destination.city));
+              // dispatch(addMyDay(destination.city));
               // dispatch(removeMyDays());
               heartPress();
             }}
