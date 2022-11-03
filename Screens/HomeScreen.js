@@ -36,6 +36,7 @@ export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch()
   const [allDetailsResto, setAllDetailsResto]=useState(null)
   const destination = useSelector((state) => state.destinations.value)
+  const [buttonDay, setButtonDay] = useState(true)
   const user = useSelector((state) => state.user.value)
 
 
@@ -186,13 +187,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
             </TouchableOpacity>
           </View> }
           {user.isConnected &&  <View style={styles.btnHeader}>
-          <TouchableOpacity
-              onPress={() => navigation.navigate("Days")}
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Days</Text>
-            </TouchableOpacity>
+        
             <FontAwesome
             style={{marginRight: 10}}
             name="suitcase"
@@ -234,6 +229,13 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
             <Text style={styles.headerTitle}>Organisez vos vacances</Text>  
            
             </View>
+           { buttonDay && <TouchableOpacity
+              onPress={() => navigation.navigate("Days")}
+              style={styles.days}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnDays}>Découvrez vos journées   😃</Text>
+            </TouchableOpacity>}
           </View>
 
             <View>
@@ -374,14 +376,39 @@ const styles = StyleSheet.create({
   },
   btnToReserve: {
     backgroundColor: '#9E2A2B',
-    width: 80,
+    width: 100,
     height: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
     marginTop: 5, 
-    borderRadius: 5   
+    borderRadius: 5 
   },
+  btnDays:{
+    backgroundColor: '#9E2A2B',
+    width: 200,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 5, 
+    borderRadius: 5,  
+    fontWeight: 'bold',
+    color: 'white'
+    
+  }, 
+  days: {
+    width: 250,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "#9E2A2B",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#9E2A2B",
+    marginLeft: 10,
+    marginLeft: '20%'
+  }
 });
 
 

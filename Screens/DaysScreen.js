@@ -142,7 +142,7 @@ export default function DaysScreen({ navigation }) {
 
 
   const store = useSelector((state) => state.mylikedays.value);
-  console.log("DEST_store", store);
+ 
   
   // console.log("ACTIVITES", myactivities);
 
@@ -398,7 +398,7 @@ export default function DaysScreen({ navigation }) {
             // color={'#335C67'}
             onPress={() => {
             // dispatch(addActivities({activities: }))
-              // dispatch(addMyDay(destination.city));
+              dispatch(addMyDay(destination.city));
               // dispatch(removeMyDays());
               heartPress();
             }}
