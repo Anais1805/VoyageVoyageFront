@@ -21,6 +21,7 @@ import favorite from "../reducers/favorites";
 import { addMyDay } from "../reducers/mylikedays";
 import { addActivities, cleanActivities } from "../reducers/favorites";
 import { icon } from "@fortawesome/fontawesome-svg-core";
+import activities from "../reducers/activities";
 
 export default function DaysScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
@@ -42,13 +43,14 @@ export default function DaysScreen({ navigation }) {
   function fisherYatesShuffle(arr){
     for(var i =arr.length-1 ; i>0 ;i--){
         var j = Math.floor( Math.random() * (i + 1) ); //random index
+        if(arr[i] !== undefined && arr[j] !== undefined){
         [arr[i],arr[j]]=[arr[j],arr[i]];// swap
-    }
+    }}
   }
 
   const shuffle = () => {
-    fisherYatesShuffle(allDetails);
     fisherYatesShuffle(details);
+    fisherYatesShuffle(allDetails);
     shuffleState ? setShuffleState(false) : setShuffleState(true) ;
   }
 
@@ -62,7 +64,7 @@ export default function DaysScreen({ navigation }) {
 
   const heartPress = () => {
     setHeart(!heart);
-    // if(!heart && favorites){dispatch(cleanActivities())}
+    if(!heart){dispatch(cleanActivities())}
   };
  
 
@@ -99,8 +101,10 @@ export default function DaysScreen({ navigation }) {
         if (data.result) {
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
-
+   
+          
           let cult = [];
+          
           tmp.forEach((e) => {
 
             fetch(`http://192.168.1.18:4000/infos/${e}`)
@@ -112,7 +116,8 @@ export default function DaysScreen({ navigation }) {
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setAllDetails([...allDetails, ...cult]));
-      
+           
+              // dispatch((addActivities({activities:reducr})))
               // fisherYatesShuffle(allDetails)
 
           });
@@ -130,10 +135,15 @@ export default function DaysScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           setAllRestaurants(data.foods);
+          //  console.log('resto', allrestaurants) => tous les restos sans détails
           let tmp = data.foods.map((e) => e.xid);
-          // setXid(tmp);
-          // console.log(data.foods)
+          // console.log(allrestaurants)
           let resto = [];
+          // let reduc = allrestaurants.splice(0,2)
+          // dispatch((addActivities({foods:reduc})))
+
+          // console.log('reduc', reduc)
+          // console.log('tmp', tmp) => tous les Xid
           tmp.forEach((e) => {
 
             fetch(`http://192.168.1.18:4000/infos/${e}`)
@@ -144,22 +154,25 @@ export default function DaysScreen({ navigation }) {
                 // setAllDetails([...allDetails,data])
               })
               .finally(() => setDetails([...details, ...resto]));
+              
               //  fisherYatesShuffle(details)
+              // setDetails(details.splice(0,2))
+              // console.log('det', details)
+              // dispatch((addActivities({activities:details.infos})))
           });
         }
       });
   }, []);
  
 
-
   // console.log('VISIT', allDetails)
-  
-
+ 
   const visit = allDetails.map((data, i) => {
     // const image = data.infos.wikipedia_extracts
 
     // console.log('DAT', image)
-    if (i < 2) {
+    if (i < 2 && data <2) {
+      dispatch((addActivities({foods:data.infos.name})))
       // if(heart && data){
       // dispatch(addActivities({activities:data.infos.name}))}
       // console.log('visit à envoyer dans reducer', addActivities({activities:data.infos.name}))}
@@ -231,12 +244,14 @@ export default function DaysScreen({ navigation }) {
   const restaurants = details.map((data, j) => {
     const image = "";
 
-    // console.log("DAT", image);
+    // console.log("DAT", restaurants);
     if (j < 2) {
-      if(heart ){
-      dispatch(addActivities({foods:data.infos.name}))}
-      console.log(data.infos.name)
-    
+      // setAllRestaurants(restaurants.splice(0,1))
+      // console.log(allrestaurants.splice(0,2))
+      // if(heart ){
+      // dispatch(addActivities({foods:data.infos.name}))
+      // console.log(data.infos.name)
+
       return (
         <ImageBackground
           key={j}
@@ -299,24 +314,22 @@ export default function DaysScreen({ navigation }) {
    
 
   //compteur
-  const [count, setCount] = useState(1);
+  // const [count, setCount] = useState(1);
 
-  const handleUpPage = () => {
-    setCount(count + 1);
-  };
-  const handleDownPage = () => {
-    if (count < 2) {
-      return;
-    } else {
-      setCount(count - 1);
-    }
-  };
+  // const handleUpPage = () => {
+  //   setCount(count + 1);
+  // };
+  // const handleDownPage = () => {
+  //   if (count < 2) {
+  //     return;
+  //   } else {
+  //     setCount(count - 1);
+  //   }
+  // };
 
   //map en attendant les fetch...
   //const [places, setPlaces] = useState([]);
-
-   
-    console.log("ADD REDUCER FAVORITE", favorites);
+  console.log("ADD REDUCER FAVORITE", favorites);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
