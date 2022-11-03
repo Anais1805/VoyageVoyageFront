@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore, login, logout } from "../reducers/users";
+import users from "../reducers/users";
 
-
-const BACKEND_ADRESS = "http://192.168.10.136:4000";
+const BACKEND_ADRESS = "http://192.168.1.18:4000";
 
 
 
@@ -22,7 +22,7 @@ export default function ConnectionScreen({ navigation }) {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  // console.log(user);
+
 
   const [emailError, setEmailError] = useState(false);
   const [signInEmail, setSignInEmail] = useState("");
@@ -41,7 +41,7 @@ export default function ConnectionScreen({ navigation }) {
           // dispatch(
           //   addUserToStore({ email: setSignInEmail, token: data.token })
           // );
-          dispatch(login(signInEmail))
+          dispatch(login({ token: data.token, email: signInEmail }))
           navigation.navigate("MyReservation");
           setSignInEmail("");
           setSignInPassword("");
@@ -50,6 +50,8 @@ export default function ConnectionScreen({ navigation }) {
         }
       });
   };
+
+  console.log('user', user);
 
   return (
     <SafeAreaView style={{flex: 1}}>

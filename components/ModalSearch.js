@@ -12,16 +12,16 @@ export default function ModalSearch ({navigation})  {
 
 const [city, setCity]=useState('')
 const [country, setCountry]=useState('')
-  const [modalVisible, setModalVisible] = useState(false);
+const [modalVisible, setModalVisible] = useState(false);
 
-  const destination = useSelector((state) => state.destinations.value)
+const destination = useSelector((state) => state.destinations.value)
 const dispatch = useDispatch()
   // console.log(destination)
 
 
 const searchPress = () => {
 
-fetch(`http://192.168.10.136:4000/favorite/${city}/${country}`)
+fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
 
             .then((resp) => resp.json())
             .then((data) => {

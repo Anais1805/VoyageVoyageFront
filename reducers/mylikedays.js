@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: [], 
-  myday: {activities: '', foods:''}
+  // value: [], 
+  value: {activities: [], foods: []}
   
 };
 
@@ -13,12 +13,9 @@ export const myLikedDaysSlice = createSlice({
     addMyDay: (state, action) => {
         state.value.push(action.payload)
     }, 
-    addActivities: (state, action) => {
-      state.myday.activities = action.payload.activities
-      state.myday.foods = action.payload.foods
-    }
   },
 });
 
-export const {addMyDay, addActivities} = myLikedDaysSlice.actions;
+
+export const {addMyDay} = myLikedDaysSlice.actions;
 export default myLikedDaysSlice.reducer;

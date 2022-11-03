@@ -27,14 +27,15 @@ export const userSlice = createSlice({
         state.value.budget = action.payload.budget
         state.value.diet = action.payload.diet
         state.value.displacement = action.payload.displacement
-        
+        state.value.isConnected = true
     },
     login: (state, action)=> {
-      console.log('obj', action.payload)
-          if(action.payload.email){        
+      // console.log('obj', action.payload)
+      //     if(action.payload.email){        
       state.value.isConnected = true,
       state.value.email = action.payload
-          }
+      state.value.token = action.payload.token;
+          // }
           
      },
      logout: (state, action) => {

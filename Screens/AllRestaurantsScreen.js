@@ -13,9 +13,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-
 // import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
-
 
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
@@ -23,10 +21,6 @@ import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
-
-
-
-
 
  
 
@@ -37,96 +31,75 @@ export default function AllRestaurantsScreen({ navigation }) {
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
 
-
-
   const activity = useSelector((state) => state.activities.value);
-
 
   useEffect(() => {
     fetch(
 
-      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
+  `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
 
-    )
-      .then(resp => resp.json())
-      .then(data => {
-        if (data.result) {
-          setAllRestaurants(data.foods);
-          let tmp = data.foods.map((e) => e.xid);
-          // setXid(tmp);
-          // console.log(data.foods)
-          let resto = []
-          tmp.forEach((e) => {
+)
+  .then(resp => resp.json())
+  .then(data => {
+    if (data.result) {
+      setAllRestaurants(data.foods);
+      let tmp = data.foods.map((e) => e.xid);
+      // setXid(tmp);
+      // console.log(data.foods)
+      let resto = []
+      tmp.forEach((e) => {
 
-            fetch(`http://192.168.10.127:4000/infos/${e}`)
+        fetch(`http://192.168.1.18:4000/infos/${e}`)
 
 
 
-              .then(resp => resp.json())
-              .then(data => {
-                resto.push(data)
-                // setAllDetails([...allDetails,data])
+          .then(resp => resp.json())
+          .then(data => {
+            resto.push(data)
+            // setAllDetails([...allDetails,data])
+    
+          }).finally(()=> setAllDetails([...allDetails,...resto]))
         
-              }).finally(()=> setAllDetails([...allDetails,...resto]))
-            
-            })
-            
-            
-        }
-      });
+        })
+        
+        
+    }
+  });
   }, []);
  
 
+// console.log('DETAILS', allDetails)
 
-  // useEffect(() => {
-  //   xid.map((e) => {
-  //     fetch(`http://192.168.10.137:4000/infos/${e}`)
-  //       .then((resp) => resp.json())
-  //       .then((data) => {
+const restaurants = allDetails.map((data, i) => {
+const image = data.infos.preview?.source
+  
+  // console.log('DAT', data.infos.preview?.source)
+  return (
+  //   <TouchableOpacity
+  //   activeOpacity={0.8}
+  //   onPress={() => navigation.navigate("Details", allDetails)}
+  // >
+    //source={{uri : `data: {data.infos.image}` ? `data: ${data.infos.image}` : require('../assets/Unknown.png')}}
+    // source={{uri: data.infos.preview ? data.infos.image : require('../assets/Unknown.png')}}
+    <ImageBackground key={i} style={styles.cardImage}    source={{uri: image === data.infos.preview?.source ? data.infos.preview?.source : source={uri:'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg'} }} >
+    <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
+        <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address?.city}</Text>
+      </View>
     
-          
-  //         setAllDetails([...allDetails, data])
-  //       });
-  //     })   
-  // }, [xid]);
+     {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
+     <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
 
-
-console.log('DETAILS', allDetails)
-
-    const restaurants = allDetails.map((data, i) => {
-      const image = ''
-      // if(data.infos.preview.image === undefined){
-      //   image = require('../assets/Unknown.png')
-      // } else {
-      //   image = data.infos.preview.source
-      // }
-      console.log('DAT', image)
-      return (
-      //   <TouchableOpacity
-      //   activeOpacity={0.8}
-      //   onPress={() => navigation.navigate("Details", allDetails)}
-      // >
-        //source={{uri : `data: {data.infos.image}` ? `data: ${data.infos.image}` : require('../assets/Unknown.png')}}
-        // source={{uri: data.infos.preview ? data.infos.image : require('../assets/Unknown.png')}}
-        <ImageBackground key={i} style={styles.cardImage}    source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg/400px-Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg'}} >
-        <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
-            <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address.city}</Text>
-          </View>
-        
-         {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
-         <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
-
-        </View>
-        </ImageBackground>
-        // </TouchableOpacity>
-        )
-        
-      // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
-    });
+    </View>
+    </ImageBackground>
+    // </TouchableOpacity>
+    )
+    
+  // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
+});
  
-    console.log(destination.city)
+console.log(destination.city)
    
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -154,36 +127,36 @@ console.log('DETAILS', allDetails)
           </View>
         </View>
 
-        <View style={styles.titleRestoContainer}>
-          <Text style={styles.titleResto}>Les restaurants à {destination.city}</Text>
-        </View>
-        {/* <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
-         <View style={styles.allcards}>
-         
-        <ScrollView contentContainerStyle>
-       {restaurants}
-        </ScrollView>
-         
-         </View> 
-        </ImageBackground> */}
+    <View style={styles.titleRestoContainer}>
+      <Text style={styles.titleResto}>Les restaurants à {destination.city}</Text>
+    </View>
+    {/* <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
+     <View style={styles.allcards}>
+     
+    <ScrollView contentContainerStyle>
+   {restaurants}
+    </ScrollView>
+     
+     </View> 
+    </ImageBackground> */}
    
-          {/* <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            vertical
-            showsHorizontalScrollIndicator={false}
-            data={allDetails}
-            renderItem={({ item }) => <Card allDetails={item}/>}
-            
-            
-          /> */}
+      {/* <FlatList
+        contentContainerStyle={{ paddingLeft: 20 }}
+        vertical
+        showsHorizontalScrollIndicator={false}
+        data={allDetails}
+        renderItem={({ item }) => <Card allDetails={item}/>}
         
-        <ScrollView style={styles.scrollViewer}>
         
-            {restaurants}
-          </ScrollView>
-          
-      </SafeAreaView>
-    </SafeAreaView>
+      /> */}
+    
+    <ScrollView style={styles.scrollViewer}>
+    
+        {restaurants}
+      </ScrollView>
+      
+  </SafeAreaView>
+</SafeAreaView>
   
   );
 }
@@ -247,8 +220,8 @@ const styles = StyleSheet.create({
   allcards: {
     //  flex:0.80,
 
-    height: "100%",
-    margin: 0,
+height: "100%",
+margin: 0,
   },
   scrollView: {
     height: 20,
@@ -265,8 +238,6 @@ const styles = StyleSheet.create({
     height: '100%',
    
 
-    marginLeft: 20,
+marginLeft: 20,
   }
 });
-
-
