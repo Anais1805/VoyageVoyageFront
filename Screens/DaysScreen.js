@@ -16,10 +16,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import destinations from "../reducers/destinations";
-import mylikedays from "../reducers/mylikedays";
+
 import favorite from "../reducers/favorites";
-import { addMyDay } from "../reducers/mylikedays";
 import { addActivities, cleanActivities } from "../reducers/favorites";
+import mylikedays, { removeMyDays } from "../reducers/mylikedays";
+import { addMyDay, addActivities } from "../reducers/mylikedays";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import activities from "../reducers/activities";
 
@@ -93,7 +94,9 @@ export default function DaysScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
-      `http://192.168.1.18:4000/visits/${destination.lon}/${destination.lat}`
+
+      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+
 
     )
       .then((resp) => resp.json())
@@ -107,7 +110,8 @@ export default function DaysScreen({ navigation }) {
           
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.1.18:4000/infos/${e}`)
+
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -125,10 +129,18 @@ export default function DaysScreen({ navigation }) {
       });
   }, []);
 
+
+
+
+  const store = useSelector((state) => state.mylikedays.value);
+  console.log("DEST_store", store);
+  
+  // console.log("ACTIVITES", myactivities);
+
   useEffect(() => {
     fetch(
 
-      `http://192.168.1.18:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
 
     )
       .then((resp) => resp.json())
@@ -146,7 +158,8 @@ export default function DaysScreen({ navigation }) {
           // console.log('tmp', tmp) => tous les Xid
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.1.18:4000/infos/${e}`)
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
+
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -171,11 +184,17 @@ export default function DaysScreen({ navigation }) {
     // const image = data.infos.wikipedia_extracts
 
     // console.log('DAT', image)
+
     if (i < 2 && data <2) {
       dispatch((addActivities({foods:data.infos.name})))
+
+  
+
+
       // if(heart && data){
       // dispatch(addActivities({activities:data.infos.name}))}
       // console.log('visit à envoyer dans reducer', addActivities({activities:data.infos.name}))}
+
       return (
        
        
@@ -246,11 +265,13 @@ export default function DaysScreen({ navigation }) {
 
     // console.log("DAT", restaurants);
     if (j < 2) {
+
       // setAllRestaurants(restaurants.splice(0,1))
       // console.log(allrestaurants.splice(0,2))
       // if(heart ){
       // dispatch(addActivities({foods:data.infos.name}))
       // console.log(data.infos.name)
+
 
       return (
         <ImageBackground
@@ -286,7 +307,7 @@ export default function DaysScreen({ navigation }) {
                 {data.infos.name}
               </Text>
               <Text style={{ color: "white", paddingHorizontal: 10 }}>
-                {destination.city}
+                {data.infos.address?.city}
               </Text>
             </View>
 
@@ -379,6 +400,7 @@ export default function DaysScreen({ navigation }) {
             onPress={() => {
             // dispatch(addActivities({activities: }))
               dispatch(addMyDay(destination.city));
+              // dispatch(removeMyDays());
               heartPress();
             }}
           />

@@ -33,7 +33,10 @@ export default function AllNaturalssScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
-      `http://192.168.1.18:4000/naturals/${destination.lon}/${destination.lat}`
+
+
+      `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
+
 
     )
       .then((resp) => resp.json())
@@ -46,7 +49,9 @@ export default function AllNaturalssScreen({ navigation }) {
           let nature = [];
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.1.18:4000/infos/${e}`)
+
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
+
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -61,7 +66,9 @@ export default function AllNaturalssScreen({ navigation }) {
 
   // console.log(allDetails);
   const hikes = allDetails.map((data, i) => {
-    // console.log("DAT", data.infos.image);
+
+    const image = data.infos.preview?.source
+
 
     return (
       // <TouchableOpacity
@@ -71,7 +78,7 @@ export default function AllNaturalssScreen({ navigation }) {
         <ImageBackground
           key={i}
           style={styles.cardImage}
-          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg/400px-Paris_75005_Rue_Saint-Jacques_La_Sorbonne_facade_01c.jpg'}}
+          source={{uri: image}}
         >
           <View
             style={{

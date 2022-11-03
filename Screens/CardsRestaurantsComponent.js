@@ -35,7 +35,51 @@ import {
       </ImageBackground> 
       </TouchableOpacity>
     );
+
+  }
+  
+  const styles = StyleSheet.create({
+    cards:{
+        height:'20%',
+      
+    },
+    cardcontainer: {
+      
+      flexDirection: "row",
+      borderColor: "#9E2A2B",
+      borderWidth: 1,
+      borderRadius: 5,
+      margin: "3%",
+      backgroundColor: "white",
+     
+    },
+    image: {
+      width: "100%",
+      height: "100%",
+      borderRadius: 5,
+      padding: "1%",
+    },
+    leftpart: {
+      flex: 0.4,
+      margin: "2%",
+    },
+    rightpart: {
+      flex: 0.6,
+      alignItems: "flex-start",
+      justifyContent: "space-around",
+      margin: "2%",
+    },
+    title2: {
+      fontWeight: "bold",
+      marginVertical: '5%'
+    },
+    description: {
+      fontSize: 12,
+      marginVertical: '5%'
+    },
+
   };
+
 
   const styles = StyleSheet.create({
   cardImage: {
