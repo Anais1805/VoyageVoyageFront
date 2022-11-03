@@ -11,7 +11,9 @@ export const FavoritesSlice = createSlice({
   initialState,
   reducers: {
     addActivities: (state, action) => {
-        state.value.push(state.value.filter(activites => activites !== action.payload));
+        // state.value = state.value.filter(activites => activites !== action.payload)
+        state.value.push(action.payload.activities)  
+        state.value.push(action.payload.foods)  
     },
     cleanActivities: (state) => {
     state.value = [];
