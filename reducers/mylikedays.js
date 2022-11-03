@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // value: [], 
-  value: {activities: [], foods: []}
-  
+
+  // value: {
+  //   city: [],
+  //   activities: [],
+  //   foods: ''
+  // },
+  value: []
+
 };
 
 export const myLikedDaysSlice = createSlice({
@@ -11,11 +16,14 @@ export const myLikedDaysSlice = createSlice({
   initialState,
   reducers: {
     addMyDay: (state, action) => {
-        state.value.push(action.payload)
+      console.log('___payload', action.payload);
+      state.value.push(action.payload);
     }, 
+    removeMyDays: (state, action) => {
+      state.value = []
+    }
   },
 });
 
-
-export const {addMyDay} = myLikedDaysSlice.actions;
+export const {addMyDay, removeMyDays} = myLikedDaysSlice.actions;
 export default myLikedDaysSlice.reducer;

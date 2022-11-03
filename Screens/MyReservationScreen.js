@@ -13,13 +13,27 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Calendar } from "react-native-calendars";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LocaleConfig } from "react-native-calendars";
-import mylikedays from "../reducers/mylikedays";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import mylikedays from "../reducers/mylikedays";
+import { removeMyDays } from "../reducers/mylikedays";
+import dates from "../reducers/dates";
+import { addMyDates } from "../reducers/dates";
+
 
 export default function MyReservationScreen({ navigation }) {
-  
+   const dispatch = useDispatch()
+  const poub = useSelector((state) => state.mylikedays.value)
+  const dates = useSelector((state) => state.dates.value)
+  const[myDays, setMyDays]= useState([])
+  console.log('DATES', dates)
+ 
+  useEffect(() => {
+   dispatch(addMyDates(myDays))
+  }, [myDays]);
+
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -63,15 +77,18 @@ export default function MyReservationScreen({ navigation }) {
   };
   LocaleConfig.defaultLocale = "fr";
   const mydays = useSelector((state) => state.mylikedays.value)
-
+  console.log('DAYSDAYS', mydays)
+ 
   const myBookings = mydays.map((data, i) => {
-    const [showCalendar, setShowCalendar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [daySelected, setDaySelected] = useState("");
   const [dayBooked, setDayBooked] = useState(false);
-
+  
+  
     return(
+      <View key={i}>
       <ImageBackground
-      key={i}
+      
       style={styles.cardImage}
       source={{
         uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG/400px-Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG",
@@ -110,32 +127,7 @@ export default function MyReservationScreen({ navigation }) {
 >
         {!dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Je plannifie</Text>}
         {dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>{daySelected}</Text>}
-        {showCalendar && (
-          <Calendar
-            minDate={"2022-10-01"}
-            maxDate={"2026-10-01"}
-            onDayPress={(day) => {
-              console.log("selected day", day);
-              setDaySelected(day.dateString);
-              setDayBooked(true);
-              setShowCalendar(!showCalendar)
-            }}
-            markedDates={{
-              [daySelected]: {
-                selected: true,
-                selectedColor: "#335C67",
-              },
-            }}
-            markingType={"dot"}
-            theme={{
-              arrowColor: "#9E2A2B",
-              selectedDayBackgroundColor: "#F4F1F1",
-              monthTextColor: "#9E2A2B",
-              // textMonthFontWeight: 'bold'
-            }}
-            
-          />
-        )}
+       
         </Pressable>
         {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
         <Text
@@ -152,6 +144,34 @@ export default function MyReservationScreen({ navigation }) {
       </View>
       
     </ImageBackground>
+     {showCalendar && (
+      <Calendar
+        minDate={"2022-10-01"}
+        maxDate={"2026-10-01"}
+        onDayPress={(day) => {
+          console.log("selected day", day);
+          setDaySelected(day.dateString);
+          setDayBooked(true);
+          setShowCalendar(!showCalendar)
+          setMyDays(daySelected)
+        }}
+        markedDates={{
+          [daySelected]: {
+            selected: true,
+            selectedColor: "#335C67",
+          },
+        }}
+        markingType={"dot"}
+        theme={{
+          arrowColor: "#9E2A2B",
+          selectedDayBackgroundColor: "#F4F1F1",
+          monthTextColor: "#9E2A2B",
+          // textMonthFontWeight: 'bold'
+        }}
+        
+      />
+    )}
+    </View>
     )
   })
 
@@ -164,7 +184,7 @@ export default function MyReservationScreen({ navigation }) {
             <View>
               <Image
                 source={require("../assets/logo.png")}
-                style={{ width: 30, height: 30 }}
+                style={{ width: 40, height: 40 }}
                 onPress={() => navigation.navigate("Home")}
               />
             </View>
@@ -194,14 +214,21 @@ export default function MyReservationScreen({ navigation }) {
               Vos journées réservées
               
             </Text>
-            </View>
+           
          
-          <ScrollView showsVerticalScrollIndicator={false}
-          >
+         
            
-           
+           <FontAwesome
+            style={styles.iconP}
+            name="bitbucket"
+            size={30}
+            onPress={() => dispatch(removeMyDays())}
+          />
+           </View>
+             <ScrollView showsVerticalScrollIndicator={false}
+          >    
  {myBookings}
- <Pressable style={styles.btnToReserve}  onPress={() => navigation.navigate('Overview')}
+ <Pressable style={styles.btnToReserve}  onPress={() => {navigation.navigate('Overview'); }}
 >
        <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Valider</Text>
         
@@ -296,6 +323,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 5   
   },
+  
 });
 
 
