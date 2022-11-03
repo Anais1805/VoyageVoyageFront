@@ -25,7 +25,6 @@ export const destinationSlice = createSlice({
     },
     destinationPerDay: (state, action) =>{
      console.log('ACT', action.payload.city) 
-       
      state.mydays.push(action.payload.city)
     }
   },

@@ -13,7 +13,8 @@ import { useState } from "react";
 import { RadioButton } from "react-native-paper";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useDispatch, useSelector } from "react-redux";
-import { SignUp } from "../reducers/users";
+import { SignUp, login } from "../reducers/users";
+import users from "../reducers/users";
 
 import createPersistoid from "redux-persist/es/createPersistoid";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,13 +33,13 @@ export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.value);
-  console.log(user);
+ 
   const EMAIL_REGEX =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const submitClick = () => {
 
-    fetch("http://192.168.10.136:4000/users/signup", {
+    fetch("http://192.168.1.18:4000/users/signup", {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -69,12 +70,15 @@ export default function ProfileScreen({ navigation }) {
               isConnected: connected,
             })
           );
+          dispatch(login({ token: data.token }))
           setSelected([]);
         } else {
           setEmailError(true);
         }
       });
   };
+
+  console.log('user up', user);
 
   const addDisplacement = (newDisplacement) => {
     setSelected([...isSelected, newDisplacement]);

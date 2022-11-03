@@ -33,7 +33,10 @@ export default function AllNaturalssScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
+
+
       `http://192.168.1.43:4000/naturals/${destination.lon}/${destination.lat}`
+
 
     )
       .then((resp) => resp.json())
@@ -42,11 +45,13 @@ export default function AllNaturalssScreen({ navigation }) {
           setAllNaturals(data.naturals);
           let tmp = data.naturals.map((e) => e.xid);
           // setXid(tmp);
-          console.log("DDDDDD", data.naturals);
+          // console.log("DDDDDD", data.naturals);
           let nature = [];
           tmp.forEach((e) => {
 
+
             fetch(`http://192.168.1.43:4000/infos/${e}`)
+
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -59,9 +64,11 @@ export default function AllNaturalssScreen({ navigation }) {
       });
   }, []);
 
-  console.log(allDetails);
+  // console.log(allDetails);
   const hikes = allDetails.map((data, i) => {
+
     const image = data.infos.preview?.source
+
 
     return (
       // <TouchableOpacity

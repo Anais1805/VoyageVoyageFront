@@ -20,32 +20,39 @@ import destinations from "../reducers/destinations";
 import { destinationSearch } from '../reducers/destinations';
 import * as Location from 'expo-location';
 import users from "../reducers/users";
-import {login, logout} from "../reducers/users"
+import { logout} from "../reducers/users"
 
 const {width} = Dimensions.get('screen');
 
 export default function HomeScreen({ navigation }) {
 
   const [currentPosition, setCurrentPosition] = useState(null);
-  const handleLogout = () => {
-        dispatch(logout())
-    }
+  const [city, setCity]=useState('')
+  const [country, setCountry]=useState('')
+  const dispatch = useDispatch()
+  
+  const destination = useSelector((state) => state.destinations.value)
+  const user = useSelector((state) => state.user.value)
 
+  const handleLogout = () => {
+		dispatch(logout())
+	}
+ 
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
-  if (status === 'granted') {
-    Location.watchPositionAsync({ distanceInterval: 10 },
-      (location) => {
-        console.log(location);
-        // setCurrentPosition(location.coords);
-      });
-  }
-})();
-//  insert code here
+      if (status === 'granted') {
+        Location.watchPositionAsync({ distanceInterval: 10 },
+          (location) => {
+            console.log(location);
+            // setCurrentPosition(location.coords);
+          });
+      }
+    })();
+    //  insert code here
 }, []);
-
+  
   const Card = ({place}) => {
     return(
       <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
@@ -73,18 +80,12 @@ export default function HomeScreen({ navigation }) {
 
   
 
-const [city, setCity]=useState('')
-const [country, setCountry]=useState('')
-const dispatch = useDispatch()
-
-const destination = useSelector((state) => state.destinations.value)
-const user = useSelector((state) => state.user.value)
- 
-console.log('USER', user)
 const searchPress = () => {
 
 
+
 fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
+
 
 
             .then((resp) => resp.json())
@@ -95,25 +96,28 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
                   country: data.city.country,
                   lat: data.city.lat,
                   lon: data.city.lon
-
-            }
-            ))
-
-          }
-        })
-   
+                }
+                ))
+              }
+            })
    }
+   
+    return (
 
+      <SafeAreaView style={{ flex: 1}}>
+        <StatusBar />
+        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+  
+  
+  
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar />
-      <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
         <View style={styles.header}>
           <View>
             <Image
               source={require("../assets/logo.png")}
+
               style={{ width: 40, height: 40 }}
+
             />
           </View>
          {!user.isConnected && <View style={styles.btnHeader}>
@@ -125,7 +129,9 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
               <Text style={styles.btnLogin1}>S'inscrire</Text>
             </TouchableOpacity>
             <TouchableOpacity
+
               onPress={() => navigation.navigate('Connection')}
+
               style={styles.login2}
               activeOpacity={0.8}
             >
@@ -155,69 +161,75 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
               <Text style={styles.btnLogin2}>Se connecter</Text>
             </TouchableOpacity>
 
-
+                <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={40}
+            onPress={() => navigation.navigate("Profile")}
+          />
             <FontAwesome
-        style={styles.icon}
-        name="user-circle-o"
-        size={40}
-        onPress={() => navigation.navigate("Profile")}
-      />
+            style={styles.icon}
+            name="times-circle"
+            size={40}
+            onPress={() => handleLogout()}
+          />
+                    
             
-        
-        </View>}
-    </View> 
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{height: 120, paddingHorizontal: 20, paddingVertical: 20}}>
+            </View>}
+        </View> 
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{height: 120, paddingHorizontal: 20, paddingVertical: 20}}>
 
 
-      <View style={styles.inputContainer}>
-       <ModalSearch />
-       
-        <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
-       
-        </View>
-      </View>
+          <View style={styles.inputContainer}>
+           <ModalSearch />
+           
+            <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
+           
+            </View>
+          </View>
 
-        <View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={styles.suggestTxt}>Les restaurants</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
-        <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
-        </TouchableOpacity>
-        </View>
-          <FlatList
-          contentContainerStyle={{paddingLeft: 20}}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={places}
-          renderItem={({item}) => <Card place={item} /> } />
-        </View>
+            <View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.suggestTxt}>Les restaurants</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AllRestaurants')}>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
+            </TouchableOpacity>
+            </View>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
 
-        
-        <View style={{marginTop: 30}}>
-        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-        <View>
-        <Text style={styles.suggestTxt}>Les activitées sportives</Text>
-        <Text style={styles.suggestTxt}>et randonnées</Text>
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
-        <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
-        </TouchableOpacity>
-        </View>
-          <FlatList
-          contentContainerStyle={{paddingLeft: 20}}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={places}
-          renderItem={({item}) => <Card place={item} /> } />
-        </View>
+            
+            <View style={{marginTop: 30}}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+            <View>
+            <Text style={styles.suggestTxt}>Les activitées sportives</Text>
+            <Text style={styles.suggestTxt}>et randonnées</Text>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
+            </TouchableOpacity>
+            </View>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
 
-        <View style={{marginTop: 30}}>
-        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-        <View>
-        <Text style={styles.suggestTxt}>Les visites culturelles</Text>
-        
-        </View>
+            <View style={{marginTop: 30}}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+            <View>
+            <Text style={styles.suggestTxt}>Les visites culturelles</Text>
+            
+            </View>
+
 
         <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
         <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
@@ -225,22 +237,23 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
         <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
         <Text style={{fontSize: 12}}>Voir plus ...</Text>
 
-        </TouchableOpacity>
-        </View>
-          <FlatList
-          contentContainerStyle={{paddingLeft: 20}}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={places}
-          renderItem={({item}) => <Card place={item} /> } />
-        </View>
-        
-    </ScrollView>
-    </ImageBackground>
-  </SafeAreaView>
+
+            </TouchableOpacity>
+            </View>
+              <FlatList
+              contentContainerStyle={{paddingLeft: 20}}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              renderItem={({item}) => <Card place={item} /> } />
+            </View>
+            
+        </ScrollView>
+        </ImageBackground>
+      </SafeAreaView>
 
 
-      
+          
   );
 }
 
@@ -320,6 +333,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 10,
     marginTop: 5, 
-    borderRadius: 5
+    borderRadius: 5   
   },
 });
+
+
+
+
+
+
+   
+

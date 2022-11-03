@@ -16,6 +16,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import destinations from "../reducers/destinations";
+
+import favorite from "../reducers/favorites";
+import { addActivities, cleanActivities } from "../reducers/favorites";
 import mylikedays, { removeMyDays } from "../reducers/mylikedays";
 import { addMyDay, addActivities } from "../reducers/mylikedays";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -33,7 +36,9 @@ export default function DaysScreen({ navigation }) {
 
 
   const dispatch = useDispatch();
-
+  const mydays = useSelector((state) => state.mylikedays.value);
+  const favorites = useSelector((state) => state.favorite.value);
+ 
 
   function fisherYatesShuffle(arr){
     for(var i =arr.length-1 ; i>0 ;i--){
@@ -58,8 +63,9 @@ export default function DaysScreen({ navigation }) {
 
   const heartPress = () => {
     setHeart(!heart);
+    // if(!heart && favorites){dispatch(cleanActivities())}
   };
-  // console.log(heart);
+ 
 
   // const wait = (timeout) => {
   //   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -86,7 +92,9 @@ export default function DaysScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
+
       `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+
 
     )
       .then((resp) => resp.json())
@@ -97,6 +105,7 @@ export default function DaysScreen({ navigation }) {
 
           let cult = [];
           tmp.forEach((e) => {
+
 
             fetch(`http://192.168.1.43:4000/infos/${e}`)
 
@@ -114,6 +123,7 @@ export default function DaysScreen({ navigation }) {
         }
       });
   }, []);
+
 
 
 
@@ -140,6 +150,7 @@ export default function DaysScreen({ navigation }) {
 
             fetch(`http://192.168.1.43:4000/infos/${e}`)
 
+
               .then((resp) => resp.json())
               .then((data) => {
                 resto.push(data);
@@ -162,7 +173,11 @@ export default function DaysScreen({ navigation }) {
 
     // console.log('DAT', image)
     if (i < 2) {
-      // dispatch(addActivities({activities: data.infos.name}))
+
+      // if(heart && data){
+      // dispatch(addActivities({activities:data.infos.name}))}
+      // console.log('visit à envoyer dans reducer', addActivities({activities:data.infos.name}))}
+
       return (
        
        
@@ -197,6 +212,7 @@ export default function DaysScreen({ navigation }) {
                 }}
               >
                 {data.infos.name}
+                
               </Text>
               <Text style={{ color: "white", paddingHorizontal: 10 }}>
                 {destination.city}
@@ -232,7 +248,10 @@ export default function DaysScreen({ navigation }) {
 
     // console.log("DAT", image);
     if (j < 2) {
-      // dispatch(addActivities({foods: data.infos.name}))
+      if(heart ){
+      dispatch(addActivities({foods:data.infos.name}))}
+      console.log(data.infos.name)
+
       return (
         <ImageBackground
           key={j}
@@ -311,6 +330,8 @@ export default function DaysScreen({ navigation }) {
   //map en attendant les fetch...
   //const [places, setPlaces] = useState([]);
 
+   
+    console.log("ADD REDUCER FAVORITE", favorites);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />

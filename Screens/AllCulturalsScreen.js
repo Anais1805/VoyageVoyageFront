@@ -28,7 +28,9 @@ export default function AllCulturalsScreen({ navigation }) {
 
   useEffect(() => {
 
+
     fetch(`http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`)
+
 
       .then((resp) => resp.json())
       .then((data) => {
@@ -40,7 +42,9 @@ export default function AllCulturalsScreen({ navigation }) {
           let cult = [];
           tmp.forEach((e) => {
 
+
             fetch(`http://192.168.1.43:4000/infos/${e}`)
+
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -57,7 +61,7 @@ export default function AllCulturalsScreen({ navigation }) {
     const image = data.infos.preview?.source
     //data.infos.wikipedia_extracts;
 
-    console.log("DAT", image);
+    // console.log("DAT", image);
     return (
       <ImageBackground
         key={i}

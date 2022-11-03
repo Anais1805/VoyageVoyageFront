@@ -13,20 +13,17 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-
 // import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
-
 
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
-
-import { $CombinedState } from "@reduxjs/toolkit";
-
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
-
+import { $CombinedState } from "@reduxjs/toolkit";
+import { activitiesInfos } from "../reducers/activities";
+import places from "./places";
 
 
 export default function AllRestaurantsScreen({ navigation }) {
@@ -35,6 +32,7 @@ export default function AllRestaurantsScreen({ navigation }) {
   const [allDetails, setAllDetails] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
+
 
   // console.log(destination);
   // const [lonmax, setLonMax] = useState(destination.lon + 1);
@@ -47,15 +45,12 @@ export default function AllRestaurantsScreen({ navigation }) {
   useEffect(() => {
     fetch(
       `http://192.168.10.133:4000/foods/${destination.lon}/${destination.lat}`
-=======
-
-
 
   const activity = useSelector((state) => state.activities.value);
 
-
   useEffect(() => {
     fetch(
+
 
       `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
 
@@ -90,8 +85,11 @@ export default function AllRestaurantsScreen({ navigation }) {
             
         }
       });
+
   }, []);
  
+
+// console.log('DETAILS', allDetails)
 
 
 
@@ -141,6 +139,7 @@ console.log('DETAILS', allDetails)
  
 
     console.log(destination.city)
+
    
   return (
 
@@ -195,6 +194,7 @@ console.log('DETAILS', allDetails)
 
 
 
+
       <ScrollView contentContainerStyle={styles.allcards}>
         <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
        {restaurants}
@@ -216,24 +216,25 @@ console.log('DETAILS', allDetails)
          
          </View> 
         </ImageBackground> */}
+
    
-          {/* <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            vertical
-            showsHorizontalScrollIndicator={false}
-            data={allDetails}
-            renderItem={({ item }) => <Card allDetails={item}/>}
-            
-            
-          /> */}
+      {/* <FlatList
+        contentContainerStyle={{ paddingLeft: 20 }}
+        vertical
+        showsHorizontalScrollIndicator={false}
+        data={allDetails}
+        renderItem={({ item }) => <Card allDetails={item}/>}
         
-        <ScrollView style={styles.scrollViewer}>
         
-            {restaurants}
-          </ScrollView>
-          
-      </SafeAreaView>
-    </SafeAreaView>
+      /> */}
+    
+    <ScrollView style={styles.scrollViewer}>
+    
+        {restaurants}
+      </ScrollView>
+      
+  </SafeAreaView>
+</SafeAreaView>
   
 
   );
@@ -307,8 +308,8 @@ const styles = StyleSheet.create({
 
     //  flex:0.80,
 
-    height: "100%",
-    margin: 0,
+height: "100%",
+margin: 0,
   },
   scrollView: {
     height: 20,
@@ -325,9 +326,11 @@ const styles = StyleSheet.create({
     height: '100%',
    
 
-    marginLeft: 20,
+marginLeft: 20,
   }
 
+
 });
+
 
 
