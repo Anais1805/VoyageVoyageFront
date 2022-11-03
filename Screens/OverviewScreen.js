@@ -17,9 +17,12 @@ import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import dates from "../reducers/dates";
 import { removeMyDates } from "../reducers/dates";
-import markers from "../reducers/markers";
+
 import { importMarkers } from "../reducers/markers";
 import { addMyDay, removeMyDays } from "../reducers/mylikedays";
+import { addMyDates } from "../reducers/dates";
+import markers from "../reducers/markers";
+
 
 export default function MapScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -33,40 +36,41 @@ export default function MapScreen({ navigation }) {
     .then(resp => resp.json())
       .then(data =>{
         console.log('FETCH', data.destination)
-         setMyMarkers(data),
+         setMyMarkers(data.destination),
         dispatch(importMarkers(data.destination))
         })}, [])
+
         useEffect(() => {
         fetch(`http://192.168.1.43:4000/bookings/${user.token}`)
         .then(resp => resp.json())
           .then(data =>{
             console.log('BOOK', data.Journeys)
             setMyDates(data.Journeys)
-          dispatch(addMyDay(data.Journeys)) 
+          dispatch(addMyDates(data.Journeys)) 
             })}, []);
 
-
-            const mydays = useSelector((state) => state.mylikedays.value);
-            console.log('DATESDATES', mydays);
+console.log('MARK', myMarkers);
+            
+   
    
 
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Location.requestForegroundPermissionsAsync();
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
-  //     if (status === "granted") {
-  //       Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-  //         setCurrentPosition(location.coords);
-  //       });
-  //     }
-  //   })();
-  // }, []);
+      if (status === "granted") {
+        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+          setCurrentPosition(location.coords);
+        });
+      }
+    })();
+  }, []);
   
 
-  // console.log('USERS', user.token)
+  // // console.log('USERS', user.token)
   const mymarkers = useSelector((state) => state.markers.value)
-  // console.log('MYMARKERS', mymarkers)
+   console.log('MYMARKERS', mymarkers)
   const markers = mymarkers.map((data, i) => {
     return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
   });
@@ -119,7 +123,7 @@ export default function MapScreen({ navigation }) {
           style={styles.iconP}
           name="bitbucket"
           size={30}
-          onPress={() => dispatch(removeMyDates())}
+          onPress={() => dispatch(removeMyDays())}
         />
       </View>
       

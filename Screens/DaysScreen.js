@@ -142,7 +142,7 @@ export default function DaysScreen({ navigation }) {
 
 
   const store = useSelector((state) => state.mylikedays.value);
-  console.log("DEST_store", store);
+ 
   
   // console.log("ACTIVITES", myactivities);
 
@@ -183,8 +183,7 @@ export default function DaysScreen({ navigation }) {
   
 
   const visit = allDetails.map((data, i) => {
-    // const image = data.infos.wikipedia_extracts
-
+     const image = data.infos.preview?.source
     // console.log('DAT', image)
     if (i < 2) {
 
@@ -202,7 +201,7 @@ export default function DaysScreen({ navigation }) {
           key={i}
           style={styles.cardImage}
           source={{
-            uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG/400px-Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG",
+            uri: image ?? 'https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg',
           }}
         >
           <View
@@ -261,7 +260,7 @@ export default function DaysScreen({ navigation }) {
 
 
   const restaurants = details.map((data, j) => {
-    const image = "";
+    const image = data.infos.preview?.source
 
     // console.log("DAT", image);
     if (j < 2) {
@@ -275,7 +274,8 @@ export default function DaysScreen({ navigation }) {
           key={j}
           style={styles.cardImage}
           source={{
-            uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg/400px-Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg",
+            uri: image ?? 'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg'
+            
           }}
         >
           <View
@@ -391,6 +391,7 @@ export default function DaysScreen({ navigation }) {
           <Text style={styles.titleResto}>
             Votre journée à {destination.city}
           </Text>
+          <View style={{flexDirection:'row'}}>
           <FontAwesome
             style={iconColor}
             name="heart"
@@ -398,11 +399,18 @@ export default function DaysScreen({ navigation }) {
             // color={'#335C67'}
             onPress={() => {
             // dispatch(addActivities({activities: }))
-              // dispatch(addMyDay(destination.city));
+              dispatch(addMyDay(destination.city));
               // dispatch(removeMyDays());
               heartPress();
             }}
           />
+            <FontAwesome
+            style={{color: "#9E2A2B", marginLeft: 30}}
+            name="refresh"
+            size={40}
+            onPress={() => shuffle()}
+          />
+        </View>
         </View>
         <ScrollView
         //   showsVerticalScrollIndicator={false}
@@ -413,15 +421,7 @@ export default function DaysScreen({ navigation }) {
           {visit}
           {restaurants}
         </ScrollView>
-
-        <TouchableOpacity
-              onPress={() => shuffle()}
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Shuffle</Text>
-            </TouchableOpacity>
-
+      
       </ImageBackground>
     </SafeAreaView>
 
@@ -541,6 +541,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 10,
   },
+  
   // container: {
   //     flex: 1,
   //     width:'100%',
