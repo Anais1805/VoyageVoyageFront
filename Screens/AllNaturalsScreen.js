@@ -78,7 +78,7 @@ export default function AllNaturalssScreen({ navigation }) {
         <ImageBackground
           key={i}
           style={styles.cardImage}
-          source={{uri: image}}
+          source={{uri: image ?? 'https://www.sentiersmaritimes.com/681-thickbox_default/la-crete-entre-mer-et-montagne.jpg'}}
         >
           <View
             style={{

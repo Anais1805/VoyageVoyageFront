@@ -17,41 +17,66 @@ import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import dates from "../reducers/dates";
 import { removeMyDates } from "../reducers/dates";
+import markers from "../reducers/markers";
+import { importMarkers } from "../reducers/markers";
+import { addMyDay, removeMyDays } from "../reducers/mylikedays";
 
 export default function MapScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const dates = useSelector((state) => state.dates.value);
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [tempCoordinates, setTempCoordinates] = useState(null);
-  const [newPlace, setNewPlace] = useState("");
-
+  const [myMarkers, setMyMarkers]= useState([])
+  const [myDates, setMyDates]=useState([])
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+    fetch(`http://192.168.1.43:4000/destinations/${user.token}`)
+    .then(resp => resp.json())
+      .then(data =>{
+        console.log('FETCH', data.destination)
+         setMyMarkers(data),
+        dispatch(importMarkers(data.destination))
+        })}, [])
+        useEffect(() => {
+        fetch(`http://192.168.1.43:4000/bookings/${user.token}`)
+        .then(resp => resp.json())
+          .then(data =>{
+            console.log('BOOK', data.Journeys)
+            setMyDates(data.Journeys)
+          dispatch(addMyDay(data.Journeys)) 
+            })}, []);
 
-      if (status === "granted") {
-        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          setCurrentPosition(location.coords);
-        });
-      }
-    })();
-    //  insert code here
-  }, []);
 
-  // mettre les markers de chaque activité enregistré
-  // const markers = user.places.map((data, i) => {
-  //     //console.log(data)
-  //     return <Marker key={i} coordinate={{ latitude: data.latitude || 0,
-  //                                          longitude: data.longitude || 0 }}
-  //                            title={data.name} />;
+            const mydays = useSelector((state) => state.mylikedays.value);
+            console.log('DATESDATES', mydays);
+   
 
-  const myBookingDays = dates.map((data, i) => {
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Location.requestForegroundPermissionsAsync();
+
+  //     if (status === "granted") {
+  //       Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+  //         setCurrentPosition(location.coords);
+  //       });
+  //     }
+  //   })();
+  // }, []);
+  
+
+  // console.log('USERS', user.token)
+  const mymarkers = useSelector((state) => state.markers.value)
+  // console.log('MYMARKERS', mymarkers)
+  const markers = mymarkers.map((data, i) => {
+    return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
+  });
+  const myBookingDays = mymarkers.map((data, i) => {
+    console.log('HELLO', data.date)
     if (data) {
       return (
         <View key={i} style={styles.btnToReserve}>
           <Text style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>
-            Journée du {data}
+            Journée à/en {data.city}
           </Text>
         </View>
       );
@@ -105,7 +130,15 @@ export default function MapScreen({ navigation }) {
         </View>
 
         <View style={{ width: "100%", height: "50%", alignItems: "center", }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.mymap}>My Map</Text>
+          <FontAwesome
+         style={styles.iconE}
+          name="expand"
+          size={25}
+          onPress={() => navigation.navigate('Map')}
+        />
+        </View>
           <MapView
             onLongPress={() => navigation.navigate("Map")}
             mapType="hybrid"
@@ -118,7 +151,7 @@ export default function MapScreen({ navigation }) {
                 pinColor="#fecb2d"
               />
             )}
-            {/* {markers} */}
+           {markers} 
           </MapView>
         </View>
    
@@ -205,11 +238,11 @@ const styles = StyleSheet.create({
   },
   btnToReserve: {
     backgroundColor: "#9E2A2B",
-    width: 150,
+    width: 170,
     height: 25,
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 5,
+    marginHorizontal: 10,
     marginBottom: 10,
 
     borderRadius: 5,
@@ -229,5 +262,10 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     paddingBottom: 5,
+    paddingLeft: '30%'
   },
+  iconE: {
+   
+    paddingLeft: '30%'
+  }
 });

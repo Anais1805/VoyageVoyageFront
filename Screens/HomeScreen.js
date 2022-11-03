@@ -13,6 +13,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import ModalSearch from "../components/ModalSearch";
 import places from "./places";
+import places1 from "./places1";
+import places2 from "./places2";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -21,6 +23,8 @@ import { destinationSearch } from '../reducers/destinations';
 import * as Location from 'expo-location';
 import users from "../reducers/users";
 import { logout} from "../reducers/users"
+import { importPosition } from "../reducers/currentPosition";
+
 
 const {width} = Dimensions.get('screen');
 
@@ -30,14 +34,11 @@ export default function HomeScreen({ navigation }) {
   const [city, setCity]=useState('')
   const [country, setCountry]=useState('')
   const dispatch = useDispatch()
-  
+  const [allDetailsResto, setAllDetailsResto]=useState(null)
   const destination = useSelector((state) => state.destinations.value)
   const user = useSelector((state) => state.user.value)
 
-  const handleLogout = () => {
-		dispatch(logout())
-	}
- 
+
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -45,14 +46,53 @@ export default function HomeScreen({ navigation }) {
       if (status === 'granted') {
         Location.watchPositionAsync({ distanceInterval: 10 },
           (location) => {
-            console.log(location);
-            // setCurrentPosition(location.coords);
+            console.log('LOC', location);
+           setCurrentPosition(location.coords);
+           dispatch(importPosition(location.coords))
           });
       }
     })();
-    //  insert code here
-}, []);
   
+}, []);
+// const current = useSelector((state) => state.currentPosition.value)
+//   console.log('CURRENT', current.latitude)
+//   useEffect(() => {
+//     fetch(
+
+//  `http://192.168.1.43:4000/foods/${current.longitude}/${current.latitude}`
+
+// )
+//   .then(resp => resp.json())
+//   .then(data => {
+//     if (data.result) {  
+//       setAllRestaurants(data.foods);
+//       let tmp = data.foods.map((e) => e.xid);
+//       let resto = []
+//       tmp.forEach((e) => {
+
+//     fetch(`http://192.168.1.43:4000/infos/${e}`)
+//       .then(resp => resp.json())
+//       .then(data => {
+//         resto.push(data)
+//         // setAllDetails([...allDetails,data])
+
+//       }).finally(()=> setAllDetailsResto([...allDetailsResto,...resto]))
+    
+//     })}
+//   });
+//   }, []);
+ 
+// console.log('RESTO', allDetailsResto);
+
+  const handleLogout = () => {
+		dispatch(logout())
+	}
+ 
+
+
+
+  
+
   const Card = ({place}) => {
     return(
       <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
@@ -146,12 +186,19 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
             </TouchableOpacity>
           </View> }
           {user.isConnected &&  <View style={styles.btnHeader}>
+          <TouchableOpacity
+              onPress={() => navigation.navigate("Days")}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Days</Text>
+            </TouchableOpacity>
             <FontAwesome
             style={{marginRight: 10}}
             name="suitcase"
             size={40}
             color={'#9E2A2B'}
-            onPress={() => navigation.navigate("MyReservation")}
+            onPress={() => navigation.navigate("Overview")}
           />
             <TouchableOpacity
               onPress={() => handleLogout()}
@@ -184,7 +231,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
           <View style={styles.inputContainer}>
            <ModalSearch />
            
-            <Text style={styles.headerTitle}>Organisez vos sorties</Text>  
+            <Text style={styles.headerTitle}>Organisez vos vacances</Text>  
            
             </View>
           </View>
@@ -200,7 +247,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
               contentContainerStyle={{paddingLeft: 20}}
               horizontal
               showsHorizontalScrollIndicator={false}
-              data={places}
+              data={places1}
               renderItem={({item}) => <Card place={item} /> } />
             </View>
 
@@ -235,7 +282,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
         <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
-        <Text style={{fontSize: 12}}>Voir plus ...</Text>
+       
 
 
             </TouchableOpacity>
@@ -244,7 +291,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
               contentContainerStyle={{paddingLeft: 20}}
               horizontal
               showsHorizontalScrollIndicator={false}
-              data={places}
+              data={places2}
               renderItem={({item}) => <Card place={item} /> } />
             </View>
             
