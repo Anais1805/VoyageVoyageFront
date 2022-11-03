@@ -83,7 +83,9 @@ const user = useSelector((state) => state.user.value)
 console.log('USER', user)
 const searchPress = () => {
 
+
 fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
+
 
             .then((resp) => resp.json())
             .then((data) => {
