@@ -28,12 +28,7 @@ export default function AllCulturalsScreen({ navigation }) {
 
   useEffect(() => {
 
-    fetch(
-
-      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
-    )
-
-    fetch(`http://192.168.10.136:4000/visits/${destination.lon}/${destination.lat}`)
+    fetch(`http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`)
 
       .then((resp) => resp.json())
       .then((data) => {
@@ -45,7 +40,7 @@ export default function AllCulturalsScreen({ navigation }) {
           let cult = [];
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.10.136:4000/infos/${e}`)
+            fetch(`http://192.168.1.43:4000/infos/${e}`)
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -59,7 +54,8 @@ export default function AllCulturalsScreen({ navigation }) {
   }, []);
 
   const visit = allDetails.map((data, i) => {
-    const image = data.infos.wikipedia_extracts;
+    const image = data.infos.preview?.source
+    //data.infos.wikipedia_extracts;
 
     console.log("DAT", image);
     return (
@@ -67,8 +63,7 @@ export default function AllCulturalsScreen({ navigation }) {
         key={i}
         style={styles.cardImage}
         source={{
-          uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG/400px-Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG",
-        }}
+          uri: image }}
       >
         <View
           style={{
@@ -109,7 +104,7 @@ export default function AllCulturalsScreen({ navigation }) {
               fontSize: 12,
             }}
           >
-            {data.infos.kinds}
+            {data.infos.wikipedia_extracts?.text}
           </Text>
         </View>
       </ImageBackground>

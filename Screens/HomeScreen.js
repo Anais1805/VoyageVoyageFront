@@ -83,10 +83,9 @@ const user = useSelector((state) => state.user.value)
 console.log('USER', user)
 const searchPress = () => {
 
-fetch(`http://192.168.1.18:4000/favorite/${city}/${country}`)
 
+fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
 
-fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
 
             .then((resp) => resp.json())
             .then((data) => {
@@ -114,7 +113,7 @@ fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
           <View>
             <Image
               source={require("../assets/logo.png")}
-              style={{ width: 30, height: 30 }}
+              style={{ width: 40, height: 40 }}
             />
           </View>
          {!user.isConnected && <View style={styles.btnHeader}>
@@ -126,7 +125,7 @@ fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
               <Text style={styles.btnLogin1}>S'inscrire</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handleLogout()}
+              onPress={() => navigation.navigate('Connection')}
               style={styles.login2}
               activeOpacity={0.8}
             >
@@ -148,6 +147,13 @@ fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
             color={'#9E2A2B'}
             onPress={() => navigation.navigate("MyReservation")}
           />
+            <TouchableOpacity
+              onPress={() => handleLogout()}
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Se connecter</Text>
+            </TouchableOpacity>
 
 
             <FontAwesome
@@ -213,7 +219,7 @@ fetch('http://192.168.10.127:4000/favorite/${city}/${country}')
         
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate('AllNaturals')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>
         <Text style={{fontSize: 14, fontWeight: 'bold', color:'#9E2A2B'}}>Voir plus ...</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AllCulturals')}>

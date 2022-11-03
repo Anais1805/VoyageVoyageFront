@@ -57,10 +57,8 @@ export default function AllRestaurantsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
-
       `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
 
-      `http://192.168.10.127:4000/foods/${destination.lon}/${destination.lat}`
 
 
     )
@@ -76,7 +74,7 @@ export default function AllRestaurantsScreen({ navigation }) {
 
             fetch(`http://192.168.1.43:4000/infos/${e}`)
 
-            fetch(`http://192.168.10.127:4000/infos/${e}`)
+
 
 
 
@@ -96,22 +94,7 @@ export default function AllRestaurantsScreen({ navigation }) {
  
 
 
-  // console.log("rest", allrestaurants);
 
-
-
-
-  const restaurants = allrestaurants.map((data, i) => {
-    if(i <100){
-
-    return (
-        <CardsRestaurantsComponent
-        key={i}
-        name={data.name}
-        kind={data.kinds}
-        style={styles.cards}
-        />
-        )
 
     } else {
       return
@@ -120,13 +103,9 @@ console.log('DETAILS', allDetails)
 
     const restaurants = allDetails.map((data, i) => {
 
-      const image = ''
-      // if(data.infos.preview.image === undefined){
-      //   image = require('../assets/Unknown.png')
-      // } else {
-      //   image = data.infos.preview.source
-      // }
-      console.log('DAT', image)
+     const image = data.infos.preview?.source
+      
+      console.log('DAT', data.infos)
 
       return (
       //   <TouchableOpacity
@@ -135,7 +114,12 @@ console.log('DETAILS', allDetails)
       // >
         //source={{uri : `data: {data.infos.image}` ? `data: ${data.infos.image}` : require('../assets/Unknown.png')}}
         // source={{uri: data.infos.preview ? data.infos.image : require('../assets/Unknown.png')}}
-        <ImageBackground key={i} style={styles.cardImage}    source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg/400px-Au_Vieux_Paris_d%27Arcole%2C_24_Rue_Chanoinesse%2C_75004_Paris%2C_1_May_2018.jpg'}} >
+        <ImageBackground key={i}
+         style={styles.cardImage} 
+          source={{uri: image === data.infos.preview?.source 
+            ? data.infos.preview?.source 
+            : 'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg' }} 
+        >
         <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
