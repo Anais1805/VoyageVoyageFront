@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore, login, logout } from "../reducers/users";
 import users from "../reducers/users";
 
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+const BACKEND_ADRESS = "http://192.168.10.123:4000";
 
 
 
@@ -54,27 +54,22 @@ export default function ConnectionScreen({ navigation }) {
   console.log('user', user);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#335C67'}}>
+      <View style={{flex:1, backgroundColor: '#FFFBF7'}}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
             style={styles.logo}
-            source={require("../assets/logo.png")}
+            source={require("../assets/logoWhite.png")}
           ></Image>
         </TouchableOpacity>
       </View>
-
+<View style={{alignItems: 'center'}}>
       <View style={styles.part1}>
         <View style={styles.connexion}>
           <Text style={styles.title}>CONNEXION</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("MyDay")}
-          style={styles.login}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.textButton}>Go to MyDay</Text>
-        </TouchableOpacity>
+       
         <TextInput
           style={styles.inputEmail}
           placeholder="  ✉️️ Adresse Mail"
@@ -100,13 +95,16 @@ export default function ConnectionScreen({ navigation }) {
           onPress={() => handleSubmit()}
           activeOpacity={0.8}
         >
-          <Text style={styles.title2}>SE CONNECTER</Text>
+          <Text style={styles.title2}>Valider</Text>
         </TouchableOpacity>
+       
       </View>
-      
+      <Text style={{marginTop: 30, fontSize: 11, textAlign: 'center'}}> Mot de passe oublié ? </Text>
       <View style={{marginTop: 40}}>
+      
       <Text style={styles.compte}>________________ OU ________________</Text>
-      <Text style={styles.compte}> Pas encore de compte ? </Text>
+     
+     
       </View>
 
       <View style={styles.part2}>
@@ -136,7 +134,11 @@ export default function ConnectionScreen({ navigation }) {
         </TouchableOpacity>
         </View>
       </View>
-    
+      <TouchableOpacity onPress={()=> navigation.navigate('Profile')}>
+      <Text style={styles.compte}> Pas encore de compte ? </Text>
+      </TouchableOpacity>
+      </View>
+            </View>
     </SafeAreaView>
   );
 }
@@ -145,11 +147,11 @@ const styles = StyleSheet.create({
   header: {
     paddingVertical: 20,
     paddingHorizontal: 20,
-
+    backgroundColor: '#335C67'
   },
   logo: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     marginLeft: 10,
   },
   login: {
@@ -184,6 +186,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     marginTop: 20,
+    
   },
   part2: {
     width: 400,
@@ -192,14 +195,14 @@ const styles = StyleSheet.create({
     marginVertical: 40
   },
   inputEmail: {
-    width: "70%",
+    width: 300,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "#9E2A2B",
     shadowColor: "grey",
     shadowOffset: {
       width: 0,
@@ -208,16 +211,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
     elevation: 6,
+    marginBottom: 20
   },
   inputMdp: {
-    width: "70%",
+    width: 300,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "#9E2A2B",
     shadowColor: "grey",
     shadowOffset: {
       width: 0,
@@ -226,7 +230,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
     elevation: 6,
-    marginVertical: 20
+    marginVertical: 20,
+    
   },
   inputMail: {
     width: "70%",
@@ -289,9 +294,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#9E2A2B",
   },
+  connexion:{
+marginVertical: 30,
+
+  },
   textconnexion: {
-    width: "70%",
-    height: "15%",
+    width: 300,
+    height: 40,
     borderRadius: 5,
     backgroundColor: "#9E2A2B",
     borderWidth: 1,
@@ -306,6 +315,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 20
   },
   title2: {
     fontSize: 16,
@@ -317,7 +327,9 @@ const styles = StyleSheet.create({
   },
   compte: {
     textAlign: "center",
-    marginTop: 20,
+   
+    fontSize: 11,
+    
   },
   facebook: {
     width: 400,

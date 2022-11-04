@@ -31,7 +31,7 @@ export default function MapScreen({ navigation }) {
 }, []);
 
 useEffect(() => {
-  fetch(`http://192.168.1.43:4000/destinations/${user.token}`)
+  fetch(`http://192.168.10.123:4000/destinations/${user.token}`)
   .then(resp => resp.json())
     .then(data =>{
       console.log('FETCH', data.destination)
@@ -46,12 +46,14 @@ const markers = mymarkers.map((data, i) => {
 });
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#335C67'}}>
+      
       <StatusBar />
+      <View style={{flex: 1, backgroundColor: "#FFFBF7"}}>
       <View style={styles.header}>
         <View>
           <Image
-            source={require("../assets/logo.png")}
+            source={require("../assets/logoWhite.png")}
             style={{ width: 40, height: 40 }}
             onPress={() => navigation.navigate("Home")}
           />
@@ -60,35 +62,26 @@ const markers = mymarkers.map((data, i) => {
           <FontAwesome
             style={{ marginRight: 10 }}
             name="suitcase"
-            size={40}
-            color={"#9E2A2B"}
+            size={30}
+            color={"white"}
             onPress={() => navigation.navigate("MyReservation")}
           />
 
           <FontAwesome
             style={styles.icon}
             name="user-circle-o"
-            size={40}
+            size={30}
+            color={'white'}
             onPress={() => navigation.navigate("Profile")}
           />
         </View>
       </View>
       
 
-      <View style={{ width: "100%", height: "100%", alignItems: "center", }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          
-          <FontAwesome
-            style={{ marginRight: 20 }}
-            name="arrow-left"
-            size={30}
-            color={"#9E2A2B"}
-            onPress={() => navigation.navigate("Overview")}
-          />
-          <Text style={styles.mymap}>My Map</Text>
+      <View style={{ width: "100%", height: "100%", alignItems: "center", marginTop: 40 }}>
         
-        </View>
           <MapView
+          
             mapType="hybrid"
             style={styles.map}
           >
@@ -101,8 +94,15 @@ const markers = mymarkers.map((data, i) => {
             )}
            {markers} 
           </MapView>
+          <FontAwesome
+            style={{ marginRight: 20, marginTop: 10 }}
+            name="arrow-left"
+            size={30}
+            color={"#9E2A2B"}
+            onPress={() => navigation.navigate("Overview")}
+          />
         </View>
-   
+        </View>
     </SafeAreaView>
         
          
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
   btnHeader: {
     flexDirection: "row",
@@ -212,7 +213,8 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     paddingBottom: 5,
-    marginRight: 5
+    marginRight: 5,
+    
  
   },
   

@@ -119,6 +119,8 @@ export default function MyReservationScreen({ navigation }) {
               color: "white",
               paddingHorizontal: 10,
               paddingVertical: 5,
+              fontWeight: 'bold',
+              fontSize: 16
             
             }}
           >
@@ -141,7 +143,7 @@ export default function MyReservationScreen({ navigation }) {
             fontSize: 12,
           }}
         >
-          Activités
+          
         </Text>
         
       </View>
@@ -180,13 +182,13 @@ export default function MyReservationScreen({ navigation }) {
 
   return (
 
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67' }}>
         <StatusBar />
-        
+        <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
           <View style={styles.header}>
             <View>
               <Image
-                source={require("../assets/logo.png")}
+                source={require("../assets/logoWhite.png")}
                 style={{ width: 40, height: 40 }}
                 onPress={() => navigation.navigate("Home")}
               />
@@ -195,15 +197,16 @@ export default function MyReservationScreen({ navigation }) {
             <FontAwesome
             style={{marginRight: 10}}
             name="suitcase"
-            size={40}
-            color={'#9E2A2B'}
+            size={30}
+            color={'white'}
             onPress={() => navigation.navigate("MyReservation")}
           />
 
                 <FontAwesome
             style={styles.icon}
             name="user-circle-o"
-            size={40}
+            size={30}
+            color={'white'}
             onPress={() => navigation.navigate("Profile")}
           />
                 
@@ -238,7 +241,7 @@ export default function MyReservationScreen({ navigation }) {
         </Pressable>
           </ScrollView>
      
-   
+          </View>
       </SafeAreaView>
   
   );
@@ -250,6 +253,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
   btnHeader: {
     flexDirection: "row",
@@ -308,12 +312,13 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   cardImage: {
-    height: 130,
+    height: 200,
     width: 350,
     marginHorizontal: 10,
     marginVertical: 10,
     overflow: "hidden",
     borderRadius: 10,
+
   },
   btnToReserve: {
     backgroundColor: '#9E2A2B',
@@ -322,7 +327,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: '70%',
-    marginBottom: 40, 
+    marginTop: 10,
 
     borderRadius: 5   
   },
