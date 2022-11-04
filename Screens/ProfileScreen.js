@@ -100,12 +100,27 @@ export default function ProfileScreen({ navigation }) {
     <View style={styles.container}>
       
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Image
-            style={styles.logo}
-            source={require("../assets/logoWhite.png")}
-          ></Image>
-        </TouchableOpacity>
+      <View>
+            <Image
+              source={require("../assets/logoWhite.png")}
+
+              style={{ width: 40, height: 40 }}
+
+            />
+          </View>
+         <View style={styles.btnHeader}>
+    
+            <TouchableOpacity
+
+              onPress={() => navigation.navigate('Connection')}
+
+              style={styles.login2}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLogin2}>Se connecter</Text>
+            </TouchableOpacity>
+     
+          </View>
       </View>
 <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{justifyContent: 'center', alignItems:'center'}}>
@@ -331,8 +346,8 @@ const styles = StyleSheet.create({
   header: {
     paddingVertical: 20,
     paddingHorizontal: 20,
-   
-    borderBottomWidth: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: '#335C67'
   },
   container: {
@@ -343,6 +358,26 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginLeft: 10,
+  },
+  btnHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  login2: {
+    width: 100,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "#9E2A2B",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#9E2A2B",
+    marginLeft: 10,
+  },
+  btnLogin2: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 10,
   },
 
   input: {
