@@ -35,7 +35,7 @@ export default function AllNaturalssScreen({ navigation }) {
 
 
 
-      `http://192.168.10.123:4000/naturals/${destination.lon}/${destination.lat}`
+      `https://voyage-voyage-back.vercel.app/naturals/${destination.lon}/${destination.lat}`
 
 
     )
@@ -50,7 +50,7 @@ export default function AllNaturalssScreen({ navigation }) {
           tmp.forEach((e) => {
 
 
-            fetch(`http://192.168.10.123:4000/infos/${e}`)
+            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
 
 
               .then((resp) => resp.json())

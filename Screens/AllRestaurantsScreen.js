@@ -36,7 +36,7 @@ export default function AllRestaurantsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
- `http://192.168.10.123:4000/foods/${destination.lon}/${destination.lat}`
+ `https://voyage-voyage-back.vercel.app/foods/${destination.lon}/${destination.lat}`
 
 )
   .then(resp => resp.json())
@@ -49,7 +49,7 @@ export default function AllRestaurantsScreen({ navigation }) {
       let resto = []
       tmp.forEach((e) => {
 
-    fetch(`http://192.168.10.123:4000/infos/${e}`)
+    fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
 
 
 
