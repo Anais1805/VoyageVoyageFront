@@ -125,7 +125,7 @@ const searchPress = () => {
 
 
 
-fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
+fetch('http://192.168.1.23:4000/favorite/${city}/${country}')
 
 
 
@@ -145,9 +145,9 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
    
     return (
 
-      <SafeAreaView style={{ flex: 1}}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67'}}>
         <StatusBar />
-        <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
+        <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
   
   
   
@@ -155,7 +155,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
         <View style={styles.header}>
           <View>
             <Image
-              source={require("../assets/logo.png")}
+              source={require("../assets/logoWhite.png")}
 
               style={{ width: 40, height: 40 }}
 
@@ -178,21 +178,15 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
             >
               <Text style={styles.btnLogin2}>Se connecter</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Days")}
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Days</Text>
-            </TouchableOpacity>
+     
           </View> }
           {user.isConnected &&  <View style={styles.btnHeader}>
         
             <FontAwesome
             style={styles.icon}
             name="suitcase"
-            size={40}
-            color={'#9E2A2B'}
+            size={30}
+            color={'white'}
             onPress={() => navigation.navigate("MyReservation")}
           />
          
@@ -200,13 +194,14 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
                 <FontAwesome
             style={styles.icon}
             name="user-circle-o"
-            size={40}
+            size={30}
+            color={'white'}
             onPress={() => navigation.navigate("Profile")}
           />
             <FontAwesome
             style={styles.icon}
             name="times-circle"
-            size={40}
+            size={30}
             onPress={() => handleLogout()}
           />
                     
@@ -292,7 +287,7 @@ fetch('http://192.168.1.143:4000/favorite/${city}/${country}')
             </View>
             
         </ScrollView>
-        </ImageBackground>
+    </View>
       </SafeAreaView>
 
 
@@ -306,6 +301,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
   btnHeader: {
     flexDirection: "row",

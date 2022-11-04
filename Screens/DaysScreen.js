@@ -16,6 +16,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import destinations from "../reducers/destinations";
+import users from "../reducers/users";
+
 
 import favorite from "../reducers/favorites";
 import { addActivities, cleanActivities } from "../reducers/favorites";
@@ -34,13 +36,13 @@ export default function DaysScreen({ navigation }) {
   const [details, setDetails] = useState([]);
   const [myvisits, setMyVisits]=useState([])
 
-
+const user = useSelector((state) => state.user.value)
   const dispatch = useDispatch();
   const mydays = useSelector((state) => state.mylikedays.value);
   const favorites = useSelector((state) => state.favorite.value);
   
   useEffect(() => {
-    fetch('http://192.168.1.43:4000/destinations', {
+    fetch('http://192.168.10.123:4000/destinations', {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -107,7 +109,7 @@ export default function DaysScreen({ navigation }) {
     fetch(
 
 
-      `http://192.168.1.43:4000/visits/${destination.lon}/${destination.lat}`
+      `http://192.168.10.123:4000/visits/${destination.lon}/${destination.lat}`
 
 
     )
@@ -121,7 +123,7 @@ export default function DaysScreen({ navigation }) {
           tmp.forEach((e) => {
 
 
-            fetch(`http://192.168.1.43:4000/infos/${e}`)
+            fetch(`http://192.168.10.123:4000/infos/${e}`)
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -149,7 +151,7 @@ export default function DaysScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
-      `http://192.168.1.43:4000/foods/${destination.lon}/${destination.lat}`
+      `http://192.168.10.123:4000/foods/${destination.lon}/${destination.lat}`
 
     )
       .then((resp) => resp.json())
@@ -162,7 +164,7 @@ export default function DaysScreen({ navigation }) {
           let resto = [];
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.1.43:4000/infos/${e}`)
+            fetch(`http://192.168.10.123:4000/infos/${e}`)
 
 
               .then((resp) => resp.json())
@@ -351,17 +353,21 @@ export default function DaysScreen({ navigation }) {
    
     console.log("ADD REDUCER FAVORITE", favorites);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar />
-      <ImageBackground source={require("../assets/bg.jpg")} style={{ flex: 1 }}>
-        <View style={styles.header}>
+    
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67' }}>
+        <StatusBar />
+       <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
+
+       <View style={styles.header}>
           <View>
             <Image
-              source={require("../assets/logo.png")}
-              style={{ width: 30, height: 30 }}
+              source={require("../assets/logoWhite.png")}
+
+              style={{ width: 40, height: 40 }}
+
             />
           </View>
-          <View style={styles.btnHeader}>
+         {!user.isConnected && <View style={styles.btnHeader}>
             <TouchableOpacity
               onPress={() => navigation.navigate("Profile")}
               style={styles.login1}
@@ -370,60 +376,88 @@ export default function DaysScreen({ navigation }) {
               <Text style={styles.btnLogin1}>S'inscrire</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Connection")}
+
+              onPress={() => navigation.navigate('Connection')}
+
               style={styles.login2}
               activeOpacity={0.8}
             >
               <Text style={styles.btnLogin2}>Se connecter</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("MyReservation")}
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Mes réservations</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+     
+          </View> }
+          {user.isConnected &&  <View style={styles.btnHeader}>
+        
+            <FontAwesome
+            style={styles.icon}
+            name="suitcase"
+            size={30}
+            color={'white'}
+            onPress={() => navigation.navigate("MyReservation")}
+          />
+         
 
-        <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
-        <View style={styles.titleRestoContainer}>
-          <Text style={styles.titleResto}>
-            Votre journée à {destination.city}
-          </Text>
-          <View style={{flexDirection:'row'}}>
-          <FontAwesome
-            style={iconColor}
-            name="heart"
-            size={40}
-            // color={'#335C67'}
-            onPress={() => {
-            // dispatch(addActivities({activities: }))
-              dispatch(addMyDay(destination.city));
-              // dispatch(removeMyDays());
-              heartPress();
-            }}
+                <FontAwesome
+            style={styles.icon}
+            name="user-circle-o"
+            size={30}
+            color={'white'}
+            onPress={() => navigation.navigate("Profile")}
           />
             <FontAwesome
-            style={{color: "#9E2A2B", marginLeft: 30}}
-            name="refresh"
-            size={40}
-            onPress={() => shuffle()}
+            style={styles.icon}
+            name="times-circle"
+            size={30}
+            onPress={() => handleLogout()}
           />
-        </View>
-        </View>
-        <ScrollView
-        //   showsVerticalScrollIndicator={false}
-        //   refreshControl={
-        //     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        //   }
-        >
-          {visit}
-          {restaurants}
-        </ScrollView>
-      
-      </ImageBackground>
-    </SafeAreaView>
+                    
+            
+            </View>}
+  </View>
+  <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
+  <View style={styles.titleRestoContainer}>
+    <Text style={styles.titleResto}>
+      Votre journée à {destination.city}
+    </Text>
+    <View style={{flexDirection: 'row'}}>
+    <FontAwesome
+      style={iconColor}
+      name="heart"
+      size={40}
+      // color={'#335C67'}
+      onPress={() => {
+      // dispatch(addActivities({activities: }))
+        dispatch(addMyDay(destination.city));
+        // dispatch(removeMyDays());
+        heartPress();
+        {user.isConnected &&  navigation.navigate('MyReservation')}
+        {!user.isConnected &&  navigation.navigate('Profile')}
+      }}
+    />
+      <FontAwesome
+      style={styles.icon}
+      name="refresh"
+      size={40}
+      color={'#9E2A2B'}
+      // color={'#335C67'}
+      onPress={() => shuffle()}
+    />
+    </View>
+  </View>
+  <ScrollView
+  //   showsVerticalScrollIndicator={false}
+  //   refreshControl={
+  //     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+  //   }
+  >
+    {visit}
+    {restaurants}
+  </ScrollView>
+  
+ 
+   </View>
+   
+  </SafeAreaView>
 
     // <View style={styles.container}>
 
@@ -476,6 +510,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
   btnHeader: {
     flexDirection: "row",
@@ -541,6 +576,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 10,
   },
+  icon: {
+    marginHorizontal: 5
+  }
   
   // container: {
   //     flex: 1,

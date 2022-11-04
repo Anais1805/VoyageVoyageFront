@@ -32,7 +32,7 @@ export default function MapScreen({ navigation }) {
   const [myMarkers, setMyMarkers]= useState([])
   const [myDates, setMyDates]=useState([])
   useEffect(() => {
-    fetch(`http://192.168.1.43:4000/destinations/${user.token}`)
+    fetch(`http://192.168.10.123:4000/destinations/${user.token}`)
     .then(resp => resp.json())
       .then(data =>{
         console.log('FETCH', data.destination)
@@ -41,7 +41,7 @@ export default function MapScreen({ navigation }) {
         })}, [])
 
         useEffect(() => {
-        fetch(`http://192.168.1.43:4000/bookings/${user.token}`)
+        fetch(`http://192.168.10.123:4000/bookings/${user.token}`)
         .then(resp => resp.json())
           .then(data =>{
             console.log('BOOK', data.Journeys)
@@ -88,12 +88,13 @@ console.log('MARK', myMarkers);
   });
 
   return (
-    <SafeAreaView style={{ flex: 1}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67'}}>
       <StatusBar />
+      <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
       <View style={styles.header}>
         <View>
           <Image
-            source={require("../assets/logo.png")}
+            source={require("../assets/logoWhite.png")}
             style={{ width: 40, height: 40 }}
             onPress={() => navigation.navigate("Home")}
           />
@@ -102,27 +103,28 @@ console.log('MARK', myMarkers);
           <FontAwesome
             style={{ marginRight: 10 }}
             name="suitcase"
-            size={40}
-            color={"#9E2A2B"}
+            size={30}
+            color={"white"}
             onPress={() => navigation.navigate("MyReservation")}
           />
 
           <FontAwesome
             style={styles.icon}
             name="user-circle-o"
-            size={40}
+            size={30}
+            color={'white'}
             onPress={() => navigation.navigate("Profile")}
           />
         </View>
       </View>
 
-      <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
+      <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
       <View style={styles.titleRestoContainer}>
         <Text style={styles.titleResto}>Récapitulatif</Text>
         <FontAwesome
           style={styles.iconP}
           name="bitbucket"
-          size={30}
+          size={20}
           onPress={() => dispatch(removeMyDays())}
         />
       </View>
@@ -133,21 +135,23 @@ console.log('MARK', myMarkers);
           {myBookingDays}
         </View>
 
-        <View style={{ width: "100%", height: "50%", alignItems: "center", }}>
+        <View style={{ width: "100%", height: "40%", alignItems: "center", }}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={styles.mymap}>My Map</Text>
-          <FontAwesome
-         style={styles.iconE}
-          name="expand"
-          size={25}
-          onPress={() => navigation.navigate('Map')}
-        />
+          <Text style={styles.mymap}></Text>
+        
         </View>
           <MapView
             onLongPress={() => navigation.navigate("Map")}
             mapType="hybrid"
             style={styles.map}
           >
+                <FontAwesome
+         style={styles.iconE}
+          name="expand"
+          size={25}
+          color={'white'}
+          onPress={() => navigation.navigate('Map')}
+        />
             {currentPosition && (
               <Marker
                 coordinate={currentPosition}
@@ -158,7 +162,7 @@ console.log('MARK', myMarkers);
            {markers} 
           </MapView>
         </View>
-   
+        </View>
     </SafeAreaView>
   );
 }
@@ -169,6 +173,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
   btnHeader: {
     flexDirection: "row",
@@ -269,7 +274,8 @@ const styles = StyleSheet.create({
     paddingLeft: '30%'
   },
   iconE: {
-   
-    paddingLeft: '30%'
+   marginBottom: 190,
+   marginLeft: 300
+    
   }
 });

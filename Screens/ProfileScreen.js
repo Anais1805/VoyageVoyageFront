@@ -8,6 +8,7 @@ import {
   Pressable,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { useState } from "react";
 import { RadioButton } from "react-native-paper";
@@ -15,9 +16,10 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { SignUp, login } from "../reducers/users";
 import users from "../reducers/users";
-
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import createPersistoid from "redux-persist/es/createPersistoid";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");
@@ -39,7 +41,7 @@ export default function ProfileScreen({ navigation }) {
 
   const submitClick = () => {
 
-    fetch("http://192.168.1.18:4000/users/signup", {
+    fetch("http://192.168.10.123:4000/users/signup", {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -94,25 +96,46 @@ export default function ProfileScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#335C67'}}>
     <View style={styles.container}>
       
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
             style={styles.logo}
-            source={require("../assets/logo.png")}
+            source={require("../assets/logoWhite.png")}
           ></Image>
         </TouchableOpacity>
       </View>
-
+<ScrollView showsVerticalScrollIndicator={false}>
       <View style={{justifyContent: 'center', alignItems:'center'}}>
-      <Image
-        style={styles.avatar}
-        source={{
-          uri: "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small_2x/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg",
-        }}
-      ></Image>
+      <View style={styles.iconAvater}>
+              <FontAwesome
+                style={{ marginTop: 30 }}
+                name="user-circle-o"
+                size={80}
+                color="#335C67"
+                onPress={() => navigation.navigate("Profile")}
+              />
+
+              <View style={styles.iconPlus}>
+                <TouchableOpacity>
+                  <FontAwesome name="plus" size={20} color={"white"} />
+                </TouchableOpacity>
+              </View>
+              </View>
+              <View style={{ marginVertical: 5 }}>
+              <Text style={{ fontSize: 11 }}>
+                Ajouter une photo à votre profil
+              </Text>
+            </View>
+            <View style={{alignItems: 'center', marginVertical: 30}}>
+            <View>
+              <Text style={{ fontSize: 24, paddingBottom: 30 }}>
+                Créez votre compte
+              </Text>
+            </View>
+           
       <KeyboardAvoidingView>
         <TextInput
           style={styles.input}
@@ -139,6 +162,7 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.error}> ⚠️ Invalid email address</Text>
         )}
       </KeyboardAvoidingView>
+      </View>
       </View>
       
       <View style={{justifyContent: 'center', alignItems:'center'}}>
@@ -297,7 +321,7 @@ export default function ProfileScreen({ navigation }) {
         <Text style={styles.texteButton}>Valider</Text>
       </TouchableOpacity>  
       </View>      
-      
+      </ScrollView>
     </View>
     </SafeAreaView>
   );
@@ -307,8 +331,13 @@ const styles = StyleSheet.create({
   header: {
     paddingVertical: 20,
     paddingHorizontal: 20,
-    borderBottomColor: "#9E2A2B",
+   
     borderBottomWidth: 1,
+    backgroundColor: '#335C67'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFBF7'
   },
   logo: {
     width: 30,
@@ -318,18 +347,18 @@ const styles = StyleSheet.create({
 
   input: {
     borderWidth: 1,
-    borderColor: "#E1E1E1",
+    borderColor: "#9E2A2B",
     padding: 5,
-    width: 200,
+    width: 300,
+    height: 40,
     marginBottom: 15,
     borderRadius: 10,
     // textAlign: "Left",
   },
   avatar: {
-    width: 70,
-    height: 70,
-    marginVertical: 20,
-    borderRadius: 50,
+    borderRadius: '40%',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   ligne: {
     borderBottomWidth: 1,
@@ -383,7 +412,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: 100,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom:20
   },
   texteButton: {
     color: "white",
@@ -392,4 +422,16 @@ const styles = StyleSheet.create({
     marginTop: 0,
     paddingBottom: 10,
   },
+  iconPlus: {
+    position: 'absolute',
+    backgroundColor: '#9E2A2B',
+    borderRadius: '40%',
+    width: 30, 
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 60,
+    top: 75,
+    left: 1
+  }
 });
