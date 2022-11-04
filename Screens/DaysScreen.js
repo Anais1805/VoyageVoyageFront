@@ -42,7 +42,7 @@ const user = useSelector((state) => state.user.value)
   const favorites = useSelector((state) => state.favorite.value);
   
   useEffect(() => {
-    fetch('http://192.168.10.123:4000/destinations', {
+    fetch('https://voyage-voyage-back.vercel.app/destinations', {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -109,7 +109,7 @@ const user = useSelector((state) => state.user.value)
     fetch(
 
 
-      `http://192.168.10.123:4000/visits/${destination.lon}/${destination.lat}`
+      `https://voyage-voyage-back.vercel.app/visits/${destination.lon}/${destination.lat}`
 
 
     )
@@ -123,7 +123,7 @@ const user = useSelector((state) => state.user.value)
           tmp.forEach((e) => {
 
 
-            fetch(`http://192.168.10.123:4000/infos/${e}`)
+            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -151,7 +151,7 @@ const user = useSelector((state) => state.user.value)
   useEffect(() => {
     fetch(
 
-      `http://192.168.10.123:4000/foods/${destination.lon}/${destination.lat}`
+      `https://voyage-voyage-back.vercel.app/foods/${destination.lon}/${destination.lat}`
 
     )
       .then((resp) => resp.json())
@@ -164,7 +164,7 @@ const user = useSelector((state) => state.user.value)
           let resto = [];
           tmp.forEach((e) => {
 
-            fetch(`http://192.168.10.123:4000/infos/${e}`)
+            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
 
 
               .then((resp) => resp.json())

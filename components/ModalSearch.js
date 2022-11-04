@@ -23,7 +23,7 @@ const searchPress = () => {
 
 
 
-fetch(`http://192.168.10.123:4000/favorite/${city}/${country}`)
+fetch(`https://voyage-voyage-back.vercel.app/favorite/${city}/${country}`)
 
 
             .then((resp) => resp.json())

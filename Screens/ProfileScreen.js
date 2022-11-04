@@ -41,7 +41,7 @@ export default function ProfileScreen({ navigation }) {
 
   const submitClick = () => {
 
-    fetch("http://192.168.10.123:4000/users/signup", {
+    fetch("https://voyage-voyage-back.vercel.app/users/signup", {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -31,7 +31,7 @@ export default function MapScreen({ navigation }) {
 }, []);
 
 useEffect(() => {
-  fetch(`http://192.168.10.123:4000/destinations/${user.token}`)
+  fetch(`https://voyage-voyage-back.vercel.app/destinations/${user.token}`)
   .then(resp => resp.json())
     .then(data =>{
       console.log('FETCH', data.destination)
