@@ -11,18 +11,19 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { addPlace, allPlaces } from '../reducers/user';
+
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import dates from "../reducers/dates";
 import { removeMyDates } from "../reducers/dates";
 
-import { importMarkers } from "../reducers/markers";
+import { importMarkers, removeMarkers } from "../reducers/markers";
 import { addMyDay, removeMyDays } from "../reducers/mylikedays";
 import { addMyDates } from "../reducers/dates";
 import markers from "../reducers/markers";
-
+ 
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function MapScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export default function MapScreen({ navigation }) {
   const [myMarkers, setMyMarkers]= useState([])
   const [myDates, setMyDates]=useState([])
   useEffect(() => {
-    fetch(`https://voyage-voyage-back.vercel.app/destinations/${user.token}`)
+    fetch(`${BACKEND_ADRESS}/destinations/${user.token}`)
     .then(resp => resp.json())
       .then(data =>{
         console.log('FETCH', data.destination)
@@ -40,16 +41,16 @@ export default function MapScreen({ navigation }) {
         dispatch(importMarkers(data.destination))
         })}, [])
 
-        useEffect(() => {
-        fetch(`https://voyage-voyage-back.vercel.app/bookings/${user.token}`)
-        .then(resp => resp.json())
-          .then(data =>{
-            console.log('BOOK', data.Journeys)
-            setMyDates(data.Journeys)
-          dispatch(addMyDates(data.Journeys)) 
-            })}, []);
+        // useEffect(() => {
+        // fetch(`${BACKEND_ADRESS}/bookings/${user.token}`)
+        // .then(resp => resp.json())
+        //   .then(data =>{
+        //     console.log('BOOK', data.Journeys)
+        //     setMyDates(data.Journeys)
+        //   dispatch(addMyDates(data.Journeys)) 
+        //     })}, []);
 
-console.log('MARK', myMarkers);
+// console.log('MARK', myMarkers);
             
    
    
@@ -70,17 +71,18 @@ console.log('MARK', myMarkers);
 
   // // console.log('USERS', user.token)
   const mymarkers = useSelector((state) => state.markers.value)
-   console.log('MYMARKERS', mymarkers)
-  const markers = mymarkers.map((data, i) => {
-    return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
-  });
-  const myBookingDays = mymarkers.map((data, i) => {
-    console.log('HELLO', data.date)
+   console.log('MYMARKER', mymarkers)
+   console.log('MYDATES', dates)
+  // const markers = mymarkers.map((data, i) => {
+  //   return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
+  // });
+  const myBookingDays = dates.map((data, i) => {
+    
     if (data) {
       return (
         <View key={i} style={styles.btnToReserve}>
           <Text style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>
-            Journée à/en {data.city}
+            Journée du {data}
           </Text>
         </View>
       );
@@ -93,11 +95,13 @@ console.log('MARK', myMarkers);
       <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
       <View style={styles.header}>
         <View>
+          <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
           <Image
             source={require("../assets/logoWhite.png")}
             style={{ width: 40, height: 40 }}
-            onPress={() => navigation.navigate("Home")}
+            
           />
+          </TouchableOpacity>
         </View>
         <View style={styles.btnHeader}>
           <FontAwesome
@@ -125,7 +129,7 @@ console.log('MARK', myMarkers);
           style={styles.iconP}
           name="bitbucket"
           size={20}
-          onPress={() => dispatch(removeMyDays())}
+          onPress={() => {dispatch(removeMyDays()); dispatch(removeMarkers()); dispatch(removeMyDates())}}
         />
       </View>
       

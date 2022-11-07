@@ -22,7 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
 
- 
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function AllRestaurantsScreen({ navigation }) {
 
@@ -36,7 +36,7 @@ export default function AllRestaurantsScreen({ navigation }) {
   useEffect(() => {
     fetch(
 
- `https://voyage-voyage-back.vercel.app/foods/${destination.lon}/${destination.lat}`
+ `${BACKEND_ADRESS}/foods/${destination.lon}/${destination.lat}`
 
 )
   .then(resp => resp.json())
@@ -49,7 +49,7 @@ export default function AllRestaurantsScreen({ navigation }) {
       let resto = []
       tmp.forEach((e) => {
 
-    fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
+    fetch(`${BACKEND_ADRESS}/infos/${e}`)
 
 
 
@@ -72,20 +72,9 @@ export default function AllRestaurantsScreen({ navigation }) {
 
 const restaurants = allDetails.map((data, i) => {
 let image = data.infos.preview?.source
-// if(data.infos.preview?.source === data.preview?.source){
-//   image = data.infos.preview?.source
-// } else {
-//   image = 'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg'
-// }
 
-  // console.log('DAT', data.infos.preview?.source)
   return (
-  //   <TouchableOpacity
-  //   activeOpacity={0.8}
-  //   onPress={() => navigation.navigate("Details", allDetails)}
-  // >
-    //source={{uri : data: {data.infos.image} ? data: ${data.infos.image} : require('../assets/Unknown.png')}}
-    // source={{uri: data.infos.preview ? data.infos.image : require('../assets/Unknown.png')}}
+  
     <ImageBackground key={i} style={styles.cardImage}    source={{uri: image ??  'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg'}} >
     <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -98,9 +87,9 @@ let image = data.infos.preview?.source
 
 </View>
 </ImageBackground>
-// </TouchableOpacity>
+
 )
-  // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
+
 });
  
 console.log(destination.city)

@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add expo
+  /usr/local/bin/node /usr/local/bin/yarnpkg add expo-updates@~0.14.6
 
 PATH: 
   /usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
@@ -29,6 +29,7 @@ npm manifest:
     },
     "dependencies": {
       "@fortawesome/fontawesome-svg-core": "^6.2.0",
+      "@fortawesome/free-regular-svg-icons": "^6.2.0",
       "@fortawesome/free-solid-svg-icons": "^6.2.0",
       "@fortawesome/react-fontawesome": "^0.2.0",
       "@react-native-async-storage/async-storage": "^1.17.10",
@@ -1464,6 +1465,13 @@ Lockfile:
     dependencies:
       "@fortawesome/fontawesome-common-types" "6.2.0"
   
+  "@fortawesome/free-regular-svg-icons@^6.2.0":
+    version "6.2.0"
+    resolved "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-6.2.0.tgz"
+    integrity sha512-M1dG+PAmkYMTL9BSUHFXY5oaHwBYfHCPhbJ8qj8JELsc9XCrUJ6eEHWip4q0tE+h9C0DVyFkwIM9t7QYyCpprQ==
+    dependencies:
+      "@fortawesome/fontawesome-common-types" "6.2.0"
+  
   "@fortawesome/free-solid-svg-icons@^6.2.0":
     version "6.2.0"
     resolved "https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-6.2.0.tgz"
@@ -1473,7 +1481,7 @@ Lockfile:
   
   "@fortawesome/react-fontawesome@^0.2.0":
     version "0.2.0"
-    resolved "https://registry.npmjs.org/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.0.tgz"
+    resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.0.tgz#d90dd8a9211830b4e3c08e94b63a0ba7291ddcf4"
     integrity sha512-uHg75Rb/XORTtVt7OS9WoK8uM276Ufi7gCzshVWkUJbHhh3svsUUeqXerrM96Wm7fRiDzfKRwSoahhMIkGAYHw==
     dependencies:
       prop-types "^15.8.1"

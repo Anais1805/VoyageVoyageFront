@@ -25,6 +25,7 @@ import users from "../reducers/users";
 import { logout} from "../reducers/users"
 import { importPosition } from "../reducers/currentPosition";
 
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 const {width} = Dimensions.get('screen');
 
@@ -56,7 +57,7 @@ export default function HomeScreen({ navigation }) {
   
 }, []);
 // const current = useSelector((state) => state.currentPosition.value)
-//   console.log('CURRENT', current.latitude)
+  console.log('CURRENT', currentPosition)
 //   useEffect(() => {
 //     fetch(
 
@@ -125,7 +126,7 @@ const searchPress = () => {
 
 
 
-fetch(`https://voyage-voyage-back.vercel.app/favorite/${city}/${country}`)
+fetch(`${BACKEND_ADRESS}/favorite/${city}/${country}`)
 
 
 

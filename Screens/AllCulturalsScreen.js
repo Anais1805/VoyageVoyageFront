@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
 
-
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 export default function AllCulturalsScreen({ navigation }) {
 
   const [allCulturals, setAllCulturals] = useState([]);
@@ -30,7 +30,7 @@ export default function AllCulturalsScreen({ navigation }) {
   useEffect(() => {
 
 
-    fetch(`https://voyage-voyage-back.vercel.app/visits/${destination.lon}/${destination.lat}`)
+    fetch(`${BACKEND_ADRESS}/visits/${destination.lon}/${destination.lat}`)
 
 
       .then((resp) => resp.json())
@@ -44,7 +44,7 @@ export default function AllCulturalsScreen({ navigation }) {
           tmp.forEach((e) => {
 
 
-            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
+            fetch(`${BACKEND_ADRESS}/infos/${e}`)
 
 
               .then((resp) => resp.json())

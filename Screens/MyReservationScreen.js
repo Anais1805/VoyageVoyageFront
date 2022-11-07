@@ -19,19 +19,23 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import mylikedays from "../reducers/mylikedays";
 import { removeMyDays } from "../reducers/mylikedays";
-import dates from "../reducers/dates";
+import dates, { removeMyDates } from "../reducers/dates";
 import { addMyDates } from "../reducers/dates";
 
-
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 export default function MyReservationScreen({ navigation }) {
    const dispatch = useDispatch()
   const poub = useSelector((state) => state.mylikedays.value)
   const dates = useSelector((state) => state.dates.value)
-  // const[myDays, setMyDays]= useState([])
-  console.log('DATES', dates)
+  console.log('DATES STORED', dates);
+  const[myDays, setMyDays]= useState([])
+  // console.log('DATES', dates)
   // useEffect(() => {
   //   dispatch(addMyDates(myDays))
   //  }, [myDays]);
+const [myDates, setMyDates] = useState('')
+
+// console.log('MYDATES', myDates)      
 
 
   LocaleConfig.locales["fr"] = {
@@ -77,11 +81,15 @@ export default function MyReservationScreen({ navigation }) {
   };
   LocaleConfig.defaultLocale = "fr";
   const mydays = useSelector((state) => state.mylikedays.value)
-  console.log('DAYSDAYS', mydays)
+  // console.log('DAYSDAYS', mydays)
+
+  const submitPress = () => {
+    dispatch(addMyDates(myDates.day))
+  }
  
   const myBookings = mydays.map((data, i) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [daySelected, setDaySelected] = useState("");
+  const [daySelected, setDaySelected] = useState('');
   const [dayBooked, setDayBooked] = useState(false);
   
 
@@ -158,7 +166,11 @@ export default function MyReservationScreen({ navigation }) {
           setDaySelected(day.dateString);
           setDayBooked(true);
           setShowCalendar(!showCalendar)
-          // setMyDays(daySelected)
+          //dispatch(addMyDates(day.dateString))
+          
+          // dispatch(removeMyDates())
+          //
+         setMyDates({key: i, day:day.dateString})
         }}
         markedDates={{
           [daySelected]: {
@@ -187,11 +199,13 @@ export default function MyReservationScreen({ navigation }) {
         <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
           <View style={styles.header}>
             <View>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
               <Image
                 source={require("../assets/logoWhite.png")}
                 style={{ width: 40, height: 40 }}
-                onPress={() => navigation.navigate("Home")}
+                
               />
+              </TouchableOpacity>
             </View>
             <View style={styles.btnHeader}>
             <FontAwesome
@@ -234,7 +248,7 @@ export default function MyReservationScreen({ navigation }) {
              <ScrollView showsVerticalScrollIndicator={false}
           >    
  {myBookings}
- <Pressable style={styles.btnToReserve}  onPress={() => {navigation.navigate('Overview'); }}
+ <Pressable style={styles.btnToReserve}  onPress={() => {navigation.navigate('Overview'); submitPress()}}
 >
        <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Valider</Text>
         
