@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity } from "react-native";
+import {Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from "react-native-safe-area-context";
-import destinations from "../reducers/destinations";
 import { destinationSearch } from '../reducers/destinations';
 
 import { useSelector, useDispatch } from 'react-redux';
+
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function ModalSearch ({navigation})  {
 
@@ -23,7 +23,7 @@ const searchPress = () => {
 
 
 
-fetch(`https://voyage-voyage-back.vercel.app/favorite/${city}/${country}`)
+fetch(`${BACKEND_ADRESS}/favorite/${city}/${country}`)
 
 
             .then((resp) => resp.json())

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUserToStore, login, logout } from "../reducers/users";
 import users from "../reducers/users";
 
-const BACKEND_ADRESS = "https://voyage-voyage-back.vercel.app";
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 
 

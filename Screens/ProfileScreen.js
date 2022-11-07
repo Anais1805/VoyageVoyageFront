@@ -20,6 +20,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import createPersistoid from "redux-persist/es/createPersistoid";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");
@@ -41,7 +42,7 @@ export default function ProfileScreen({ navigation }) {
 
   const submitClick = () => {
 
-    fetch("https://voyage-voyage-back.vercel.app/users/signup", {
+    fetch(`${BACKEND_ADRESS}/users/signup`, {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },

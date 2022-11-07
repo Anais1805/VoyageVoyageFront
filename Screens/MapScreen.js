@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Modal, StatusBar, SafeAreaView } from 'react-native'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { addPlace, allPlaces } from '../reducers/user';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import markers from "../reducers/markers";
 import { importMarkers } from "../reducers/markers";
+
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+
 export default function MapScreen({ navigation }) {
 
   const dispatch = useDispatch();
@@ -31,10 +33,10 @@ export default function MapScreen({ navigation }) {
 }, []);
 
 useEffect(() => {
-  fetch(`https://voyage-voyage-back.vercel.app/destinations/${user.token}`)
+  fetch(`${BACKEND_ADRESS}/destinations/${user.token}`)
   .then(resp => resp.json())
     .then(data =>{
-      console.log('FETCH', data.destination)
+      // console.log('FETCH', data.destination)
        setMyMarkers(data.destination),
       dispatch(importMarkers(data.destination))
  })}, []);

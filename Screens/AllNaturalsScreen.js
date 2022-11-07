@@ -19,7 +19,7 @@ import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
 import places from "./places";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 export default function AllNaturalssScreen({ navigation }) {
   const [city, setCity] = useState("");
   const [allNaturals, setAllNaturals] = useState([]);
@@ -35,7 +35,7 @@ export default function AllNaturalssScreen({ navigation }) {
 
 
 
-      `https://voyage-voyage-back.vercel.app/naturals/${destination.lon}/${destination.lat}`
+      `${BACKEND_ADRESS}/naturals/${destination.lon}/${destination.lat}`
 
 
     )
@@ -50,7 +50,7 @@ export default function AllNaturalssScreen({ navigation }) {
           tmp.forEach((e) => {
 
 
-            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
+            fetch(`${BACKEND_ADRESS}/infos/${e}`)
 
 
               .then((resp) => resp.json())

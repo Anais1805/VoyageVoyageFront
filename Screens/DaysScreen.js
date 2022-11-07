@@ -17,14 +17,14 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import destinations from "../reducers/destinations";
 import users from "../reducers/users";
-
+import dates from "../reducers/dates";
 
 import favorite from "../reducers/favorites";
 import { addActivities, cleanActivities } from "../reducers/favorites";
 import mylikedays, { removeMyDays } from "../reducers/mylikedays";
 import { addMyDay } from "../reducers/mylikedays";
 import { icon } from "@fortawesome/fontawesome-svg-core";
-
+const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 export default function DaysScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
@@ -35,21 +35,23 @@ export default function DaysScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [details, setDetails] = useState([]);
   const [myvisits, setMyVisits]=useState([])
-
+const dates = useSelector((state) => state.dates.value)
 const user = useSelector((state) => state.user.value)
   const dispatch = useDispatch();
   const mydays = useSelector((state) => state.mylikedays.value);
   const favorites = useSelector((state) => state.favorite.value);
   
   useEffect(() => {
-    fetch('https://voyage-voyage-back.vercel.app/destinations', {
+    fetch(`${BACKEND_ADRESS}/destinations`, {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         city: destination.city,
         lat: destination.lat,
-        lon: destination.lon
+        lon: destination.lon,
+   
+
       }),
     })
       
@@ -109,7 +111,7 @@ const user = useSelector((state) => state.user.value)
     fetch(
 
 
-      `https://voyage-voyage-back.vercel.app/visits/${destination.lon}/${destination.lat}`
+      `${BACKEND_ADRESS}/visits/${destination.lon}/${destination.lat}`
 
 
     )
@@ -123,7 +125,7 @@ const user = useSelector((state) => state.user.value)
           tmp.forEach((e) => {
 
 
-            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
+            fetch(`${BACKEND_ADRESS}/infos/${e}`)
 
               .then((resp) => resp.json())
               .then((data) => {
@@ -151,7 +153,7 @@ const user = useSelector((state) => state.user.value)
   useEffect(() => {
     fetch(
 
-      `https://voyage-voyage-back.vercel.app/foods/${destination.lon}/${destination.lat}`
+      `${BACKEND_ADRESS}/foods/${destination.lon}/${destination.lat}`
 
     )
       .then((resp) => resp.json())
@@ -164,7 +166,7 @@ const user = useSelector((state) => state.user.value)
           let resto = [];
           tmp.forEach((e) => {
 
-            fetch(`https://voyage-voyage-back.vercel.app/infos/${e}`)
+            fetch(`${BACKEND_ADRESS}/infos/${e}`)
 
 
               .then((resp) => resp.json())
@@ -347,8 +349,7 @@ const user = useSelector((state) => state.user.value)
     }
   };
 
-  //map en attendant les fetch...
-  //const [places, setPlaces] = useState([]);
+
 
    
     console.log("ADD REDUCER FAVORITE", favorites);

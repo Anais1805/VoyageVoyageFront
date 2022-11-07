@@ -83,24 +83,7 @@ export default function ReservedScreen({ navigation }) {
               data={places}
               renderItem={({item}) => <Card place={item} /> } />
             </View>
-        {/* <View style={styles.part}>
-                <View style={styles.cardcontainer}>
-                    <View style={styles.left} >
-                        <Image style={styles.image} source={require('../assets/rando.jpg')}></Image>
-                    </View>
-                    <View style={styles.right}>
-                        <TouchableOpacity onPress={() => handleSubmit()}  style={styles.delete} activeOpacity={0.8}>
-                            <FontAwesome name='times-circle' size={25} color='#335C67'></FontAwesome>
-                        </TouchableOpacity>
-                        <Text style={styles.title2}>Title</Text>
-                        <Text style={styles.descritpion}>Descritpion Adultes: 25€,  jusqu’à 14ans et après     65 ans : 13€, avant 5ans: gratuit</Text>
-                        <TouchableOpacity onPress={() => handleSubmit()}  style={styles.remplace} activeOpacity={0.8}>
-                            <Text style={styles.textButton}>Remplacer</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-       */}
+    
     </SafeAreaView>
   );
 }

@@ -11,10 +11,13 @@ export const myMarkersSlice = createSlice({
   reducers: {
    importMarkers: (state, action) => {
       state.value = action.payload
+    },
+    removeMarkers: (state, action) => {
+      state.value = []
     }
    
   },
 });
 
-export const {importMarkers} = myMarkersSlice.actions;
+export const {importMarkers, removeMarkers} = myMarkersSlice.actions;
 export default myMarkersSlice.reducer;

@@ -10,6 +10,7 @@ export const datesSlice = createSlice({
   reducers: {
    addMyDates: (state, action) => {
     state.value.push(action.payload)
+    state.value = [...new Set(state.value)]
    },
    removeMyDates: (state, action) => {
     state.value = []
