@@ -84,29 +84,8 @@ const user = useSelector((state) => state.user.value)
     // if(!heart && favorites){dispatch(cleanActivities())}
   };
  
-
-  // const wait = (timeout) => {
-  //   return new Promise((resolve) => setTimeout(resolve, timeout));
-  // };
-  // const [refreshing, setRefreshing] = useState(false);
   const [shuffleState, setShuffleState] = useState(false);
-
-  // const onRefresh = React.useCallback(() => {
-  //   shuffleState ? setShuffleState(false) : setShuffleState(true) ;
-  //    setRefreshing(()=>true);
-  //   wait(2000).then(() => setRefreshing(()=>false));
-    
-  // }, []);
-//essai forcer render suite au shuffle = marche une seule fois
-    // useEffect(() => {
-    
-  //   fisherYatesShuffle(allDetails)
-  //   fisherYatesShuffle(details)
-
-  // }, [shuffleState]);
-
-
-    
+   
   useEffect(() => {
     fetch(
 
@@ -120,18 +99,14 @@ const user = useSelector((state) => state.user.value)
         if (data.result) {
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
-
           let cult = [];
           tmp.forEach((e) => {
 
 
             fetch(`${BACKEND_ADRESS}/infos/${e}`)
-
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
-
-                // setAllDetails([...allDetails,data])
               })
               .finally(() => setAllDetails([...allDetails, ...cult]));
       
@@ -142,13 +117,7 @@ const user = useSelector((state) => state.user.value)
       });
   }, []);
 
-
-
-
   const store = useSelector((state) => state.mylikedays.value);
- 
-  
-  // console.log("ACTIVITES", myactivities);
 
   useEffect(() => {
     fetch(
@@ -161,43 +130,30 @@ const user = useSelector((state) => state.user.value)
         if (data.result) {
           setAllRestaurants(data.foods);
           let tmp = data.foods.map((e) => e.xid);
-          // setXid(tmp);
-          // console.log(data.foods)
           let resto = [];
           tmp.forEach((e) => {
 
             fetch(`${BACKEND_ADRESS}/infos/${e}`)
-
-
               .then((resp) => resp.json())
               .then((data) => {
                 resto.push(data);
-                // setAllDetails([...allDetails,data])
+              
               })
               .finally(() => setDetails([...details, ...resto]));
-              //  fisherYatesShuffle(details)
           });
         }
       });
   }, []);
  
 
-
-  // console.log('VISIT', allDetails)
-  
-
   const visit = allDetails.map((data, i) => {
      const image = data.infos.preview?.source
-    // console.log('DAT', image)
     if (i < 2) {
 
     // if(heart && data){
-    
-    //   dispatch(addActivities({activities:data.infos.name}))
-      
+    //   dispatch(addActivities({activities:data.infos.name}))  
     // }
      
-
       return (
        
        
@@ -333,25 +289,7 @@ const user = useSelector((state) => state.user.value)
 
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
-   
-
-  //compteur
-  const [count, setCount] = useState(1);
-
-  const handleUpPage = () => {
-    setCount(count + 1);
-  };
-  const handleDownPage = () => {
-    if (count < 2) {
-      return;
-    } else {
-      setCount(count - 1);
-    }
-  };
-
-
-
-   
+  
     console.log("ADD REDUCER FAVORITE", favorites);
   return (
     
@@ -425,7 +363,6 @@ const user = useSelector((state) => state.user.value)
       style={iconColor}
       name="heart"
       size={40}
-      // color={'#335C67'}
       onPress={() => {
       // dispatch(addActivities({activities: }))
         dispatch(addMyDay(destination.city));
@@ -440,16 +377,12 @@ const user = useSelector((state) => state.user.value)
       name="refresh"
       size={40}
       color={'#9E2A2B'}
-      // color={'#335C67'}
       onPress={() => shuffle()}
     />
     </View>
   </View>
   <ScrollView
-  //   showsVerticalScrollIndicator={false}
-  //   refreshControl={
-  //     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-  //   }
+
   >
     {visit}
     {restaurants}
@@ -460,48 +393,6 @@ const user = useSelector((state) => state.user.value)
    
   </SafeAreaView>
 
-    // <View style={styles.container}>
-
-    //     <View style={styles.header}>
-    //         <TouchableOpacity onPress={() =>navigation.navigate('Home')} activeOpacity={0.8}>
-    //             <Image style= {styles.logo} source={require('../assets/logo.png')} />
-    //         </TouchableOpacity>
-    //         <View style={styles.menuHeader}>
-
-    //             <TouchableOpacity onPress={() => navigation.navigate('Connection')} style={styles.login1} activeOpacity={0.8}>
-    //                 <Text style={styles.btnLogin1}>S'inscrire</Text>
-    //             </TouchableOpacity>
-    //             <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.login2} activeOpacity={0.8}>
-    //                 <Text style={styles.btnLogin2}>Se connecter</Text>
-    //             </TouchableOpacity>
-    //         </View>
-    //     </View>
-
-    //     <View style={styles.content}>
-    //         <ImageBackground source={require('../assets/bg.jpg')} style={styles.bg}>
-    //             <View style={styles.pagePlace}>
-    //                 <View style={styles.titleDay}>
-    //                     <Text style={styles.text}>Vos journées à (selon ville à rajouter)</Text>
-    //                 </View>
-
-    //                 <View style={styles.suggest}>
-    //                     <Text>Suggestions (à faire avec un map ou des components) {places.tittle}</Text>
-    //                 </View>
-
-    //                 <View style={styles.pageNumber}>
-    //                     <TouchableOpacity onPress={() => handleDownPage()} style={styles.pageChangement}>
-    //                         <Text style={styles.text}>G </Text>
-    //                     </TouchableOpacity>
-    //                     <Text style={styles.text}>Journée {count}/ nb page</Text>
-    //                     <TouchableOpacity onPress={() => handleUpPage()} style={styles.pageChangement}>
-    //                         <Text style={styles.text}>D </Text>
-    //                     </TouchableOpacity>
-    //                 </View>
-    //             </View>
-    //         </ImageBackground>
-
-    //     </View>
-    // </View>
   );
 }
 

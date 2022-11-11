@@ -83,18 +83,28 @@ export default function ProfileScreen({ navigation }) {
 
   console.log('user up', user);
 
-  const addDisplacement = (newDisplacement) => {
-    setSelected([...isSelected, newDisplacement]);
-    console.log("r", isSelected);
-  };
-  const removeDisplacement = (newDisplacement) => {
-    if (alreadyPress) {
-      setSelected(isSelected.filter((e) => e !== newDisplacement));
+ 
+  const updateDisplacement = (displacement) => {
+    if(isSelected.find(displacement => displacement === 'A pied')){
+        setSelected(isSelected.filter(displacement => displacement !== 'A pied'))
+    }else {
+       return setSelected([...isSelected, displacement])
     }
-  };
-  const checkedBox = () => {
-    setAlreadyPress(!alreadyPress);
-  };
+  }
+  const updateDisplacement1 = (displacement) => {
+    if(isSelected.find(displacement => displacement === 'En transports')){
+        setSelected(isSelected.filter(displacement => displacement !== 'En transports'))
+    }else {
+        return setSelected([...isSelected, displacement])
+     }
+   }
+   const updateDisplacement2 = (displacement) => {
+    if(isSelected.find(displacement => displacement === 'En voiture')){
+        setSelected(isSelected.filter(displacement => displacement !== 'En voiture'))
+    }else {
+        return setSelected([...isSelected, displacement])
+     }
+   }
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#335C67'}}>
@@ -296,11 +306,13 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.subtitleRadio}>Déplacement :</Text>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {
-                addDisplacement("A pied");
-                removeDisplacement();
-                checkedBox();
-              }}
+              onPress={() => updateDisplacement('A pied')
+              //{
+              //   // addDisplacement("A pied");
+              //   // removeDisplacement();
+              //   // checkedBox();
+              // }
+            }
               fillColor="#9E2A2B"
               text="A pied"
               textStyle={styles.textRadio}
@@ -308,11 +320,13 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {
-                addDisplacement("En transports");
-                removeDisplacement("En transports");
-                checkedBox();
-              }}
+              onPress={() => updateDisplacement1('En transports')
+              //    {
+              //   addDisplacement("En transports");
+              //   removeDisplacement("En transports");
+              //   checkedBox();
+              // }
+            }
               fillColor="#9E2A2B"
               text="En transports"
               textStyle={styles.textRadio}
@@ -320,11 +334,13 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View style={styles.radio}>
             <BouncyCheckbox
-              onPress={() => {
-                addDisplacement("En voiture");
-                removeDisplacement("En voiture");
-                checkedBox();
-              }}
+              onPress={() => updateDisplacement2('En voiture')
+                // {
+                // addDisplacement("En voiture");
+                // removeDisplacement("En voiture");
+                // checkedBox();
+              // }
+            }
               fillColor="#9E2A2B"
               text="En voiture"
               textStyle={styles.textRadio}
