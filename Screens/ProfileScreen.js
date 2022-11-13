@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
+  StatusBar
 } from "react-native";
 import { useState } from "react";
 import { RadioButton } from "react-native-paper";
@@ -19,7 +20,8 @@ import users from "../reducers/users";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import createPersistoid from "redux-persist/es/createPersistoid";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import Header from "../components/Header";
+import HeaderConnected from "../components/HeaderConnected";
 const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function ProfileScreen({ navigation }) {
@@ -32,7 +34,7 @@ export default function ProfileScreen({ navigation }) {
   const [checked3, setChecked3] = useState("Flexitarien");
   const [alreadyPress, setAlreadyPress] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [connected, setConnected]=useState(true)
+  const [connected, setConnected]=useState(false)
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.value);
@@ -75,6 +77,8 @@ export default function ProfileScreen({ navigation }) {
           );
           dispatch(login({ token: data.token }))
           setSelected([]);
+          navigation.navigate('Home')
+          setConnected(!connected)
         } else {
           setEmailError(true);
         }
@@ -107,32 +111,22 @@ export default function ProfileScreen({ navigation }) {
    }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#335C67'}}>
-    <View style={styles.container}>
-      
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
+    <StatusBar />
+    <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
       <View style={styles.header}>
-      <View>
-            <Image
-              source={require("../assets/logoWhite.png")}
-
-              style={{ width: 40, height: 40 }}
-
-            />
-          </View>
-         <View style={styles.btnHeader}>
-    
-            <TouchableOpacity
-
-              onPress={() => navigation.navigate('Connection')}
-
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Se connecter</Text>
-            </TouchableOpacity>
-     
-          </View>
+        <View>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <Image
+          style={{ width: 40, height: 40 }}
+          source={require("../assets/logoWhite.png")}
+        ></Image>
+      </TouchableOpacity>
+        </View>
+        {!user.isConnected && <Header/>}
+        {user.isConnected && <HeaderConnected />}
       </View>
+   
 <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{justifyContent: 'center', alignItems:'center'}}>
       <View style={styles.iconAvater}>
@@ -354,7 +348,7 @@ export default function ProfileScreen({ navigation }) {
       </TouchableOpacity>  
       </View>      
       </ScrollView>
-    </View>
+      </View>
     </SafeAreaView>
   );
 }

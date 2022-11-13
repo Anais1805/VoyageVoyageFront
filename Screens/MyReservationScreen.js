@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Calendar } from "react-native-calendars";
@@ -21,243 +21,66 @@ import mylikedays from "../reducers/mylikedays";
 import { removeMyDays } from "../reducers/mylikedays";
 import dates, { removeMyDates } from "../reducers/dates";
 import { addMyDates } from "../reducers/dates";
-
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+import BookingCards from "../components/BookingCards";
+import { addLikedDays } from "../reducers/users";
+import Header from "../components/Header";
+import HeaderConnected from "../components/HeaderConnected";
+import { logout } from "../reducers/users";
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 export default function MyReservationScreen({ navigation }) {
-   const dispatch = useDispatch()
-  const poub = useSelector((state) => state.mylikedays.value)
-  const dates = useSelector((state) => state.dates.value)
-  console.log('DATES STORED', dates);
-  const[myDays, setMyDays]= useState([])
-  // console.log('DATES', dates)
-  // useEffect(() => {
-  //   dispatch(addMyDates(myDays))
-  //  }, [myDays]);
-const [myDates, setMyDates] = useState('')
+  const dispatch = useDispatch();
+  const poub = useSelector((state) => state.mylikedays.value);
+  const user = useSelector((state) => state.user.value);
 
-// console.log('MYDATES', myDates)      
+  const mydays = useSelector((state) => state.mylikedays.value);
+  console.log("DAYSDAYS", mydays);
 
-
-  LocaleConfig.locales["fr"] = {
-    monthNames: [
-      "Janvier",
-      "Février",
-      "Mars",
-      "Avril",
-      "Mai",
-      "Juin",
-      "Juillet",
-      "Août",
-      "Septembre",
-      "Octobre",
-      "Novembre",
-      "Décembre",
-    ],
-    monthNamesShort: [
-      "Janv.",
-      "Févr.",
-      "Mars",
-      "Avril",
-      "Mai",
-      "Juin",
-      "Juil.",
-      "Août",
-      "Sept.",
-      "Oct.",
-      "Nov.",
-      "Déc.",
-    ],
-    dayNames: [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ],
-    dayNamesShort: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
-    today: "Aujourd'hui",
-  };
-  LocaleConfig.defaultLocale = "fr";
-  const mydays = useSelector((state) => state.mylikedays.value)
-  // console.log('DAYSDAYS', mydays)
-
-  const submitPress = () => {
-    dispatch(addMyDates(myDates.day))
-  }
- 
   const myBookings = mydays.map((data, i) => {
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [daySelected, setDaySelected] = useState('');
-  const [dayBooked, setDayBooked] = useState(false);
-  
-
-
-
-
-    return(
-      <View key={i}>
-      <ImageBackground
-      
-      style={styles.cardImage}
-      source={{
-        uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG/400px-Point_Z%C3%A9ro_des_Routes_de_France_%281%29.JPG",
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: "#335C67",
-          opacity: 0.9,
-          width: "100%",
-          height: "40%",
-          top: "60%",
-         
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text
-            style={{
-              color: "white",
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              fontWeight: 'bold',
-              fontSize: 16
-            
-            }}
-          >
-            {data}
-          </Text>
-       
-        </View>
-        <Pressable style={styles.btnToReserve}  onPress={() => setShowCalendar(!showCalendar)}
->
-        {!dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Je plannifie</Text>}
-        {dayBooked &&  <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>{daySelected}</Text>}
-       
-        </Pressable>
-        {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
-        <Text
-          style={{
-            color: "white",
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            fontSize: 12,
-          }}
-        >
-          
-        </Text>
-        
-      </View>
-      
-    </ImageBackground>
-     {showCalendar && (
-      <Calendar
-        minDate={"2022-10-01"}
-        maxDate={"2026-10-01"}
-        onDayPress={(day) => {
-          console.log("selected day", day);
-          setDaySelected(day.dateString);
-          setDayBooked(true);
-          setShowCalendar(!showCalendar)
-          //dispatch(addMyDates(day.dateString))
-          
-          // dispatch(removeMyDates())
-          //
-         setMyDates({key: i, day:day.dateString})
-        }}
-        markedDates={{
-          [daySelected]: {
-            selected: true,
-            selectedColor: "#335C67",
-          },
-        }}
-        markingType={"dot"}
-        theme={{
-          arrowColor: "#9E2A2B",
-          selectedDayBackgroundColor: "#F4F1F1",
-          monthTextColor: "#9E2A2B",
-          // textMonthFontWeight: 'bold'
-        }}
-        
-      />
-    )}
-    </View>
-    )
-  })
+    return (
+      <BookingCards key={i} name={data.city} lat={data.lat} lon={data.lon} />
+    );
+  });
 
   return (
-
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67' }}>
-        <StatusBar />
-        <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
-          <View style={styles.header}>
-            <View>
-              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-              <Image
-                source={require("../assets/logoWhite.png")}
-                style={{ width: 40, height: 40 }}
-                
-              />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.btnHeader}>
-            <FontAwesome
-            style={{marginRight: 10}}
-            name="suitcase"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
-
-                <FontAwesome
-            style={styles.icon}
-            name="user-circle-o"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("Profile")}
-          />
-                
-            
-            </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
+      <StatusBar />
+      <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
+        <View style={styles.header}>
+          <View>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={{ width: 40, height: 40 }}
+            source={require("../assets/logoWhite.png")}
+          ></Image>
+        </TouchableOpacity>
           </View>
-  
-          <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
-          <View style={styles.titleRestoContainer}>
-            <Text style={styles.titleResto}>
-              Vos journées réservées
-              
-            </Text>
-           
-         
-         
-           
-           <FontAwesome
+          
+           <HeaderConnected />
+        </View>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
+        <View style={styles.titleRestoContainer}>
+          <Text style={styles.titleResto}>Vos journées à planifier</Text>
+
+          <FontAwesome
             style={styles.iconP}
             name="bitbucket"
             size={30}
             onPress={() => dispatch(removeMyDays())}
           />
-           </View>
-             <ScrollView showsVerticalScrollIndicator={false}
-          >    
- {myBookings}
- <Pressable style={styles.btnToReserve}  onPress={() => {navigation.navigate('Overview'); submitPress()}}
->
-       <Text style={{color: 'white', fontSize: 12, fontWeight:'bold'}}>Valider</Text>
-        
-        </Pressable>
-          </ScrollView>
-     
-          </View>
-      </SafeAreaView>
-  
+        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {myBookings}
+          <Pressable
+            style={styles.btnToReserve}
+            onPress={() => navigation.navigate("Overview")}
+          >
+            <Text style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>
+              Voir mon récapitulatif
+            </Text>
+          </Pressable>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -267,7 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: '#335C67'
+    backgroundColor: "#335C67",
   },
   btnHeader: {
     flexDirection: "row",
@@ -332,22 +155,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     overflow: "hidden",
     borderRadius: 10,
-
   },
   btnToReserve: {
-    backgroundColor: '#9E2A2B',
-    width: 80,
+    backgroundColor: "#9E2A2B",
+    width: 200,
     height: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '70%',
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "40%",
     marginTop: 10,
 
-    borderRadius: 5   
+    borderRadius: 5,
   },
-  
 });
-
-
-
-

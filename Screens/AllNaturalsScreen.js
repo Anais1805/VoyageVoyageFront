@@ -11,13 +11,17 @@ import {
   KeyboardAvoidingView,
   ImageBackground,
   ScrollView,
+  StatusBar
 } from "react-native";
+import Header from "../components/Header";
+import HeaderConnected from "../components/HeaderConnected";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CardsVisitsComponent from "./CardsVisitsComponent";
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
 import places from "./places";
+import AllCards from "../components/AllCards";
 import { SafeAreaView } from "react-native-safe-area-context";
 const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 export default function AllNaturalssScreen({ navigation }) {
@@ -27,7 +31,7 @@ export default function AllNaturalssScreen({ navigation }) {
   const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
-
+  const user = useSelector((state)=> state.user.value)
   const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
@@ -71,81 +75,39 @@ export default function AllNaturalssScreen({ navigation }) {
 
 
     return (
-      // <TouchableOpacity
-      //   activeOpacity={0.8}
-      //   onPress={() => navigation.navigate("Details", allDetails)}
-      // >
-        <ImageBackground
-          key={i}
-          style={styles.cardImage}
-          source={{uri: image ?? 'https://www.sentiersmaritimes.com/681-thickbox_default/la-crete-entre-mer-et-montagne.jpg'}}
-        >
-          <View
-            style={{
-              backgroundColor: "#335C67",
-              opacity: 0.9,
-              width: "100%",
-              height: "40%",
-              top: "60%",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                }}
-              >
-                {data.infos.name}
-              </Text>
-              <Text style={{ color: "white", paddingHorizontal: 10 }}>
-                {data.infos.address.city}
-              </Text>
-            </View>
-
-            {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{place.hour}</Text> */}
-           <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
-           
-          </View>
-        </ImageBackground>
-      // </TouchableOpacity>
+      <AllCards
+        key={i}
+        name={data.infos.name}
+        city={data.infos.address.city}
+        source={
+          image ??
+          "https://france3-regions.francetvinfo.fr/image/v0vf_b8jc4d_nDoH5thBr9Vnu4Q/600x400/regions/2020/06/09/5edf5bcbe8030_photo_sancy-3767849.jpg"
+        }
+      />
     );
-    // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
+  
 
   console.log(destination.city);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67' }}>
+    <StatusBar />
+    <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.logoContainer}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Image style={styles.logo} source={require("../assets/logo.png")} />
+        <View>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={{ width: 40, height: 40 }}
+            source={require("../assets/logoWhite.png")}
+          ></Image>
         </TouchableOpacity>
-        <View style={styles.menuHeader}>
-          <FontAwesome
-            style={styles.icon}
-            name="suitcase"
-            size={30}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
-          <FontAwesome
-            style={styles.iconUser}
-            name="user-circle-o"
-            size={30}
-            onPress={() => navigation.navigate("Profile")}
-          />
         </View>
+        {!user.isConnected && <Header/>}
+        {user.isConnected && <HeaderConnected />}
       </View>
+   
+      <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
       <View style={styles.titleRestoContainer}>
         <Text style={styles.titleResto}>
           Les randonnées à {destination.city}
@@ -165,62 +127,64 @@ export default function AllNaturalssScreen({ navigation }) {
               renderItem={({item}) => <Card place={item} /> } />
             </View> */}
       <ScrollView style={styles.scrollViewer}>{hikes}</ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   header: {
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
-  logo: {
-    width: 30,
-    height: 30,
-  },
-  menuHeader: {
-    flexDirection: "row",
-  },
-  avatar: {
-    width: "20%",
-    height: "20%",
-  },
-  icon: {
-    marginHorizontal: 20,
-  },
-  iconUser: {
-    marginRight: 10,
-  },
+ 
+ 
   searchContainer: {
     flexDirection: "row",
   },
   cardImage: {
-    height: 200,
+    height: 130,
     width: 350,
-    marginRight: 20,
+    marginHorizontal: 10,
     marginVertical: 10,
     overflow: "hidden",
-    borderRadius: 10,
+    borderRadius: 10
   },
-  content: {
-    flex: 1,
+  input: {
+    borderWidth: 1,
+    borderColor: "#E1E1E1",
+    padding: 5,
+    width: "46.5%",
+    marginBottom: 15,
+    backgroundColor: "white",
   },
-  bg: {
-    width: "100%",
-    height: "100%",
+  iconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  iconSearch: {
+    backgroundColor: "#9E2A2B",
+    padding: 5,
+    marginBottom: "50%",
   },
   cards: {
     width: 100,
-    height: 100,
+    height: 20,
   },
   allcards: {
+    // flex:0.80,
     height: "100%",
     margin: 0,
+
+  },
+  scrollView: {
+    height: 20,
   },
   titleRestoContainer: {
-    marginTop: 20,
+  
     alignItems: "center",
   },
   titleResto: {
@@ -228,9 +192,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   scrollViewer: {
+
     height: "100%",
-    marginLeft: 20,
+
+    marginLeft: 5,
   },
 });
-
 

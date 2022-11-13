@@ -1,92 +1,98 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Modal, StatusBar, SafeAreaView } from 'react-native'
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Modal,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import markers from "../reducers/markers";
 import { importMarkers } from "../reducers/markers";
+import HeaderConnected from "../components/HeaderConnected";
 
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function MapScreen({ navigation }) {
-
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  
+
   const [currentPosition, setCurrentPosition] = useState(null);
   const [tempCoordinates, setTempCoordinates] = useState(null);
-  const [newPlace, setNewPlace] = useState('');
-  const [myMarkers, setMyMarkers]= useState([])
+  const [newPlace, setNewPlace] = useState("");
+  const [myMarkers, setMyMarkers] = useState([]);
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
-      if (status === 'granted') {
-        Location.watchPositionAsync({ distanceInterval: 10 },
-          (location) => {
-            setCurrentPosition(location.coords);
-          });
+      if (status === "granted") {
+        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+          setCurrentPosition(location.coords);
+        });
       }
     })();
-    
-}, []);
+  }, []);
+  let mark = [];
+  useEffect(() => {
+    fetch(`${BACKEND_ADRESS}/destinations/${user.token}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("FETCH", data.destination);
 
-useEffect(() => {
-  fetch(`${BACKEND_ADRESS}/destinations/${user.token}`)
-  .then(resp => resp.json())
-    .then(data =>{
-      // console.log('FETCH', data.destination)
-       setMyMarkers(data.destination),
-      dispatch(importMarkers(data.destination))
- })}, []);
+        mark.push(data.destination);
+        setMyMarkers(data.destination),
+          dispatch(importMarkers(data.destination));
+      });
+  }, []);
 
-const mymarkers = useSelector((state) => state.markers.value)
-console.log('MYMARKERS', mymarkers)
-const markers = mymarkers.map((data, i) => {
-  return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.name} />;
-});
-
+  const mymarkers = useSelector((state) => state.markers.value);
+  console.log("MYMARKERS", myMarkers);
+  const markers = myMarkers.map((data, i) => {
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: '#335C67'}}>
-      
+      <Marker
+        key={i}
+        coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }}
+        title={data.name}
+      />
+    );
+  });
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
       <StatusBar />
-      <View style={{flex: 1, backgroundColor: "#FFFBF7"}}>
-      <View style={styles.header}>
-        <View>
+      <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
+  
+  
+  
+
+  <View style={styles.header}>
+    <View>
+    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
-            source={require("../assets/logoWhite.png")}
             style={{ width: 40, height: 40 }}
-            onPress={() => navigation.navigate("Home")}
-          />
-        </View>
-        <View style={styles.btnHeader}>
-          <FontAwesome
-            style={{ marginRight: 10 }}
-            name="suitcase"
-            size={30}
-            color={"white"}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
+            source={require("../assets/logoWhite.png")}
+          ></Image>
+        </TouchableOpacity>
+    </View>
+    <HeaderConnected/>
+</View>
 
-          <FontAwesome
-            style={styles.icon}
-            name="user-circle-o"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("Profile")}
-          />
-        </View>
-      </View>
-      
-
-      <View style={{ width: "100%", height: "100%", alignItems: "center", marginTop: 40 }}>
-        
-          <MapView
-          
-            mapType="hybrid"
-            style={styles.map}
-          >
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+            marginTop: 40,
+          }}
+        >
+          <MapView mapType="hybrid" style={styles.map}>
             {currentPosition && (
               <Marker
                 coordinate={currentPosition}
@@ -94,7 +100,7 @@ const markers = mymarkers.map((data, i) => {
                 pinColor="#fecb2d"
               />
             )}
-           {markers} 
+            {markers}
           </MapView>
           <FontAwesome
             style={{ marginRight: 20, marginTop: 10 }}
@@ -104,12 +110,9 @@ const markers = mymarkers.map((data, i) => {
             onPress={() => navigation.navigate("Overview")}
           />
         </View>
-        </View>
+      </View>
     </SafeAreaView>
-        
-         
-              
-          );
+  );
 }
 const styles = StyleSheet.create({
   header: {
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: '#335C67'
+    backgroundColor: "#335C67",
   },
   btnHeader: {
     flexDirection: "row",
@@ -166,8 +169,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: 'center',
-    marginVertical: 10
+    alignItems: "center",
+    marginVertical: 10,
   },
   titleResto: {
     fontSize: 26,
@@ -216,8 +219,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 5,
     marginRight: 5,
-    
- 
   },
-  
-})
+});

@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-
-  
-  value: []
-
+  value:[]
 };
 
 export const myLikedDaysSlice = createSlice({
@@ -12,7 +9,7 @@ export const myLikedDaysSlice = createSlice({
   initialState,
   reducers: {
     addMyDay: (state, action) => {
-      // console.log('___payload', action.payload);
+      console.log('___payload', action.payload);
       state.value.push(action.payload);
     }, 
     removeMyDays: (state, action) => {
