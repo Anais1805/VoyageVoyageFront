@@ -9,9 +9,10 @@ import {
   FlatList,
   ImageBackground,
   ScrollView,
-
+  StatusBar,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AllCards from "../components/AllCards";
 
 // import CardsRestaurantsComponent from "./CardsRestaurantsComponent";
 
@@ -21,168 +22,105 @@ import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
+import Header from "../components/Header";
+import HeaderConnected from "../components/HeaderConnected";
 
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function AllRestaurantsScreen({ navigation }) {
-
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
-
+  const user = useSelector((state) => state.user.value);
   const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
-    fetch(
-
- `${BACKEND_ADRESS}/foods/${destination.lon}/${destination.lat}`
-
-)
-  .then(resp => resp.json())
-  .then(data => {
-    if (data.result) {
-      setAllRestaurants(data.foods);
-      let tmp = data.foods.map((e) => e.xid);
-      // setXid(tmp);
-      // console.log(data.foods)
-      let resto = []
-      tmp.forEach((e) => {
-
-    fetch(`${BACKEND_ADRESS}/infos/${e}`)
-
-
-
-      .then(resp => resp.json())
-      .then(data => {
-        resto.push(data)
-        // setAllDetails([...allDetails,data])
-
-      }).finally(()=> setAllDetails([...allDetails,...resto]))
-    
-    })
-    
-    
-}
-  });
+    fetch(`${BACKEND_ADRESS}/foods/${destination.lon}/${destination.lat}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.result) {
+          setAllRestaurants(data.foods);
+          let tmp = data.foods.map((e) => e.xid);
+          // setXid(tmp);
+          // console.log(data.foods)
+          let resto = [];
+          tmp.forEach((e) => {
+            fetch(`${BACKEND_ADRESS}/infos/${e}`)
+              .then((resp) => resp.json())
+              .then((data) => {
+                resto.push(data);
+                // setAllDetails([...allDetails,data])
+              })
+              .finally(() => setAllDetails([...allDetails, ...resto]));
+          });
+        }
+      });
   }, []);
- 
 
-// console.log('DETAILS', allDetails)
+  // console.log('DETAILS', allDetails)
 
-const restaurants = allDetails.map((data, i) => {
-let image = data.infos.preview?.source
+  const restaurants = allDetails.map((data, i) => {
+    let image = data.infos.preview?.source;
+    return (
+      <AllCards
+        key={i}
+        name={data.infos.name}
+        city={data.infos.address.city}
+        source={
+          image ??
+          "https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg"
+        }
+      />
+    );
+   
+  });
 
-  return (
-  
-    <ImageBackground key={i} style={styles.cardImage}    source={{uri: image ??  'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg'}} >
-    <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
-      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-        <Text style={{color: 'white', paddingHorizontal: 10, paddingVertical: 5}}>{data.infos.name}</Text>
-        <Text style={{color: 'white', paddingHorizontal: 10}}>{data.infos.address?.city}</Text>
-      </View>
-    
-     {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
-     <Text style={{color: 'white', paddingHorizontal: 10,  paddingVertical: 5, fontSize: 12}}>{data.infos.kinds}</Text>
-
-</View>
-</ImageBackground>
-
-)
-
-});
- 
-console.log(destination.city)
+  console.log(destination.city);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
+      <StatusBar />
+      <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.logoContainer}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Image style={styles.logo} source={require("../assets/logo.png")} />
-          </TouchableOpacity>
-          <View style={styles.menuHeader}>
-            <FontAwesome
-              style={styles.icon}
-              name="suitcase"
-              size={30}
-              onPress={() => navigation.navigate("MyReservation")}
-            />
-            <FontAwesome
-              style={styles.iconUser}
-              name="user-circle-o"
-              size={30}
-              onPress={() => navigation.navigate("Profile")}
-            />
+          <View>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={{ width: 40, height: 40 }}
+            source={require("../assets/logoWhite.png")}
+          ></Image>
+        </TouchableOpacity>
           </View>
+          {!user.isConnected && <Header />}
+          {user.isConnected && <HeaderConnected />}
         </View>
-
-<View style={styles.titleRestoContainer}>
-  <Text style={styles.titleResto}>Les restaurants à {destination.city}</Text>
-</View>
-{/* <ImageBackground source={require("../assets/bg.jpg")} style={styles.bg}>
- <View style={styles.allcards}>
- 
-<ScrollView contentContainerStyle>
-   {restaurants}
-    </ScrollView>
-     
-     </View> 
-    </ImageBackground> /}
-
-      {/ <FlatList
-        contentContainerStyle={{ paddingLeft: 20 }}
-        vertical
-        showsHorizontalScrollIndicator={false}
-        data={allDetails}
-        renderItem={({ item }) => <Card allDetails={item}/>}
-
-
-      /> */}
-
-    <ScrollView style={styles.scrollViewer}>
-    
-        {restaurants}
-      </ScrollView>
-      
-  </SafeAreaView>
-</SafeAreaView>
-  
+        <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
+        <View style={styles.titleRestoContainer}>
+          <Text style={styles.titleResto}>
+            Les restaurants à {destination.city}
+          </Text>
+        </View>
+        <ScrollView style={styles.scrollViewer}>{restaurants}</ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   header: {
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: '#335C67'
   },
-  logo: {
-    width: 30,
-    height: 30,
-  },
-  menuHeader: {
-    flexDirection: "row",
-  },
-  avatar: {
-    width: "20%",
-    height: "20%",
-  },
-  icon: {
-    marginHorizontal: 20,
-  },
-  iconUser: {
-    marginRight: 10,
-  },
+
+  
   searchContainer: {
     flexDirection: "row",
   },
   cardImage: {
-    height: 200,
+    height: 130,
     width: 350,
     marginRight: 20,
     marginVertical: 10,
@@ -197,30 +135,23 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: "white",
   },
-  iconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconSearch: {
-    backgroundColor: "#9E2A2B",
-    padding: 5,
-    marginBottom: "50%",
-  },
+
+  
   cards: {
     width: 100,
     height: 20,
   },
   allcards: {
-    //  flex:0.80,
+    //flex:0.80,
 
-height: "100%",
-margin: 0,
+    height: "100%",
+    margin: 0,
   },
   scrollView: {
     height: 20,
   },
   titleRestoContainer: {
-    marginTop: 20,
+  
     alignItems: "center",
   },
   titleResto: {
@@ -228,10 +159,8 @@ margin: 0,
     fontWeight: "bold",
   },
   scrollViewer: {
-    height: '100%',
-   
+    height: "100%",
 
-marginLeft: 20,
-  }
+    marginLeft: 10,
+  },
 });
-

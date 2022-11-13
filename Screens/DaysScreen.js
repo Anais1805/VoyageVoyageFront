@@ -16,15 +16,18 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import destinations from "../reducers/destinations";
-import users from "../reducers/users";
+import users, { addLikedDays } from "../reducers/users";
 import dates from "../reducers/dates";
-
+import Header from "../components/Header";
+import HeaderConnected from "../components/HeaderConnected"
 import favorite from "../reducers/favorites";
 import { addActivities, cleanActivities } from "../reducers/favorites";
 import mylikedays, { removeMyDays } from "../reducers/mylikedays";
 import { addMyDay } from "../reducers/mylikedays";
 import { icon } from "@fortawesome/fontawesome-svg-core";
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+import AllCards from "../components/AllCards";
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
+
 export default function DaysScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
@@ -34,42 +37,45 @@ export default function DaysScreen({ navigation }) {
   const destination = useSelector((state) => state.destinations.value);
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [details, setDetails] = useState([]);
-  const [myvisits, setMyVisits]=useState([])
-const dates = useSelector((state) => state.dates.value)
-const user = useSelector((state) => state.user.value)
+  const [myvisits, setMyVisits] = useState([]);
+  const dates = useSelector((state) => state.dates.value);
+  const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const mydays = useSelector((state) => state.mylikedays.value);
   const favorites = useSelector((state) => state.favorite.value);
-  
-  useEffect(() => {
-    fetch(`${BACKEND_ADRESS}/destinations`, {
 
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        city: destination.city,
-        lat: destination.lat,
-        lon: destination.lon,
-   
+  const newPlace = {
+    city: destination.city,
+    lat: destination.lat,
+    lon: destination.lon,
+  };
+  // useEffect(() => {
+  //   fetch(`${BACKEND_ADRESS}/destinations`, {
 
-      }),
-    })
-      
-   }, [heart]);
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       city: destination.city,
+  //       lat: destination.lat,
+  //       lon: destination.lon,
 
+  //     }),
+  //   })
 
-  function fisherYatesShuffle(arr){
-    for(var i =arr.length-1 ; i>0 ;i--){
-        var j = Math.floor( Math.random() * (i + 1) ); //random index
-        [arr[i],arr[j]]=[arr[j],arr[i]];// swap
+  //  }, [heart]);
+
+  function fisherYatesShuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)); //random index
+      [arr[i], arr[j]] = [arr[j], arr[i]]; // swap
     }
   }
 
   const shuffle = () => {
     fisherYatesShuffle(allDetails);
     fisherYatesShuffle(details);
-    shuffleState ? setShuffleState(false) : setShuffleState(true) ;
-  }
+    shuffleState ? setShuffleState(false) : setShuffleState(true);
+  };
 
   let iconColor = {};
 
@@ -83,17 +89,11 @@ const user = useSelector((state) => state.user.value)
     setHeart(!heart);
     // if(!heart && favorites){dispatch(cleanActivities())}
   };
- 
+
   const [shuffleState, setShuffleState] = useState(false);
-   
+
   useEffect(() => {
-    fetch(
-
-
-      `${BACKEND_ADRESS}/visits/${destination.lon}/${destination.lat}`
-
-
-    )
+    fetch(`${BACKEND_ADRESS}/visits/${destination.lon}/${destination.lat}`)
       .then((resp) => resp.json())
       .then((data) => {
         if (data.result) {
@@ -101,30 +101,21 @@ const user = useSelector((state) => state.user.value)
           let tmp = data.visits.map((e) => e.xid);
           let cult = [];
           tmp.forEach((e) => {
-
-
             fetch(`${BACKEND_ADRESS}/infos/${e}`)
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
               })
               .finally(() => setAllDetails([...allDetails, ...cult]));
-      
-              // fisherYatesShuffle(allDetails)
 
+            // fisherYatesShuffle(allDetails)
           });
         }
       });
   }, []);
 
-  const store = useSelector((state) => state.mylikedays.value);
-
   useEffect(() => {
-    fetch(
-
-      `${BACKEND_ADRESS}/foods/${destination.lon}/${destination.lat}`
-
-    )
+    fetch(`${BACKEND_ADRESS}/foods/${destination.lon}/${destination.lat}`)
       .then((resp) => resp.json())
       .then((data) => {
         if (data.result) {
@@ -132,156 +123,50 @@ const user = useSelector((state) => state.user.value)
           let tmp = data.foods.map((e) => e.xid);
           let resto = [];
           tmp.forEach((e) => {
-
             fetch(`${BACKEND_ADRESS}/infos/${e}`)
               .then((resp) => resp.json())
               .then((data) => {
                 resto.push(data);
-              
               })
               .finally(() => setDetails([...details, ...resto]));
           });
         }
       });
   }, []);
- 
 
   const visit = allDetails.map((data, i) => {
-     const image = data.infos.preview?.source
+    const image = data.infos.preview?.source;
     if (i < 2) {
-
-    // if(heart && data){
-    //   dispatch(addActivities({activities:data.infos.name}))  
-    // }
-     
       return (
-       
-       
-        <ImageBackground
+        <AllCards
           key={i}
-          style={styles.cardImage}
-          source={{
-            uri: image ?? 'https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg',
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#335C67",
-              opacity: 0.9,
-              width: "100%",
-              height: "40%",
-              top: "60%",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                }}
-              >
-                {data.infos.name}
-                
-              </Text>
-              <Text style={{ color: "white", paddingHorizontal: 10 }}>
-                {destination.city}
-              </Text>
-            </View>
-
-            {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
-            <Text
-              style={{
-                color: "white",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                fontSize: 12,
-              }}
-            >
-              Activités
-            </Text>
-          </View>
-        </ImageBackground>
-        // </TouchableOpacity>
+          name={data.infos.name}
+          city={data.infos.address?.city}
+          source={
+            image ??
+            "https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg"
+          }
+        />
       );
-      
     } else {
       return;
     }
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
-
-
 
   const restaurants = details.map((data, j) => {
-    const image = data.infos.preview?.source
-
-    // console.log("DAT", image);
+    const image = data.infos.preview?.source;
     if (j < 2) {
-      // if(heart ){
-      //   // state.value = state.value.filter(bookmark => bookmark.title !== action.payload.title);
-      // dispatch(addActivities({foods:(data.infos.name).filter(e => e !== action.payload)}))}
-      // console.log(data.infos.name)
-
       return (
-        <ImageBackground
+        <AllCards
           key={j}
-          style={styles.cardImage}
-          source={{
-            uri: image ?? 'https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg'
-            
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#335C67",
-              opacity: 0.9,
-              width: "100%",
-              height: "40%",
-              top: "60%",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                }}
-              >
-                {data.infos.name}
-              </Text>
-              <Text style={{ color: "white", paddingHorizontal: 10 }}>
-                {data.infos.address?.city}
-              </Text>
-            </View>
-
-            {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
-            <Text
-              style={{
-                color: "white",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                fontSize: 12,
-              }}
-            >
-              Restauration
-            </Text>
-          </View>
-        </ImageBackground>
-        // </TouchableOpacity>
+          name={data.infos.name}
+          city={data.infos.address?.city}
+          source={
+            image ??
+            "https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg"
+          }
+        />
       );
     } else {
       return;
@@ -289,110 +174,62 @@ const user = useSelector((state) => state.user.value)
 
     // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
-  
-    console.log("ADD REDUCER FAVORITE", favorites);
+
+  console.log("ADD REDUCER FAVORITE", favorites);
   return (
-    
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67' }}>
-        <StatusBar />
-       <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
-
-       <View style={styles.header}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
+      <StatusBar />
+      <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
+        <View style={styles.header}>
           <View>
-            <Image
-              source={require("../assets/logoWhite.png")}
-
-              style={{ width: 40, height: 40 }}
-
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={{ width: 40, height: 40 }}
+            source={require("../assets/logoWhite.png")}
+          ></Image>
+        </TouchableOpacity>
+          </View>
+          {!user.isConnected && <Header/>}
+          {user.isConnected && <HeaderConnected />}
+        </View>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
+        <View style={styles.titleRestoContainer}>
+          <Text style={styles.titleResto}>
+            Votre journée à {destination.city}
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <FontAwesome
+              style={iconColor}
+              name="heart"
+              size={40}
+              onPress={() => {
+                // dispatch(addActivities({activities: }))
+                dispatch(addMyDay(newPlace));
+                // dispatch(removeMyDays());
+                heartPress();
+                {
+                  user.isConnected && navigation.navigate("MyReservation");
+                }
+                {
+                  !user.isConnected && navigation.navigate("Profile");
+                }
+              }}
+            />
+            <FontAwesome
+              style={styles.icon}
+              name="refresh"
+              size={40}
+              color={"#9E2A2B"}
+              onPress={() => shuffle()}
             />
           </View>
-         {!user.isConnected && <View style={styles.btnHeader}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Profile")}
-              style={styles.login1}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin1}>S'inscrire</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-
-              onPress={() => navigation.navigate('Connection')}
-
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Se connecter</Text>
-            </TouchableOpacity>
-     
-          </View> }
-          {user.isConnected &&  <View style={styles.btnHeader}>
-        
-            <FontAwesome
-            style={styles.icon}
-            name="suitcase"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
-         
-
-                <FontAwesome
-            style={styles.icon}
-            name="user-circle-o"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("Profile")}
-          />
-            <FontAwesome
-            style={styles.icon}
-            name="times-circle"
-            size={30}
-            onPress={() => handleLogout()}
-          />
-                    
-            
-            </View>}
-  </View>
-  <View style={{ paddingHorizontal: 20, paddingVertical: 5 }}></View>
-  <View style={styles.titleRestoContainer}>
-    <Text style={styles.titleResto}>
-      Votre journée à {destination.city}
-    </Text>
-    <View style={{flexDirection: 'row'}}>
-    <FontAwesome
-      style={iconColor}
-      name="heart"
-      size={40}
-      onPress={() => {
-      // dispatch(addActivities({activities: }))
-        dispatch(addMyDay(destination.city));
-        // dispatch(removeMyDays());
-        heartPress();
-        {user.isConnected &&  navigation.navigate('MyReservation')}
-        {!user.isConnected &&  navigation.navigate('Profile')}
-      }}
-    />
-      <FontAwesome
-      style={styles.icon}
-      name="refresh"
-      size={40}
-      color={'#9E2A2B'}
-      onPress={() => shuffle()}
-    />
-    </View>
-  </View>
-  <ScrollView
-
-  >
-    {visit}
-    {restaurants}
-  </ScrollView>
-  
- 
-   </View>
-   
-  </SafeAreaView>
-
+        </View>
+        <ScrollView>
+          {visit}
+          {restaurants}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -402,7 +239,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: '#335C67'
+    backgroundColor: "#335C67",
   },
   btnHeader: {
     flexDirection: "row",
@@ -469,9 +306,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   icon: {
-    marginHorizontal: 5
-  }
-  
+    marginHorizontal: 5,
+  },
+
   // container: {
   //     flex: 1,
   //     width:'100%',

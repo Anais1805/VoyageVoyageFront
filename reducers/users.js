@@ -10,6 +10,7 @@ const initialState = {
     diet: null,
     displacement: null,
     isConnected: false,
+
   },
   
 };
@@ -42,6 +43,7 @@ export const userSlice = createSlice({
       state.value.isConnected = false
       state.value.email = null
   }
+
   },
 });
 

@@ -6,7 +6,8 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  StatusBar,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState, useEffect } from "react";
@@ -15,38 +16,30 @@ import activities from "../reducers/activities";
 import { useSelector, useDispatch } from "react-redux";
 import { activitiesInfos } from "../reducers/activities";
 import places from "./places";
-
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+import Header from "../components/Header";
+import HeaderConnected from "../components/HeaderConnected";
+import users from "../reducers/users";
+import AllCards from "../components/AllCards";
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 export default function AllCulturalsScreen({ navigation }) {
-
   const [allCulturals, setAllCulturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);
   const [xid, setXid] = useState([]);
   const dispatch = useDispatch();
   const destination = useSelector((state) => state.destinations.value);
-
+  const user = useSelector((state) => state.user.value);
   const activity = useSelector((state) => state.activities.value);
 
   useEffect(() => {
-
-
     fetch(`${BACKEND_ADRESS}/visits/${destination.lon}/${destination.lat}`)
-
-
       .then((resp) => resp.json())
       .then((data) => {
         if (data.result) {
           setAllCulturals(data.visits);
           let tmp = data.visits.map((e) => e.xid);
-          // setXid(tmp);
-          // console.log(data.foods)
           let cult = [];
           tmp.forEach((e) => {
-
-
             fetch(`${BACKEND_ADRESS}/infos/${e}`)
-
-
               .then((resp) => resp.json())
               .then((data) => {
                 cult.push(data);
@@ -59,93 +52,39 @@ export default function AllCulturalsScreen({ navigation }) {
   }, []);
 
   const visit = allDetails.map((data, i) => {
-    const image = data.infos.preview?.source
-    //data.infos.wikipedia_extracts;
+    const image = data.infos.preview?.source;
 
-    // console.log("DAT", image);
     return (
-      <ImageBackground
+      <AllCards
         key={i}
-        style={styles.cardImage}
-        source={{
-          uri: image ?? 'https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg'}}
-      >
-        <View
-          style={{
-            backgroundColor: "#335C67",
-            opacity: 0.9,
-            width: "100%",
-            height: "40%",
-            top: "60%",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                color: "white",
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-              }}
-            >
-              {data.infos.name}
-            </Text>
-            <Text style={{ color: "white", paddingHorizontal: 10 }}>
-              {destination.city}
-            </Text>
-          </View>
-
-          {/* <Text style={{color: 'white', paddingHorizontal: 10, fontSize: 12}}>{data.infos.adress}</Text>  */}
-          <Text
-            style={{
-              color: "white",
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              fontSize: 12,
-            }}
-          >
-            {data.infos.wikipedia_extracts?.text}
-          </Text>
-        </View>
-      </ImageBackground>
-      // </TouchableOpacity>
+        name={data.infos.name}
+        city={data.infos.address.city}
+        source={
+          image ??
+          "https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg"
+        }
+      />
     );
-
-    // <CardsRestaurantsComponent key={i} name={data.infos.name} city={data.infos.address.city} source={{uri:data.infos.image}}/>)
   });
 
-
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
+      <StatusBar />
+      <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.logoContainer}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Image style={styles.logo} source={require("../assets/logo.png")} />
-          </TouchableOpacity>
-          <View style={styles.menuHeader}>
-            <FontAwesome
-              style={styles.icon}
-              name="suitcase"
-              size={30}
-              onPress={() => navigation.navigate("MyReservation")}
-            />
-            <FontAwesome
-              style={styles.iconUser}
-              name="user-circle-o"
-              size={30}
-              onPress={() => navigation.navigate("Profile")}
-            />
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+              <Image
+                style={{ width: 40, height: 40 }}
+                source={require("../assets/logoWhite.png")}
+              ></Image>
+            </TouchableOpacity>
           </View>
+          {!user.isConnected && <Header />}
+          {user.isConnected && <HeaderConnected />}
         </View>
 
+        <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
         <View style={styles.titleRestoContainer}>
           <Text style={styles.titleResto}>
             Les visites à {destination.city}
@@ -153,42 +92,27 @@ export default function AllCulturalsScreen({ navigation }) {
         </View>
 
         <ScrollView style={styles.scrollViewer}>{visit}</ScrollView>
-      </SafeAreaView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   header: {
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: "#335C67",
   },
-  logo: {
-    width: 30,
-    height: 30,
-  },
-  menuHeader: {
-    flexDirection: "row",
-  },
-  avatar: {
-    width: "20%",
-    height: "20%",
-  },
-  icon: {
-    marginHorizontal: 20,
-  },
-  iconUser: {
-    marginRight: 10,
-  },
+
   searchContainer: {
     flexDirection: "row",
   },
   cardImage: {
-    height: 200,
+    height: 130,
     width: 350,
-    marginRight: 20,
+    marginHorizontal: 10,
     marginVertical: 10,
     overflow: "hidden",
     borderRadius: 10,
@@ -215,16 +139,14 @@ const styles = StyleSheet.create({
     height: 20,
   },
   allcards: {
-    //  flex:0.80,
+    // flex:0.80,
     height: "100%",
     margin: 0,
-
   },
   scrollView: {
     height: 20,
   },
   titleRestoContainer: {
-    marginTop: 20,
     alignItems: "center",
   },
   titleResto: {
@@ -232,10 +154,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   scrollViewer: {
-
     height: "100%",
 
-    marginLeft: 20,
+    marginLeft: 5,
   },
 });
-

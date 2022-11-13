@@ -22,7 +22,8 @@ import { importMarkers, removeMarkers } from "../reducers/markers";
 import { addMyDay, removeMyDays } from "../reducers/mylikedays";
 import { addMyDates } from "../reducers/dates";
 import markers from "../reducers/markers";
- 
+import Header from "../components/Header";
+ import HeaderConnected from "../components/HeaderConnected";
 const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function MapScreen({ navigation }) {
@@ -32,14 +33,17 @@ export default function MapScreen({ navigation }) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [myMarkers, setMyMarkers]= useState([])
   const [myDates, setMyDates]=useState([])
+  let mark = []
   useEffect(() => {
     fetch(`${BACKEND_ADRESS}/destinations/${user.token}`)
     .then(resp => resp.json())
       .then(data =>{
         console.log('FETCH', data.destination)
-         setMyMarkers(data.destination),
+        mark.push(data.destination)
+        setMyMarkers(data.destination),
         dispatch(importMarkers(data.destination))
-        })}, [])
+        })
+      }, [])
 
         // useEffect(() => {
         // fetch(`${BACKEND_ADRESS}/bookings/${user.token}`)
@@ -50,7 +54,6 @@ export default function MapScreen({ navigation }) {
         //   dispatch(addMyDates(data.Journeys)) 
         //     })}, []);
 
-// console.log('MARK', myMarkers);
             
    
    
@@ -71,18 +74,23 @@ export default function MapScreen({ navigation }) {
 
   // // console.log('USERS', user.token)
   const mymarkers = useSelector((state) => state.markers.value)
-   console.log('MYMARKER', mymarkers)
-   console.log('MYDATES', dates)
-  // const markers = mymarkers.map((data, i) => {
-  //   return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
-  // });
-  const myBookingDays = dates.map((data, i) => {
+  //  console.log('MYMARKER', mymarkers)
+
+ console.log('MARK', myMarkers)
+//  Object.values(myMarkers))
+//  .map((value, index) => {return (<View key={index}><Text>{value}</Text></View>)}));
+
+  const markers = myMarkers.map((data, i) => {
+    if(data !== null){
+    return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
+  }})
+  const myBookingDays = myMarkers.map((data, i) => {
     
     if (data) {
       return (
         <View key={i} style={styles.btnToReserve}>
           <Text style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>
-            Journée du {data}
+            Journée du {data.date} à {data.city}
           </Text>
         </View>
       );
@@ -93,35 +101,21 @@ export default function MapScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67'}}>
       <StatusBar />
       <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
-      <View style={styles.header}>
-        <View>
-          <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
+  
+  
+  
+
+  <View style={styles.header}>
+    <View>
+    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
-            source={require("../assets/logoWhite.png")}
             style={{ width: 40, height: 40 }}
-            
-          />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btnHeader}>
-          <FontAwesome
-            style={{ marginRight: 10 }}
-            name="suitcase"
-            size={30}
-            color={"white"}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
-
-          <FontAwesome
-            style={styles.icon}
-            name="user-circle-o"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("Profile")}
-          />
-        </View>
-      </View>
-
+            source={require("../assets/logoWhite.png")}
+          ></Image>
+        </TouchableOpacity>
+    </View>
+    <HeaderConnected/>
+</View>
       <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
       <View style={styles.titleRestoContainer}>
         <Text style={styles.titleResto}>Récapitulatif</Text>
@@ -251,7 +245,7 @@ const styles = StyleSheet.create({
   },
   btnToReserve: {
     backgroundColor: "#9E2A2B",
-    width: 170,
+    width: 250,
     height: 25,
     justifyContent: "center",
     alignItems: "center",

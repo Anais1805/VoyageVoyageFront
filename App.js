@@ -19,8 +19,8 @@ import AllNaturalssScreen from './Screens/AllNaturalsScreen.js';
 import AllRestaurantsScreen from './Screens/AllRestaurantsScreen.js';
 import Card from './components/Card.js'
 
-
-
+import HeaderConnected from './components/HeaderConnected.js';
+import Header from './components/Header.js';
 import MyDayScreen from './Screens/MyDayScreen';
 import MapScreen from './Screens/MapScreen';
 import DaysScreen from './Screens/DaysScreen';
@@ -65,7 +65,10 @@ export default function App() {
 <PersistGate persistor={persistor}>
 <NavigationContainer>
      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    
        <Stack.Screen name="Start" component={StartScreen} />
+       <Stack.Screen name='Header' component={Header}/>
+      <Stack.Screen name='HeaderConnected' component={HeaderConnected}/>
        <Stack.Screen name="Home" component={HomeScreen} />
        <Stack.Screen name="AllRestaurants" component={AllRestaurantsScreen} />
        <Stack.Screen name="AllCulturals" component={AllCulturalsScreen} />

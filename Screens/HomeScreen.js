@@ -24,7 +24,8 @@ import * as Location from 'expo-location';
 import users from "../reducers/users";
 import { logout} from "../reducers/users"
 import { importPosition } from "../reducers/currentPosition";
-
+import HeaderConnected from "../components/HeaderConnected"
+import Header from "../components/Header";
 const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 const {width} = Dimensions.get('screen');
@@ -86,9 +87,7 @@ export default function HomeScreen({ navigation }) {
  
 // console.log('RESTO', allDetailsResto);
 
-  const handleLogout = () => {
-		dispatch(logout())
-	}
+
  
 
 
@@ -162,52 +161,8 @@ fetch(`${BACKEND_ADRESS}/favorite/${city}/${country}`)
 
             />
           </View>
-         {!user.isConnected && <View style={styles.btnHeader}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Profile")}
-              style={styles.login1}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin1}>S'inscrire</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-
-              onPress={() => navigation.navigate('Connection')}
-
-              style={styles.login2}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLogin2}>Se connecter</Text>
-            </TouchableOpacity>
-     
-          </View> }
-          {user.isConnected &&  <View style={styles.btnHeader}>
-        
-            <FontAwesome
-            style={styles.icon}
-            name="suitcase"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("MyReservation")}
-          />
-         
-
-                <FontAwesome
-            style={styles.icon}
-            name="user-circle-o"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.navigate("Profile")}
-          />
-            <FontAwesome
-            style={styles.icon}
-            name="times-circle"
-            size={30}
-            onPress={() => handleLogout()}
-          />
-                    
-            
-            </View>}
+         {!user.isConnected &&  <Header/>}
+          {user.isConnected &&  <HeaderConnected/>}
         </View> 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{height: 120, paddingHorizontal: 20, paddingVertical: 20}}>
