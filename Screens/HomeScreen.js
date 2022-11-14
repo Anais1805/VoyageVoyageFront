@@ -57,42 +57,9 @@ export default function HomeScreen({ navigation }) {
     })();
   
 }, []);
-// const current = useSelector((state) => state.currentPosition.value)
-  console.log('CURRENT', currentPosition)
-//   useEffect(() => {
-//     fetch(
 
-//  `http://192.168.1.43:4000/foods/${current.longitude}/${current.latitude}`
+  console.log('CURRENT', currentPosition?.latitude)
 
-// )
-//   .then(resp => resp.json())
-//   .then(data => {
-//     if (data.result) {  
-//       setAllRestaurants(data.foods);
-//       let tmp = data.foods.map((e) => e.xid);
-//       let resto = []
-//       tmp.forEach((e) => {
-
-//     fetch(`http://192.168.1.43:4000/infos/${e}`)
-//       .then(resp => resp.json())
-//       .then(data => {
-//         resto.push(data)
-//         // setAllDetails([...allDetails,data])
-
-//       }).finally(()=> setAllDetailsResto([...allDetailsResto,...resto]))
-    
-//     })}
-//   });
-//   }, []);
- 
-// console.log('RESTO', allDetailsResto);
-
-
- 
-
-
-
-  
 
   const Card = ({place}) => {
     return(
@@ -121,27 +88,11 @@ export default function HomeScreen({ navigation }) {
 
   
 
-const searchPress = () => {
 
 
 
-fetch(`${BACKEND_ADRESS}/favorite/${city}/${country}`)
 
 
-
-            .then((resp) => resp.json())
-            .then((data) => {
-              if(data.result) {
-                dispatch(destinationSearch({
-                  city: data.city.name,
-                  country: data.city.country,
-                  lat: data.city.lat,
-                  lon: data.city.lon
-                }
-                ))
-              }
-            })
-   }
    
     return (
 

@@ -16,7 +16,7 @@ import {
 import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import CardsVisitsComponent from "./CardsVisitsComponent";
+
 import { useState, useEffect } from "react";
 import destinations from "../reducers/destinations";
 import { useSelector, useDispatch } from "react-redux";
@@ -78,7 +78,7 @@ export default function AllNaturalssScreen({ navigation }) {
       <AllCards
         key={i}
         name={data.infos.name}
-        city={data.infos.address.city}
+        city={data.infos.address?.city}
         source={
           image ??
           "https://france3-regions.francetvinfo.fr/image/v0vf_b8jc4d_nDoH5thBr9Vnu4Q/600x400/regions/2020/06/09/5edf5bcbe8030_photo_sancy-3767849.jpg"

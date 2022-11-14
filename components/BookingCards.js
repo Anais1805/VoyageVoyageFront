@@ -79,8 +79,6 @@ export default function BookingCards(props) {
       // console.log('DAYSDAYS', mydays)
     
       const submitPress = () => {
-        // dispatch(addMyDates(myDates.day))
-       
         fetch(`${BACKEND_ADRESS}/destinations`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -92,7 +90,6 @@ export default function BookingCards(props) {
             date: daySelected,
           }),
         });
-        console.log('click', props.lat)
         setPress(!press)
       }
      
@@ -169,8 +166,8 @@ export default function BookingCards(props) {
               setShowCalendar(!showCalendar)
              
               // dispatch(removeMyDates())
-              //
-             setMyDates({day:day.dateString})
+              
+             
             }}
             markedDates={{
               [daySelected]: {

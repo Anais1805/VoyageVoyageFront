@@ -23,41 +23,26 @@ import { addMyDay, removeMyDays } from "../reducers/mylikedays";
 import { addMyDates } from "../reducers/dates";
 import markers from "../reducers/markers";
 import Header from "../components/Header";
- import HeaderConnected from "../components/HeaderConnected";
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+import HeaderConnected from "../components/HeaderConnected";
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function MapScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const dates = useSelector((state) => state.dates.value);
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [myMarkers, setMyMarkers]= useState([])
-  const [myDates, setMyDates]=useState([])
-  let mark = []
+  const [myMarkers, setMyMarkers] = useState([]);
+  const [myDates, setMyDates] = useState([]);
+  let mark = [];
   useEffect(() => {
     fetch(`${BACKEND_ADRESS}/destinations/${user.token}`)
-    .then(resp => resp.json())
-      .then(data =>{
-        console.log('FETCH', data.destination)
-        mark.push(data.destination)
-        setMyMarkers(data.destination),
-        dispatch(importMarkers(data.destination))
-        })
-      }, [])
-
-        // useEffect(() => {
-        // fetch(`${BACKEND_ADRESS}/bookings/${user.token}`)
-        // .then(resp => resp.json())
-        //   .then(data =>{
-        //     console.log('BOOK', data.Journeys)
-        //     setMyDates(data.Journeys)
-        //   dispatch(addMyDates(data.Journeys)) 
-        //     })}, []);
-
-            
-   
-   
-
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("FETCH", data.destination);
+        mark.push(data.destination);
+        setMyMarkers(data.destination);
+      });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -70,22 +55,28 @@ export default function MapScreen({ navigation }) {
       }
     })();
   }, []);
-  
 
   // // console.log('USERS', user.token)
-  const mymarkers = useSelector((state) => state.markers.value)
+  const mymarkers = useSelector((state) => state.markers.value);
   //  console.log('MYMARKER', mymarkers)
 
- console.log('MARK', myMarkers)
-//  Object.values(myMarkers))
-//  .map((value, index) => {return (<View key={index}><Text>{value}</Text></View>)}));
+  console.log("MARK", myMarkers);
 
   const markers = myMarkers.map((data, i) => {
-    if(data !== null){
-    return <Marker key={i} coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }} title={data.city} />;
-  }})
+    if (data !== null) {
+      return (
+        <Marker
+          key={i}
+          coordinate={{
+            latitude: Number(data.lat),
+            longitude: Number(data.lon),
+          }}
+          title={data.city}
+        />
+      );
+    }
+  });
   const myBookingDays = myMarkers.map((data, i) => {
-    
     if (data) {
       return (
         <View key={i} style={styles.btnToReserve}>
@@ -98,58 +89,65 @@ export default function MapScreen({ navigation }) {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#335C67'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#335C67" }}>
       <StatusBar />
-      <View style={{flex: 1, backgroundColor: '#FFFBF7'}}>
-  
-  
-  
+      <View style={{ flex: 1, backgroundColor: "#FFFBF7" }}>
+        <View style={styles.header}>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+              <Image
+                style={{ width: 40, height: 40 }}
+                source={require("../assets/logoWhite.png")}
+              ></Image>
+            </TouchableOpacity>
+          </View>
+          <HeaderConnected />
+        </View>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
+        <View style={styles.titleRestoContainer}>
+          <Text style={styles.titleResto}>Récapitulatif</Text>
+          <FontAwesome
+            style={styles.iconP}
+            name="bitbucket"
+            size={20}
+            onPress={() => {
+              dispatch(removeMyDays());
+              dispatch(removeMarkers());
+              dispatch(removeMyDates());
+            }}
+          />
+        </View>
 
-  <View style={styles.header}>
-    <View>
-    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Image
-            style={{ width: 40, height: 40 }}
-            source={require("../assets/logoWhite.png")}
-          ></Image>
-        </TouchableOpacity>
-    </View>
-    <HeaderConnected/>
-</View>
-      <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}></View>
-      <View style={styles.titleRestoContainer}>
-        <Text style={styles.titleResto}>Récapitulatif</Text>
-        <FontAwesome
-          style={styles.iconP}
-          name="bitbucket"
-          size={20}
-          onPress={() => {dispatch(removeMyDays()); dispatch(removeMarkers()); dispatch(removeMyDates())}}
-        />
-      </View>
-      
         <View
-          style={{ paddingVertical: 3, flexWrap: "wrap", flexDirection: "row", justifyContent: 'space-around', marginVertical: 10 }}
+          style={{
+            paddingVertical: 3,
+            flexWrap: "wrap",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            marginVertical: 10,
+          }}
         >
           {myBookingDays}
         </View>
 
-        <View style={{ width: "100%", height: "40%", alignItems: "center", }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={styles.mymap}></Text>
-        
-        </View>
+        <View style={{ width: "100%", height: "40%", alignItems: "center" }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.mymap}></Text>
+          </View>
           <MapView
             onLongPress={() => navigation.navigate("Map")}
             mapType="hybrid"
             style={styles.map}
           >
-                <FontAwesome
-         style={styles.iconE}
-          name="expand"
-          size={25}
-          color={'white'}
-          onPress={() => navigation.navigate('Map')}
-        />
+            <FontAwesome
+              style={styles.iconE}
+              name="expand"
+              size={25}
+              color={"white"}
+              onPress={() => navigation.navigate("Map")}
+            />
             {currentPosition && (
               <Marker
                 coordinate={currentPosition}
@@ -157,10 +155,10 @@ export default function MapScreen({ navigation }) {
                 pinColor="#fecb2d"
               />
             )}
-           {markers} 
+            {markers}
           </MapView>
         </View>
-        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -171,7 +169,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: '#335C67'
+    backgroundColor: "#335C67",
   },
   btnHeader: {
     flexDirection: "row",
@@ -220,8 +218,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: 'center',
-    marginVertical: 10
+    alignItems: "center",
+    marginVertical: 10,
   },
   titleResto: {
     fontSize: 26,
@@ -269,11 +267,10 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     paddingBottom: 5,
-    paddingLeft: '30%'
+    paddingLeft: "30%",
   },
   iconE: {
-   marginBottom: 190,
-   marginLeft: 300
-    
-  }
+    marginBottom: 190,
+    marginLeft: 300,
+  },
 });
