@@ -58,7 +58,7 @@ export default function AllCulturalsScreen({ navigation }) {
       <AllCards
         key={i}
         name={data.infos.name}
-        city={data.infos.address.city}
+        city={data.infos.address?.city}
         source={
           image ??
           "https://mutuelle-mie.fr/assets/mieuploads/2021/11/Musee-Histoire-de-la-medecine.jpg"

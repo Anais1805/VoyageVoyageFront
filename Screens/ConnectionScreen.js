@@ -88,6 +88,7 @@ export default function ConnectionScreen({ navigation }) {
           placeholder=" 🔒 Mot de Passe"
           onChangeText={(signInPassword) => setSignInPassword(signInPassword)}
           value={signInPassword}
+          secureTextEntry={true}
         ></TextInput>
 
         <TouchableOpacity

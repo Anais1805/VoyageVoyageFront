@@ -66,7 +66,7 @@ export default function AllRestaurantsScreen({ navigation }) {
       <AllCards
         key={i}
         name={data.infos.name}
-        city={data.infos.address.city}
+        city={data.infos.address?.city}
         source={
           image ??
           "https://restaurant-lasiesta.fr/wp-content/uploads/2022/03/la-siesta-restaurant-canet-en-roussillon-2-570x855.jpg"

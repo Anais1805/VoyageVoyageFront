@@ -1,99 +1,107 @@
 import React, { useState } from "react";
-import {Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { destinationSearch } from '../reducers/destinations';
+import { destinationSearch } from "../reducers/destinations";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
-export default function ModalSearch ({navigation})  {
+export default function ModalSearch({ navigation }) {
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
-const [city, setCity]=useState('')
-const [country, setCountry]=useState('')
-const [modalVisible, setModalVisible] = useState(false);
-
-const destination = useSelector((state) => state.destinations.value)
-const dispatch = useDispatch()
+  const destination = useSelector((state) => state.destinations.value);
+  const dispatch = useDispatch();
   // console.log(destination)
 
-
-const searchPress = () => {
-
-
-
-fetch(`${BACKEND_ADRESS}/favorite/${city}/${country}`)
-
-
-            .then((resp) => resp.json())
-            .then((data) => {
-              if(data.result) {
-                dispatch(destinationSearch({
-                  city: data.city.name,
-                  country: data.city.country,
-                  lat: data.city.lat,
-                  lon: data.city.lon
-
-            }
-            ))
-
-          }
-        })
-   
-   }
+  const searchPress = () => {
+    fetch(`${BACKEND_ADRESS}/favorite/${city}/${country}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(
+            destinationSearch({
+              city: data.city.name,
+              country: data.city.country,
+              lat: data.city.lat,
+              lon: data.city.lon,
+            })
+          );
+        }
+      });
+  };
   return (
     <>
-    
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.modalView}>
+          <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "flex-end",
+                marginTop: -20,
+                marginBottom: 20,
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>X</Text>
+            </View>
+          </TouchableOpacity>
+          <Text style={styles.modalText}>Rechercher</Text>
 
-  <Modal
-    animationType="slide"
-    transparent={true}
-    visible={modalVisible}
-  >
-      <View style={styles.modalView}>
-        <TouchableOpacity onPress={() => setModalVisible(false)}>
-        <View style={{justifyContent: 'center', alignItems:'flex-end', marginTop: -20, marginBottom: 20}}>
-          <Text style={{fontWeight: 'bold'}}>X</Text>
+          <SafeAreaView>
+            <TextInput
+              style={styles.inputDestinationVille}
+              onChangeText={(city) => setCity(city)}
+              value={city}
+              placeholder="Ville"
+            />
+            <TextInput
+              style={styles.inputDestinationPays}
+              onChangeText={(country) => setCountry(country)}
+              value={country}
+              placeholder="Pays"
+            />
+
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                searchPress();
+              }}
+            >
+              <Text style={styles.textStyle}>Valider</Text>
+            </Pressable>
+          </SafeAreaView>
         </View>
-        </TouchableOpacity>
-        <Text style={styles.modalText}>Rechercher</Text>
-        
-        <SafeAreaView>
-          <TextInput style={styles.inputDestinationVille}  onChangeText={(city) => setCity(city)}
-      value={city} placeholder="Ville"/>
-          <TextInput style={styles.inputDestinationPays} onChangeText={(country) => setCountry(country)}
-      value={country} placeholder="Pays"/>
-        
-        
-        <Pressable
-          style={[styles.button, styles.buttonClose]}
-          onPress={() => {setModalVisible(!modalVisible); searchPress()}}
-        >
-          <Text style={styles.textStyle}>Valider</Text>
-        </Pressable>
-        </SafeAreaView>
-      </View>
+      </Modal>
 
-    
-  </Modal>
-
-   
-
-<TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.searchIcon]}>
-
-<Image style={styles.iconSearch} source={require('../assets/search.png')}/>  
-   </TouchableOpacity>
-  </>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={[styles.searchIcon]}
+      >
+        <Image
+          style={styles.iconSearch}
+          source={require("../assets/search.png")}
+        />
+      </TouchableOpacity>
+    </>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  centeredView: {
-
-
-  },
-  searchIcon:{
+  centeredView: {},
+  searchIcon: {
     marginRight: 20,
   },
   iconSearch: {
@@ -104,13 +112,13 @@ const styles = StyleSheet.create({
   inputDestinationVille: {
     height: "10%",
     borderWidth: 1,
-    backgroundColor: 'transparent',
-    opacity: 0.3
+    backgroundColor: "transparent",
+    opacity: 0.3,
   },
   inputDestinationPays: {
     height: "10%",
     borderWidth: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     opacity: 0.3,
     marginTop: 10,
   },
@@ -123,19 +131,17 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   button: {
     borderRadius: 5,
     padding: 10,
   },
-  buttonOpen: {
-
-  },
+  buttonOpen: {},
   buttonClose: {
     backgroundColor: "#9E2A2B",
     marginTop: 20,
@@ -150,6 +156,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
     fontSize: 16,
-    fontWeight: '700'
-  }
+    fontWeight: "700",
+  },
 });
