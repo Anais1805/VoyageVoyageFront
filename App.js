@@ -81,6 +81,7 @@ export default function App() {
        <Stack.Screen name="MyDay" component={MyDayScreen} />
        <Stack.Screen name="Days" component={DaysScreen} />
        <Stack.Screen name="Card" component={Card} />
+       <Stack.Screen name='Details' component={DetailsScreen}/>
        {/* <Stack.Screen name="Reserved" component={ReservedScreen} />
         <Stack.Screen name="Overview" component={OverviewScreen} />*/}
      </Stack.Navigator>

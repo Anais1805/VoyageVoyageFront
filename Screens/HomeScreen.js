@@ -26,8 +26,10 @@ import { logout} from "../reducers/users"
 import { importPosition } from "../reducers/currentPosition";
 import HeaderConnected from "../components/HeaderConnected"
 import Header from "../components/Header";
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+import Card from "../components/Card";
 
+//const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
 const {width} = Dimensions.get('screen');
 
 export default function HomeScreen({ navigation }) {
@@ -63,7 +65,7 @@ export default function HomeScreen({ navigation }) {
 
   const Card = ({place}) => {
     return(
-      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details', places)}>
       <ImageBackground style={styles.cardImage} source={place.image}>
         
         <View style={{backgroundColor: '#335C67', opacity: 0.9, width: "100%", height: "40%", top: "60%"}}>
