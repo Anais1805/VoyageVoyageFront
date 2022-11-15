@@ -20,7 +20,10 @@ import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected";
 import users from "../reducers/users";
 import AllCards from "../components/AllCards";
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+//const BACKEND_ADRESS = "http://192.168.1.43:4000";
+
 export default function AllCulturalsScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);
   const [allDetails, setAllDetails] = useState([]);

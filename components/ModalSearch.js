@@ -13,8 +13,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { destinationSearch } from "../reducers/destinations";
 
 import { useSelector, useDispatch } from "react-redux";
-
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+// const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function ModalSearch({ navigation }) {
   const [city, setCity] = useState("");

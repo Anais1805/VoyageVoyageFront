@@ -26,7 +26,9 @@ import { addLikedDays } from "../reducers/users";
 import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected";
 import { logout } from "../reducers/users";
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+//const BACKEND_ADRESS = "http://192.168.1.43:4000";
 export default function MyReservationScreen({ navigation }) {
   const dispatch = useDispatch();
   const poub = useSelector((state) => state.mylikedays.value);

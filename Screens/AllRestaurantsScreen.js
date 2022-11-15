@@ -25,7 +25,8 @@ import places from "./places";
 import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected";
 
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+//onst BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function AllRestaurantsScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);

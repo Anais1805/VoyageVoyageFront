@@ -26,7 +26,9 @@ import mylikedays, { removeMyDays } from "../reducers/mylikedays";
 import { addMyDay } from "../reducers/mylikedays";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import AllCards from "../components/AllCards";
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+//const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function DaysScreen({ navigation }) {
   const [allCulturals, setAllCulturals] = useState([]);

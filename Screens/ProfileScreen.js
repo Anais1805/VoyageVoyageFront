@@ -22,7 +22,9 @@ import createPersistoid from "redux-persist/es/createPersistoid";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected";
-const BACKEND_ADRESS = 'http://192.168.1.43:4000'
+
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+//const BACKEND_ADRESS = 'http://192.168.1.43:4000'
 
 export default function ProfileScreen({ navigation }) {
   const [usernameValue, setUsernameValue] = useState("");

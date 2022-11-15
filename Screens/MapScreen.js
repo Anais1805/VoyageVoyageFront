@@ -18,7 +18,8 @@ import markers from "../reducers/markers";
 import { importMarkers } from "../reducers/markers";
 import HeaderConnected from "../components/HeaderConnected";
 
-const BACKEND_ADRESS = "http://192.168.1.43:4000";
+const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
+//const BACKEND_ADRESS = "http://192.168.1.43:4000";
 
 export default function MapScreen({ navigation }) {
   const dispatch = useDispatch();
