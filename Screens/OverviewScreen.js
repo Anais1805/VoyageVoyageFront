@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   },
   btnToReserve: {
     backgroundColor: "#9E2A2B",
-    width: 250,
+    width: 330,
     height: 25,
     justifyContent: "center",
     alignItems: "center",

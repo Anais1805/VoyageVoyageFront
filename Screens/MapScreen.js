@@ -60,7 +60,7 @@ export default function MapScreen({ navigation }) {
       <Marker
         key={i}
         coordinate={{ latitude: Number(data.lat), longitude: Number(data.lon) }}
-        title={data.name}
+        title={data.city}
       />
     );
   });
