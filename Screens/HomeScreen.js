@@ -23,7 +23,7 @@ import { destinationSearch } from '../reducers/destinations';
 import * as Location from 'expo-location';
 import users from "../reducers/users";
 import { logout} from "../reducers/users"
-import { importPosition } from "../reducers/currentPosition";
+
 import HeaderConnected from "../components/HeaderConnected"
 import Header from "../components/Header";
 import Card from "../components/Card";
@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }) {
           (location) => {
             console.log('LOC', location);
            setCurrentPosition(location.coords);
-           dispatch(importPosition(location.coords))
+      
           });
       }
     })();
