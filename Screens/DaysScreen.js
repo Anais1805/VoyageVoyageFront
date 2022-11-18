@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import destinations from "../reducers/destinations";
 import users, { addLikedDays } from "../reducers/users";
-import dates from "../reducers/dates";
+
 import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected"
 import favorite from "../reducers/favorites";
@@ -40,7 +40,7 @@ export default function DaysScreen({ navigation }) {
   const [allrestaurants, setAllRestaurants] = useState([]);
   const [details, setDetails] = useState([]);
   const [myvisits, setMyVisits] = useState([]);
-  const dates = useSelector((state) => state.dates.value);
+
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const mydays = useSelector((state) => state.mylikedays.value);

@@ -19,8 +19,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import mylikedays from "../reducers/mylikedays";
 import { removeMyDays } from "../reducers/mylikedays";
-import dates, { removeMyDates } from "../reducers/dates";
-import { addMyDates } from "../reducers/dates";
+
 import BookingCards from "../components/BookingCards";
 import { addLikedDays } from "../reducers/users";
 import Header from "../components/Header";

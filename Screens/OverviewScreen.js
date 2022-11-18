@@ -15,13 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import dates from "../reducers/dates";
-import { removeMyDates } from "../reducers/dates";
 
-import { importMarkers, removeMarkers } from "../reducers/markers";
+
+
+
 import { addMyDay, removeMyDays } from "../reducers/mylikedays";
-import { addMyDates } from "../reducers/dates";
-import markers from "../reducers/markers";
+
+
 import Header from "../components/Header";
 import HeaderConnected from "../components/HeaderConnected";
 
@@ -31,7 +31,7 @@ const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
 export default function MapScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  const dates = useSelector((state) => state.dates.value);
+
   const [currentPosition, setCurrentPosition] = useState(null);
   const [myMarkers, setMyMarkers] = useState([]);
   const [myDates, setMyDates] = useState([]);
@@ -59,7 +59,7 @@ export default function MapScreen({ navigation }) {
   }, []);
 
   // // console.log('USERS', user.token)
-  const mymarkers = useSelector((state) => state.markers.value);
+
   //  console.log('MYMARKER', mymarkers)
 
   console.log("MARK", myMarkers);
@@ -114,8 +114,8 @@ export default function MapScreen({ navigation }) {
             size={20}
             onPress={() => {
               dispatch(removeMyDays());
-              dispatch(removeMarkers());
-              dispatch(removeMyDates());
+            
+              
             }}
           />
         </View>

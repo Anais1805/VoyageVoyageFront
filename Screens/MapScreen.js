@@ -14,8 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import markers from "../reducers/markers";
-import { importMarkers } from "../reducers/markers";
+
 import HeaderConnected from "../components/HeaderConnected";
 
 const BACKEND_ADRESS = 'https://voyage-voyage-back.vercel.app'
@@ -48,12 +47,12 @@ export default function MapScreen({ navigation }) {
         console.log("FETCH", data.destination);
 
         mark.push(data.destination);
-        setMyMarkers(data.destination),
-          dispatch(importMarkers(data.destination));
+        setMyMarkers(data.destination)
+    
       });
   }, []);
 
-  const mymarkers = useSelector((state) => state.markers.value);
+  
   console.log("MYMARKERS", myMarkers);
   const markers = myMarkers.map((data, i) => {
     return (
